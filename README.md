@@ -25,6 +25,12 @@ Each level beyond 10 adds 1% to gig pay and morning royalties. Existing mixing, 
 
 Browser saves use `project-superdj-v2`. Existing version 2 saves without XP gain a starting level based on their career progress. Older `afterhours-v1` saves still migrate. Export a JSON save from **Esc** for a portable backup; use **Download offline game** to save the current one-file game.
 
+## Goals and quests
+
+Select the current quest on the top-left HUD, or open **I → Goals**, to see all ten primary goals from the start. Their path runs from **The First Set** through **Monsoon Main Stage**. Each goal contains two to four measurable quests. Quests award XP once when completed; finishing a goal also awards XP, cash, and reputation. The Local travel pass lowers train fares, Mira’s master tape improves new releases, and the final goal awards a headliner plaque. Future goal requirements stay visible so you can plan ahead.
+
+Goal, quest, item, and career progress are saved in the same version 2 JSON format. Older saves infer completed work and gigs from their journal where possible; remaining quests can be completed normally.
+
 ## Tests
 
 Run `node --test tests/progression.test.cjs`. Tests use Node's built-in test runner and need no installed packages.

@@ -19,6 +19,8 @@ dialog{width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 40px);border
 
 .levelHUD{position:fixed;top:max(18px,env(safe-area-inset-top));left:max(18px,env(safe-area-inset-left));z-index:3;width:230px;padding:11px 13px;background:#111e2aee;border:2px solid #617682;box-shadow:inset 0 0 0 2px #233646,3px 4px 0 #070f1b66;color:#e6d6b9;user-select:none}
 .levelHUD .levelTitle{display:flex;justify-content:space-between;gap:8px;color:#e8c38e;font-size:13px}.levelHUD .levelTitle strong{font-size:16px}.levelHUD .track{height:8px;margin:7px 0 5px;background:#0b1520}.levelHUD .fill{background:#e3ad6c}.levelHUD .levelDetail{font-size:10px;color:#b9cbd0}.levelHUD .levelUnlock{font-size:10px;color:#8ac0bc;margin-top:5px;line-height:1.3}
+.hudQuest{display:block;width:100%;margin-top:9px;padding:8px;text-align:left;background:#213747;border-color:#466775;box-shadow:none}.hudQuest:hover:not(:disabled){background:#304b5a}.hudQuest span,.hudQuest small{display:block;font-size:10px;color:#a6c8ce;line-height:1.3}.hudQuest strong{display:block;font-size:12px;color:#f0d1a2;margin:2px 0}.hudQuest small{color:#e0d2bb}.hudQuest em{display:block;margin-top:5px;font-size:9px;font-style:normal;color:#8fc5bd}
+#menuBody,#modalBody{max-height:calc(100dvh - 190px);overflow-y:auto}.goalList{display:grid;gap:11px;padding-right:5px}.goalCard{padding:14px;border:1px solid #385568;background:#142838}.goalCard.active{border-color:#d7a966;background:#203545}.goalCard.complete{border-color:#638774}.goalCard h3{font-size:17px;margin:4px 0}.goalCard p{margin:4px 0 9px!important;font-size:12px}.goalQuest{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-top:1px solid #334b5a;font-size:12px}.goalQuest.done{color:#9acbb4}.goalQuest b{white-space:nowrap;color:#e7c690}.goalReward{margin-top:8px;color:#dfbd83;font-size:11px;line-height:1.45}
 .districtBanner{top:136px}.districtCard.locked{opacity:.56}.districtCard.locked small{color:#e2a69f}
 @media(max-width:780px){.levelHUD{left:10px;top:10px;width:174px;padding:8px 10px}.levelHUD .levelTitle{font-size:11px}.levelHUD .levelTitle strong{font-size:13px}.levelHUD .levelDetail,.levelHUD .levelUnlock{font-size:9px}.districtBanner{top:114px;left:10px;padding:9px 12px}.districtBanner strong{font-size:17px}}
 @media(max-width:390px){.levelHUD{width:145px}.levelHUD .levelUnlock{display:none}}
@@ -51,13 +53,13 @@ dialog::backdrop{background:#040c168c;backdrop-filter:blur(1px)}
 .seaLabel{grid-column:3;grid-row:1;align-self:center;justify-self:center;color:#6c96b3;font-size:12px;letter-spacing:4px;text-align:center;line-height:1.8;opacity:.65}
 .cityDetails{border:1px solid #3a5365;background:#182d3c;padding:18px}.cityDetails h3{font-size:23px;margin:5px 0}.cityDetails p{font-size:14px}.cityFacts{display:grid;gap:7px;font-size:12px;color:#cebd9d}
 @media(max-width:600px){.districtBanner{left:14px;top:15px;max-width:calc(100% - 215px);padding:10px}.districtBanner strong{font-size:19px}.districtBanner span{display:none}.districtBanner small{font-size:7px;letter-spacing:1px}.gameHUD{width:185px}.cityChart{gap:7px;padding:9px;grid-template-rows:repeat(3,94px)}.districtCard{padding:7px!important}.districtCard b{font-size:12px}.districtCard span{font-size:9px}.districtCard small{font-size:6px}.seaLabel{font-size:9px;letter-spacing:2px}}
-#districtBanner{top:136px} .districtCard.locked{opacity:.56}
-@media(max-width:780px){#districtBanner{top:114px;left:10px}}
+#districtBanner{top:auto;bottom:120px} .districtCard.locked{opacity:.56}
+@media(max-width:780px){#districtBanner{top:auto;bottom:180px;left:10px}}
 @media(max-width:480px){.levelHUD{width:155px}.gameHUD{width:168px}}
 @media(max-width:360px){.levelHUD{width:130px}.gameHUD{width:155px}.levelHUD .levelDetail{font-size:8px}}
 </style></head><body>
 <main class="gameSurface" aria-label="Project SuperDJ game"><canvas id="world" width="720" height="450" tabindex="0" aria-label="Mumbai. Move with WASD or arrow keys. E interacts, I opens your journal and character menus, Escape opens settings and saving."></canvas></main><div class="districtBanner" id="districtBanner"><small>PROJECT SUPERDJ · MUMBAI</small><strong id="districtTitle">Dadar</strong><span id="districtSubtitle">The city starts here</span></div>
-<aside class="levelHUD" aria-label="Player level and experience"><div class="levelTitle"><span>PLAYER LEVEL</span><strong id="playerLevel">1</strong></div><div class="track" id="xpMeter" role="progressbar" aria-label="Experience toward next level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fill" id="xpFill" style="width:0%"></div></div><div class="levelDetail" id="xpDetail">0 / 100 XP</div><div class="levelUnlock" id="nextUnlock">Next: Bandra and new gigs</div></aside>
+<aside class="levelHUD" aria-label="Player level, experience, and goals"><div class="levelTitle"><span>PLAYER LEVEL</span><strong id="playerLevel">1</strong></div><div class="track" id="xpMeter" role="progressbar" aria-label="Experience toward next level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fill" id="xpFill" style="width:0%"></div></div><div class="levelDetail" id="xpDetail">0 / 100 XP</div><div class="levelUnlock" id="nextUnlock">Next: Bandra and new gigs</div><button class="hudQuest" onclick="showControlSection('goals')" aria-label="Open all ten goals and current quests"><span id="goalCount">GOAL 1 / 10</span><strong id="goalTitle">The First Set</strong><small id="questLine">Reach Mixing 5 · 0 / 5</small><em>View all goals and quests →</em></button></aside>
 <aside class="gameHUD" aria-label="Essential status">
  <div class="hudDistrict" id="hudDistrict">Dadar</div><div class="hudDate"><span id="weather" aria-label="Weather">☀</span><span id="date">Spring · Day 1</span></div>
  <div class="hudTime"><strong id="clock">9:00 AM</strong><span id="money">₹1,500</span></div>
@@ -78,7 +80,7 @@ dialog::backdrop{background:#040c168c;backdrop-filter:blur(1px)}
 const $=id=>document.getElementById(id);
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const initial=()=>({version:2,district:'dadar',name:'NOVA',day:1,hour:9,money:1500,debt:0,energy:100,hunger:85,mood:80,health:100,skill:0,production:0,inspiration:30,fans:0,rep:0,gear:0,home:0,records:0,tracks:[],gigs:0,best:0,xp:0,discovered:['dadar'],partner:null,friends:{mira:0,rowan:0,sol:0,kit:0},daily:{},journal:[{day:1,text:'Moved into a Dadar chawl room with ₹1,500 and a borrowed controller. Mumbai is waiting.'}],x:640,y:445,started:false,achievements:[],settings:{sound:false,motion:true}});
+const initial=()=>({version:2,district:'dadar',name:'NOVA',day:1,hour:9,money:1500,debt:0,energy:100,hunger:85,mood:80,health:100,skill:0,production:0,inspiration:30,fans:0,rep:0,gear:0,home:0,records:0,tracks:[],gigs:0,best:0,xp:0,discovered:['dadar'],career:{jobs:0,collabs:0,venues:[]},goalProgress:{quests:[],goals:[]},items:[],partner:null,friends:{mira:0,rowan:0,sol:0,kit:0},daily:{},journal:[{day:1,text:'Moved into a Dadar chawl room with ₹1,500 and a borrowed controller. Mumbai is waiting.'}],x:640,y:445,started:false,achievements:[],settings:{sound:false,motion:true}});
 let S=initial(),currentSpot='home',pendingSpot=null,path=[],keys={},last=0,frame=0,muted=true,audioCtx=null,gig=null,toastTimer,lastSaved=0,storageOK=true;
 const people={
  mira:{name:'Mira',role:'Producer & night owl',color:'#bb84c8',line:'A rough idea with feeling beats a perfect loop with nothing to say.',perk:'At 40 friendship: collaboration sessions unlock.'},
@@ -143,6 +145,20 @@ const storeTierLevels={1:1,2:3,3:5,4:6,5:8};
 const venueLevels=[1,2,3,4,5,7,8,9,10];
 const gearLevels=[1,2,5,8],homeLevels=[1,4,8];
 const xpCosts={practice:20,cook:8,eat:8,walk:8,sample:12,picnic:8,study:22,listen:12,sleep:5,release:65,collaborate:50,record:25,gear:25,home:30,chat:8,hang:18,gift:10,date:30,discovery:15};
+const quest=(id,label,target,read)=>({id,label,target,read});
+const primaryGoals=[
+ {id:'first-set',title:'The First Set',story:'Turn a borrowed controller into your first live performance.',questXP:15,quests:[quest('practice','Reach Mixing 5',5,()=>S.skill),quest('gig','Complete your first gig',1,()=>S.gigs)],reward:{xp:40,money:100,rep:1}},
+ {id:'neighbourhood',title:'A Name in the Neighbourhood',story:'Earn your way and find a first audience beyond Dadar.',questXP:22,quests:[quest('jobs','Complete 2 paid shifts',2,()=>S.career.jobs),quest('fans','Reach 60 fans',60,()=>S.fans),quest('bandra','Visit Bandra',1,()=>Number(S.discovered.includes('bandra')))],reward:{xp:70,money:350,rep:2,item:'localPass'}},
+ {id:'own-sound',title:'A Sound of Your Own',story:'Collect records, learn production, and release an original.',questXP:30,quests:[quest('records','Collect 3 records',3,()=>S.records),quest('production','Reach Production 25',25,()=>S.production),quest('track','Release an original track',1,()=>S.tracks.length),quest('fort','Visit Fort',1,()=>Number(S.discovered.includes('fort')))],reward:{xp:100,money:750,rep:3}},
+ {id:'club-circuit',title:'The Club Circuit',story:'Grow from local rooms into the mill district.',questXP:38,quests:[quest('gigs','Complete 5 gigs',5,()=>S.gigs),quest('fans','Reach 300 fans',300,()=>S.fans),quest('parel','Visit Lower Parel',1,()=>Number(S.discovered.includes('parel')))],reward:{xp:140,money:1300,rep:4}},
+ {id:'creative-network',title:'Your Creative Circle',story:'Build a real collaboration and widen your discography.',questXP:48,quests:[quest('friend','Reach 40 friendship with anyone',40,()=>Math.max(...Object.values(S.friends))),quest('collab','Collaborate with Mira',1,()=>S.career.collabs),quest('tracks','Release 2 originals',2,()=>S.tracks.length),quest('andheri','Visit Andheri West',1,()=>Number(S.discovered.includes('andheri')))],reward:{xp:190,money:2200,rep:6,item:'masterTape'}},
+ {id:'city-frequency',title:'City Frequency',story:'A broader following calls for better gear and bolder work.',questXP:60,quests:[quest('fans','Reach 1,000 fans',1000,()=>S.fans),quest('gigs','Complete 10 gigs',10,()=>S.gigs),quest('gear','Own a club-ready setup',2,()=>S.gear),quest('worli','Visit Worli',1,()=>Number(S.discovered.includes('worli')))],reward:{xp:260,money:3500,rep:8}},
+ {id:'seaface',title:'The Seaface Headliner',story:'Take an original sound to the Arabian Rooftop.',questXP:75,quests:[quest('rooftop','Complete Arabian Rooftop',1,()=>Number(S.career.venues.includes(5))),quest('fans','Reach 1,800 fans',1800,()=>S.fans),quest('tracks','Release 2 originals',2,()=>S.tracks.length)],reward:{xp:350,money:5500,rep:10}},
+ {id:'harbour',title:'The Harbour Residency',story:'Bring a polished catalogue to Colaba.',questXP:90,quests:[quest('harbour-gig','Complete The Harbour Room',1,()=>Number(S.career.venues.includes(6))),quest('gear','Own a dream studio rig',3,()=>S.gear),quest('tracks','Release 3 originals',3,()=>S.tracks.length),quest('colaba','Visit Colaba',1,()=>Number(S.discovered.includes('colaba')))],reward:{xp:450,money:8500,rep:12}},
+ {id:'city-icon',title:'City Icon',story:'Fill a landmark room and prepare for the beach festival.',questXP:110,quests:[quest('deco','Complete Deco After Dark',1,()=>Number(S.career.venues.includes(7))),quest('fans','Reach 3,400 fans',3400,()=>S.fans),quest('juhu','Visit Juhu',1,()=>Number(S.discovered.includes('juhu'))),quest('rep','Reach 50 reputation',50,()=>S.rep)],reward:{xp:600,money:13000,rep:15}},
+ {id:'main-stage',title:'Monsoon Main Stage',story:'Complete the journey from a chawl room to a festival headliner.',questXP:140,quests:[quest('festival','Complete Monsoon Frequency',1,()=>Number(S.career.venues.includes(8))),quest('fans','Reach 5,000 fans',5000,()=>S.fans),quest('gigs','Complete 20 gigs',20,()=>S.gigs),quest('skill','Reach Mixing 85',85,()=>S.skill)],reward:{xp:900,money:25000,rep:25,item:'headlinerPlaque'}}
+];
+const goalItems={localPass:{name:'Local travel pass',description:'Local train fares are ₹10 cheaper.'},masterTape:{name:'Mira’s master tape',description:'Adds 5 quality to every new original.'},headlinerPlaque:{name:'Monsoon headliner plaque',description:'A reminder that the city knows your sound.'}};
 function xpForNext(level){return Math.round(100*Math.pow(level,1.4))}
 function xpAtLevel(level){let n=0;for(let i=1;i<level;i++)n+=xpForNext(i);return n}
 function playerLevel(xp=S.xp){let level=1,remaining=xp;while(remaining>=xpForNext(level)){remaining-=xpForNext(level);level++}return level}
@@ -193,6 +209,42 @@ function requirements(skill,prod,fans){return (skill?'Mixing '+skill+' · ':'')+
 function tier(){let n=0;tiers.forEach((t,i)=>{if(S.fans>=t.fans)n=i});return n}
 function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),4000)}
 function log(msg){S.journal.unshift({day:S.day,text:msg});S.journal=S.journal.slice(0,100)}
+function activeGoalIndex(){return primaryGoals.findIndex(goal=>!S.goalProgress.goals.includes(goal.id))}
+function questKey(goal,quest){return goal.id+':'+quest.id}
+function questValue(quest){return Math.min(quest.target,Math.max(0,Math.floor(quest.read())))}
+function goalRewardText(goal){
+ const r=goal.reward;
+ return '+'+r.xp+' XP · '+rupees(r.money)+' · +'+r.rep+' reputation'+(r.item?' · '+goalItems[r.item].name:'');
+}
+function checkGoals(){
+ let notice='';
+ for(const goal of primaryGoals){
+  if(S.goalProgress.goals.includes(goal.id))continue;
+  for(const quest of goal.quests){
+   const key=questKey(goal,quest);
+   if(!S.goalProgress.quests.includes(key)&&questValue(quest)>=quest.target){
+    S.goalProgress.quests.push(key);awardXP(goal.questXP);
+    log('Quest complete: '+quest.label+'. +'+goal.questXP+' XP.');notice='Quest complete: '+quest.label+' · +'+goal.questXP+' XP';
+   }
+  }
+  if(!goal.quests.every(q=>S.goalProgress.quests.includes(questKey(goal,q))))break;
+  S.goalProgress.goals.push(goal.id);awardXP(goal.reward.xp);earn(goal.reward.money);S.rep+=goal.reward.rep;
+  if(goal.reward.item&&!S.items.includes(goal.reward.item))S.items.push(goal.reward.item);
+  log('Primary goal complete: '+goal.title+'. '+goalRewardText(goal)+'.');
+  notice='Goal complete: '+goal.title+' · '+goalRewardText(goal);
+ }
+ if(notice)toast(notice);
+ return notice;
+}
+function renderGoalHUD(){
+ const index=activeGoalIndex();
+ if(index<0){$('goalCount').textContent='ALL 10 GOALS COMPLETE';$('goalTitle').textContent='Monsoon headliner';$('questLine').textContent='Your full journey is complete.';return}
+ const goal=primaryGoals[index],quest=goal.quests.find(q=>!S.goalProgress.quests.includes(questKey(goal,q)));
+ const done=goal.quests.length-goal.quests.filter(q=>!S.goalProgress.quests.includes(questKey(goal,q))).length;
+ $('goalCount').textContent='GOAL '+(index+1)+' / 10 · '+done+'/'+goal.quests.length+' QUESTS';
+ $('goalTitle').textContent=goal.title;
+ $('questLine').textContent=quest?quest.label+' · '+questValue(quest)+' / '+quest.target:'Goal rewards ready';
+}
 
 function save(){
  try{localStorage.setItem('project-superdj-v2',JSON.stringify(S));storageOK=true;lastSaved=Date.now();$('saved').textContent='Saved';}
@@ -215,7 +267,7 @@ function spend(hours,energy,cost=0){
  if(S.energy<15)S.mood=clamp(S.mood-3);
  return true;
 }
-function finish(msg,xp=0){const before=playerLevel();if(xp)awardXP(xp);const levelUp=playerLevel()>before;log(msg+(xp?' +'+xp+' XP.':''));toast(msg+(xp?' +'+xp+' XP.':'')+(levelUp?' Level '+playerLevel()+' unlocked!':''));checkAchievements();render();save()}
+function finish(msg,xp=0){const before=playerLevel();if(xp)awardXP(xp);const levelUp=playerLevel()>before;log(msg+(xp?' +'+xp+' XP.':''));toast(msg+(xp?' +'+xp+' XP.':'')+(levelUp?' Level '+playerLevel()+' unlocked!':''));checkAchievements();if(xp)checkGoals();render();save()}
 function meter(label,value,color){return '<div class="meterrow"><span>'+label+'</span><div class="track"><div class="fill" style="width:'+clamp(value)+'%;background:'+color+'"></div></div><span>'+Math.round(value)+'</span></div>'}
 function clock(){let h=Math.floor(S.hour)%24,m=Math.round(S.hour%1*60);return (h%12||12)+':'+String(m).padStart(2,'0')+' '+(h>=12?'PM':'AM')}
 function season(){return ['Spring','Summer','Autumn','Winter'][Math.floor((S.day-1)/28)%4]}
@@ -227,6 +279,7 @@ function render(){
  $('xpDetail').textContent=progress.toLocaleString()+' / '+cost.toLocaleString()+' XP · '+S.xp.toLocaleString()+' total';
  $('xpMeter').setAttribute('aria-valuenow',progress);$('xpMeter').setAttribute('aria-valuemax',cost);
  $('nextUnlock').textContent='Next: '+unlockText(level+1);
+ renderGoalHUD();
  $('date').textContent=season()+' · Day '+S.day;$('clock').textContent=clock();
  $('weather').textContent=S.day%3===0?'☂':S.hour>=19?'☾':'☀';
  $('weather').setAttribute('title',S.day%3===0?'Rain':S.hour>=19?'Clear night':'Sunny');
@@ -271,7 +324,7 @@ function checkAchievements(){
 }
 
 let menuMode=null,menuSection='character',saveHintTimer=0,hintTimer=0;
-const controlSections=[['city','City'],['jobs','Jobs'],['character','Character'],['career','Career'],['gigs','Gigs'],['studio','Studio'],['people','People'],['bag','Backpack'],['journal','Journal']];
+const controlSections=[['goals','Goals'],['city','City'],['jobs','Jobs'],['character','Character'],['career','Career'],['gigs','Gigs'],['studio','Studio'],['people','People'],['bag','Backpack'],['journal','Journal']];
 function pauseSetForMenu(){
  if(gig&&!gig.paused){gig.paused=true;gig.pauseStart=performance.now();gig.pauseReason='menu'}
 }
@@ -291,7 +344,7 @@ function prepareMenu(mode){
 function showControlSection(section){
  menuSection=controlSections.some(([key])=>key===section)?section:'character';
  if(menuMode!=='inventory')prepareMenu('inventory');else drawMenuTabs();
- const pages={city:showCity,jobs:showJobs,character:showCharacter,career:showCareer,gigs:showGigs,studio:showStudio,people:showPeople,bag:showBag,journal:showJournal};
+ const pages={goals:showGoals,city:showCity,jobs:showJobs,character:showCharacter,career:showCareer,gigs:showGigs,studio:showStudio,people:showPeople,bag:showBag,journal:showJournal};
  pages[menuSection]();
 }
 function toggleControlMenu(){if(menuMode==='inventory'){closeMenu();return}prepareMenu('inventory');showControlSection(menuSection)}
@@ -311,12 +364,12 @@ function closeModal(){
 }
 function showCharacter(){
  let q=objective();
- openModal('Your character','<div class="characterHeading"><canvas class="avatar" id="avatar" width="26" height="30"></canvas><div><div class="eyebrow">'+tiers[tier()].name+'</div><h3>DJ '+esc(S.name)+'</h3><span class="sub">Player Level '+playerLevel()+' · '+S.xp.toLocaleString()+' total XP · Chapter '+(tier()+1)+'</span></div></div><div class="characterGrid"><div>'+meter('Energy',S.energy,'#dfb56a')+meter('Hunger',S.hunger,'#91b880')+meter('Mood',S.mood,'#d98eb0')+meter('Health',S.health,'#7fb7b9')+'</div><div class="characterFacts"><div><strong>'+S.fans.toLocaleString()+'</strong><small>FANS</small></div><div><strong>'+Math.floor(S.skill)+'</strong><small>MIXING / 100</small></div><div><strong>'+Math.floor(S.production)+'</strong><small>PRODUCTION / 100</small></div><div><strong>'+Math.floor(S.inspiration)+'</strong><small>INSPIRATION</small></div></div></div><div class="objectiveCard"><div class="eyebrow">ON YOUR HORIZON</div><h3 style="margin-top:8px">'+q[0]+'</h3><p>'+q[1]+'</p><span class="sub">'+q[2]+'</span></div>');
+ openModal('Your character','<div class="characterHeading"><canvas class="avatar" id="avatar" width="26" height="30"></canvas><div><div class="eyebrow">'+tiers[tier()].name+'</div><h3>DJ '+esc(S.name)+'</h3><span class="sub">Player Level '+playerLevel()+' · '+S.xp.toLocaleString()+' total XP · Chapter '+(tier()+1)+'</span></div></div><div class="characterGrid"><div>'+meter('Energy',S.energy,'#dfb56a')+meter('Hunger',S.hunger,'#91b880')+meter('Mood',S.mood,'#d98eb0')+meter('Health',S.health,'#7fb7b9')+'</div><div class="characterFacts"><div><strong>'+S.fans.toLocaleString()+'</strong><small>FANS</small></div><div><strong>'+Math.floor(S.skill)+'</strong><small>MIXING / 100</small></div><div><strong>'+Math.floor(S.production)+'</strong><small>PRODUCTION / 100</small></div><div><strong>'+Math.floor(S.inspiration)+'</strong><small>INSPIRATION</small></div></div></div><div class="objectiveCard"><div class="eyebrow">ON YOUR HORIZON</div><h3 style="margin-top:8px">'+q[0]+'</h3><p>'+q[1]+'</p><span class="sub">'+q[2]+'</span><button class="tiny" onclick="showControlSection(\'goals\')">View all ten goals</button></div>');
  drawAvatar();
 }
 function showGameMenu(){
  prepareMenu('pause');
- openModal('Take a breather','<p class="pauseHero">'+season()+' · Day '+S.day+' · '+clock()+'</p><div class="pauseGrid"><section><h3>YOUR STORY</h3><div class="pauseActions"><button class="gold" onclick="saveFromMenu()">Save game</button><button onclick="exportSave()">Export save file</button><button onclick="importSave()">Import save file</button><button onclick="downloadGame()">Download offline game ↓</button><button class="quiet" onclick="newGame()">New story…</button></div><p class="sub">'+(storageOK?'Progress saves automatically as you play.':'This preview cannot store saves in the browser. Save game downloads a save file.')+'</p></section><section><h3>SETTINGS</h3><div class="settingRow"><span>Sound</span><button onclick="toggleSound();showGameMenu()" aria-pressed="'+!muted+'">'+(muted?'Off':'On')+'</button></div><div class="settingRow"><span>Ambient motion</span><button onclick="toggleMotion()" aria-pressed="'+S.settings.motion+'">'+(S.settings.motion?'On':'Off')+'</button></div><div class="settingRow"><span>Display</span><button onclick="toggleFullscreen()">'+(document.fullscreenElement?'Window':'Fullscreen')+'</button></div><div class="pauseHelp"><span class="key">W A S D</span> or arrows — move<br><span class="key">E</span> interact · click a building to visit<br><span class="key">I</span> character, career & gigs<br><span class="key">M</span> Mumbai map & local trains<br><span class="key">Esc</span> settings & saving</div></section></div><button class="gold resumeButton" onclick="closeMenu()">Resume '+(gig?'set':'game')+'</button>');
+ openModal('Take a breather','<p class="pauseHero">'+season()+' · Day '+S.day+' · '+clock()+'</p><div class="pauseGrid"><section><h3>YOUR STORY</h3><div class="pauseActions"><button class="gold" onclick="saveFromMenu()">Save game</button><button onclick="exportSave()">Export save file</button><button onclick="importSave()">Import save file</button><button onclick="downloadGame()">Download offline game ↓</button><button class="quiet" onclick="newGame()">New story…</button></div><p class="sub">'+(storageOK?'Progress saves automatically as you play.':'This preview cannot store saves in the browser. Save game downloads a save file.')+'</p></section><section><h3>SETTINGS</h3><div class="settingRow"><span>Sound</span><button onclick="toggleSound();showGameMenu()" aria-pressed="'+!muted+'">'+(muted?'Off':'On')+'</button></div><div class="settingRow"><span>Ambient motion</span><button onclick="toggleMotion()" aria-pressed="'+S.settings.motion+'">'+(S.settings.motion?'On':'Off')+'</button></div><div class="settingRow"><span>Display</span><button onclick="toggleFullscreen()">'+(document.fullscreenElement?'Window':'Fullscreen')+'</button></div><div class="pauseHelp"><span class="key">W A S D</span> or arrows — move<br><span class="key">E</span> interact · click a building to visit<br><span class="key">I</span> goals, character, career & gigs<br><span class="key">M</span> Mumbai map & local trains<br><span class="key">Esc</span> settings & saving</div></section></div><button class="gold resumeButton" onclick="closeMenu()">Resume '+(gig?'set':'game')+'</button>');
 }
 function saveFromMenu(){save();if(!storageOK)exportSave();else toast('Game saved. Your story is safe.')}
 function toggleMotion(){S.settings.motion=!S.settings.motion;save();showGameMenu()}
@@ -344,14 +397,14 @@ function releaseTrack(){
  if(S.daily.track){toast('One release a day. Give your listeners time to hear it.');return}
  let name=$('trackName').value.trim()||['Windowlight','Monsoon local','Last train','Midnight postcards','Maximum City frequencies'][S.tracks.length%5]+' '+(S.tracks.length+1);
  if(!spend(3,24,350))return;
- let quality=Math.round(clamp(20+S.production*.45+S.gear*7+S.mood*.12+Math.min(12,S.records*2),1,100));
+ let quality=Math.round(clamp(20+S.production*.45+S.gear*7+S.mood*.12+Math.min(12,S.records*2)+(S.items.includes('masterTape')?5:0),1,100));
  let fans=Math.round(quality*.5+S.fans*.025);S.inspiration-=20;S.production=clamp(S.production+8);S.tracks.push({name,quality,fans,day:S.day});S.fans+=fans;S.daily.track=1;
  finish('Released “'+name+'”. Quality '+quality+'/100, '+fans+' new listeners.',xpCosts.release+Math.round(quality/4));showStudio();
 }
 function collaborate(){
  if(!levelGate(5))return;
  if(S.friends.mira<40||S.daily.collab){toast('Mira can collaborate once a day once your friendship reaches 40.');return}
- if(!spend(2,14))return;S.daily.collab=1;S.production=clamp(S.production+16);S.inspiration=clamp(S.inspiration+25);S.friends.mira=clamp(S.friends.mira+5);finish('A studio session with Mira. Production +16, inspiration +25.',xpCosts.collaborate);showStudio();
+ if(!spend(2,14))return;S.daily.collab=1;S.career.collabs++;S.production=clamp(S.production+16);S.inspiration=clamp(S.inspiration+25);S.friends.mira=clamp(S.friends.mira+5);finish('A studio session with Mira. Production +16, inspiration +25.',xpCosts.collaborate);showStudio();
 }
 function showPeople(){
  openModal('The people in your corner','<p>A career is only part of a life. Friendships open doors, but they are also worth having on their own.</p><div class="cards">'+Object.entries(people).map(([id,p])=>'<div class="card"><div class="row"><h3>'+p.name+(S.partner===id?' ♡':'')+'</h3><span class="pill">'+(S.friends[id]>=70?'CLOSE':S.friends[id]>=40?'FRIEND':'GETTING TO KNOW YOU')+'</span></div><p>'+p.role+'</p>'+meter('Bond',S.friends[id],p.color)+'<button onclick="showPerson(\''+id+'\')">Spend time together</button></div>').join('')+'</div>');
@@ -370,14 +423,25 @@ function social(id,kind){
  finish(kind==='date'?'You and '+people[id].name+' watched the lights come on across the bay. A new chapter begins.':'Spent time with '+people[id].name+'. Friendship +'+c[3]+'.',xpCosts[kind]);showPerson(id);
 }
 function showBag(){
- openModal('Your backpack','<div class="cards"><div class="card"><h3>♫ Your setup</h3><p>'+gearNames[S.gear]+'</p><button onclick="showShop()">Browse local equipment</button></div><div class="card"><h3>▣ '+S.records+' records collected</h3><p>Every record adds inspiration and helps you discover your own sound.</p></div><div class="card"><h3>✦ '+Math.floor(S.inspiration)+' inspiration</h3><p>Gather it from living, listening, and time with people. Spend it making music.</p></div><div class="card"><h3>Your finances</h3><p>₹'+Math.floor(S.money)+' cash · ₹'+S.debt+' overdue rent · ₹'+rentCost()+' weekly rent</p><button onclick="showHome()">Your home</button></div></div>');
+ openModal('Your backpack','<div class="cards"><div class="card"><h3>♫ Your setup</h3><p>'+gearNames[S.gear]+'</p><button onclick="showShop()">Browse local equipment</button></div><div class="card"><h3>▣ '+S.records+' records collected</h3><p>Every record adds inspiration and helps you discover your own sound.</p></div><div class="card"><h3>✦ '+Math.floor(S.inspiration)+' inspiration</h3><p>Gather it from living, listening, and time with people. Spend it making music.</p></div><div class="card"><h3>Goal rewards</h3>'+(S.items.length?S.items.map(id=>'<p><b>'+esc(goalItems[id].name)+'</b> · '+esc(goalItems[id].description)+'</p>').join(''):'<p>Complete primary goals to collect special rewards.</p>')+'</div><div class="card"><h3>Your finances</h3><p>₹'+Math.floor(S.money)+' cash · ₹'+S.debt+' overdue rent · ₹'+rentCost()+' weekly rent</p><button onclick="showHome()">Your home</button></div></div>');
 }
 function showJournal(){openModal('Notes from a life in music','<div class="cards">'+S.journal.map(e=>'<div class="card"><span class="meta">DAY '+e.day+'</span><p>'+esc(e.text)+'</p></div>').join('')+'</div>')}
-function help(){openModal('Welcome to Mumbai','<p><b>Move:</b> WASD / arrow keys, or click a building. Press E near a place to interact. Location actions appear when you arrive. Press I for your character, career, gigs and journal. Press M for the city map and trains. Press Esc for settings and saving.</p><p><b>Start small:</b> practice at home once, then press I and choose Gigs → Gully Signal. Use D F J K or tap the four pads as notes reach the gold line.</p><p><b>Build a life:</b> neighbourhood jobs pay the bills. Eat, rest, make friends, upgrade equipment, and release original tracks. Time passes when you choose activities; exploring is free. Menus pause any active set.</p><p><b>Grow:</b> gigs and releases earn fans. Player Levels unlock districts, jobs, equipment, transport and stages. Each later level needs more XP; skills, fans and originals also matter. Reach 5,000 fans to become a festival icon.</p><p><b>Save:</b> progress is saved in this browser when available. Export a save as a backup. Download game gives you a standalone HTML file that works offline.</p><button class="gold" onclick="closeModal()">Back to the city</button>')}
-function intro(){
- openModal('PROJECT SUPERDJ','<div class="introTitle">THIS IS YOUR<br>FIRST TRACK.</div><p>A Dadar chawl room. ₹1,500 in your pocket. A borrowed controller. Eight districts, a million sounds, and a dream bigger than your bedroom.</p><div class="introGrid"><div><b>Make music</b>Practice, produce, play.</div><div><b>Make a life</b>Eat, work, love, rest.</div><div><b>Find your people</b>Find your Mumbai family.</div></div><label for="nameInput">What is your DJ name?</label><input id="nameInput" maxlength="20" value="NOVA" autocomplete="off"><button class="gold" onclick="begin()">Start your Mumbai story →</button><p class="sub">A complete little career awaits. No rush. No wrong way to find your sound.</p>');
+function showGoals(){
+ const active=activeGoalIndex();
+ openModal('Your 10 primary goals','<p>All ten goals are visible from the start. Complete the current goal’s quests to claim its reward and begin the next. Each quest awards XP once. Goal rewards add XP, money, reputation, and sometimes a useful item.</p><div class="goalList">'+primaryGoals.map((goal,i)=>{
+  const claimed=S.goalProgress.goals.includes(goal.id),state=claimed?'complete':i===active?'active':'future';
+  const earned=goal.quests.filter(q=>S.goalProgress.quests.includes(questKey(goal,q))).length;
+  return '<article class="goalCard '+state+'"><div class="row"><span class="eyebrow">GOAL '+(i+1)+' / 10</span><span class="pill">'+(claimed?'COMPLETE':i===active?'CURRENT':'UP AHEAD')+'</span></div><h3>'+esc(goal.title)+'</h3><p>'+esc(goal.story)+'</p><p class="sub">'+earned+' / '+goal.quests.length+' quest rewards earned · each quest +'+goal.questXP+' XP</p>'+goal.quests.map(q=>{
+   const paid=S.goalProgress.quests.includes(questKey(goal,q)),value=paid?q.target:questValue(q),ready=value>=q.target;
+   return '<div class="goalQuest '+(paid?'done':'')+'"><span>'+(paid?'✓ ':ready?'◌ ':'○ ')+esc(q.label)+(ready&&!paid?' · ready when active':'')+'</span><b>'+value+' / '+q.target+'</b></div>';
+  }).join('')+'<div class="goalReward">Goal reward: '+esc(goalRewardText(goal))+(claimed?' · Claimed':'')+'</div></article>';
+ }).join('')+'</div>');
 }
-function begin(){tryFullscreen();S.name=($('nameInput').value.trim()||'NOVA').slice(0,20);S.started=true;closeModal();render();save();announceDistrict();showControlHint();toast('Welcome to Dadar. Find your room to practice. M opens Mumbai; I opens your career.')}
+function help(){openModal('Welcome to Mumbai','<p><b>Move:</b> WASD / arrow keys, or click a building. Press E near a place to interact. Location actions appear when you arrive. Press I for your character, goals, career, gigs and journal. Select the current goal on the top-left HUD to see all ten goals. Press M for the city map and trains. Press Esc for settings and saving.</p><p><b>Start small:</b> practice at home once, then press I and choose Gigs → Gully Signal. Use D F J K or tap the four pads as notes reach the gold line.</p><p><b>Build a life:</b> neighbourhood jobs pay the bills. Eat, rest, make friends, upgrade equipment, and release original tracks. Time passes when you choose activities; exploring is free. Menus pause any active set.</p><p><b>Grow:</b> gigs and releases earn fans. Follow the ten primary goals for quest rewards. Player Levels unlock districts, jobs, equipment, transport and stages. Each later level needs more XP; skills, fans and originals also matter. Reach 5,000 fans to become a festival icon.</p><p><b>Save:</b> progress is saved in this browser when available. Export a save as a backup. Download game gives you a standalone HTML file that works offline.</p><button class="gold" onclick="closeModal()">Back to the city</button>')}
+function intro(){
+ openModal('PROJECT SUPERDJ','<div class="introTitle">THIS IS YOUR<br>FIRST TRACK.</div><p>A Dadar chawl room. ₹1,500 in your pocket. A borrowed controller. Eight districts, a million sounds, and a dream bigger than your bedroom.</p><div class="introGrid"><div><b>Make music</b>Practice, produce, play.</div><div><b>Make a life</b>Eat, work, love, rest.</div><div><b>Find your people</b>Find your Mumbai family.</div></div><label for="nameInput">What is your DJ name?</label><input id="nameInput" maxlength="20" value="NOVA" autocomplete="off"><button class="gold" onclick="begin()">Start your Mumbai story →</button><p class="sub">Ten goals trace the journey from your first set to the festival. Follow them at your own pace.</p>');
+}
+function begin(){tryFullscreen();S.name=($('nameInput').value.trim()||'NOVA').slice(0,20);S.started=true;closeModal();render();save();announceDistrict();showControlHint();toast('Welcome to Dadar. Your first goal is in the top-left HUD. M opens Mumbai; I opens your career.')}
 function newGame(){openModal('Begin a new story?','<p>This replaces the current story in this browser. Export your save first if you want to keep it.</p><button onclick="exportSave()">Export current story</button><button class="gold" onclick="resetGame()">Start a new story</button>')}
 function resetGame(){if(menuMode)closeMenu(false);S=initial();spots=createSpots(S.district);backgroundSeason='';muted=true;gig=null;path=[];pendingSpot=null;currentSpot='home';render();save();intro()}
 function downloadBlob(content,type,filename){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000)}
@@ -398,6 +462,17 @@ function validateSave(o){
  base.xp=o.xp===undefined?legacyXP(o):o.xp;
  base.discovered=Array.isArray(o.discovered)?[...new Set(o.discovered.filter(id=>!!districts[id]))]:[base.district];
  if(!base.discovered.includes(base.district))base.discovered.push(base.district);
+ const oldJournal=base.journal.map(e=>e.text);
+ const oldVenues=venues.flatMap((v,i)=>oldJournal.some(text=>text.startsWith('Played '+v.name+'.'))?[i]:[]);
+ const count=(value,fallback)=>Number.isSafeInteger(value)&&value>=0&&value<=1e6?value:fallback;
+ base.career={jobs:count(o.career?.jobs,oldJournal.filter(text=>text.includes('shift complete')).length),collabs:count(o.career?.collabs,oldJournal.filter(text=>text.startsWith('A studio session with Mira.')).length),venues:Array.isArray(o.career?.venues)?[...new Set(o.career.venues.filter(i=>Number.isInteger(i)&&i>=0&&i<venues.length))]:oldVenues};
+ const validQuestKeys=new Set(primaryGoals.flatMap(goal=>goal.quests.map(q=>questKey(goal,q))));
+ const savedQuests=Array.isArray(o.goalProgress?.quests)?o.goalProgress.quests:[];
+ const savedGoals=Array.isArray(o.goalProgress?.goals)?o.goalProgress.goals:[];
+ base.goalProgress.quests=[...new Set(savedQuests.filter(key=>validQuestKeys.has(key)))];
+ for(const goal of primaryGoals){if(!savedGoals.includes(goal.id))break;base.goalProgress.goals.push(goal.id);for(const q of goal.quests){const key=questKey(goal,q);if(!base.goalProgress.quests.includes(key))base.goalProgress.quests.push(key)}}
+ base.items=Array.isArray(o.items)?[...new Set(o.items.filter(id=>!!goalItems[id]))]:[];
+ for(const goal of primaryGoals)if(base.goalProgress.goals.includes(goal.id)&&goal.reward.item&&!base.items.includes(goal.reward.item))base.items.push(goal.reward.item);
  return base;
 }
 
@@ -415,11 +490,12 @@ const rupees=n=>'₹'+Math.floor(n).toLocaleString('en-IN');
 const gearNames=['Borrowed controller','Secondhand decks','Club-ready setup','Dream studio rig'];
 const gearCosts=[0,2500,10000,28000];
 const rentCost=()=>[1200,2200,4000][S.home];
+const trainFare=()=>S.items.includes('localPass')?10:20;
 function showCity(selected=S.district){
  if(!districts[selected])selected=S.district;
  const d=districts[selected]||district(),r=recordStores[d.store],v=venues[d.venue];
  const locked=playerLevel()<districtLevels[selected];
- const travel=selected===S.district?'<button class="gold" onclick="closeModal()">Explore this district</button>':locked?'<button disabled>Unlock at '+levelRequirement(districtLevels[selected])+'</button>':'<button class="gold" onclick="travelTo(\''+selected+'\',\'train\')" '+(gig?'disabled':'')+'>Local train · ₹20 · 15m</button><button onclick="travelTo(\''+selected+'\',\'rickshaw\')" '+(gig||playerLevel()<4?'disabled':'')+'>Auto-rickshaw · ₹60 · 6m'+(playerLevel()<4?' · Level 4':'')+'</button><button onclick="travelTo(\''+selected+'\',\'taxi\')" '+(gig||playerLevel()<7?'disabled':'')+'>Express taxi · ₹150 · 3m'+(playerLevel()<7?' · Level 7':'')+'</button>';
+ const travel=selected===S.district?'<button class="gold" onclick="closeModal()">Explore this district</button>':locked?'<button disabled>Unlock at '+levelRequirement(districtLevels[selected])+'</button>':'<button class="gold" onclick="travelTo(\''+selected+'\',\'train\')" '+(gig?'disabled':'')+'>Local train · '+rupees(trainFare())+' · 15m</button><button onclick="travelTo(\''+selected+'\',\'rickshaw\')" '+(gig||playerLevel()<4?'disabled':'')+'>Auto-rickshaw · ₹60 · 6m'+(playerLevel()<4?' · Level 4':'')+'</button><button onclick="travelTo(\''+selected+'\',\'taxi\')" '+(gig||playerLevel()<7?'disabled':'')+'>Express taxi · ₹150 · 3m'+(playerLevel()<7?' · Level 7':'')+'</button>';
  openModal('Mumbai · your city after dark','<p class="sub">Eight connected neighbourhoods. Street exits are free. Trains, auto-rickshaws, and taxis shorten the journey.</p><div class="cityChart"><div class="seaLabel">ARABIAN<br>SEA</div>'+Object.entries(districts).map(([id,a])=>'<button class="districtCard '+(id===S.district?'here ':'')+(id===selected?'selected ':'')+(playerLevel()<districtLevels[id]?'locked':'')+'" style="grid-column:'+(a.grid[0]+1)+';grid-row:'+(a.grid[1]+1)+';--district-accent:'+a.accent+'" onclick="showCity(\''+id+'\')"><small>'+(id===S.district?'● YOU ARE HERE':playerLevel()<districtLevels[id]?'LEVEL '+districtLevels[id]:'DISTRICT 0'+(Object.keys(districts).indexOf(id)+1))+'</small><b>'+a.name+'</b><span>'+a.landmark+'</span></button>').join('')+'</div><div class="cityDetails"><div class="eyebrow">'+d.subtitle+'</div><h3>'+d.name+'</h3><p>'+d.description+'</p><div class="cityFacts"><span>'+levelRequirement(districtLevels[selected])+'</span><span>♫ '+r.name+' · T'+r.tier+'</span><span>◈ '+v.name+' · T'+v.tier+'</span><span>Work: '+jobs[d.job].name+' / '+jobs[d.job2].name+'</span></div><p class="sub">Street connections: '+Object.values(d.links).map(id=>districts[id].name).join(' · ')+'</p>'+travel+'</div><p class="sub">A fictional, condensed Mumbai. Streets, businesses and train connections are designed for play.</p>');
 }
 function showJobs(){
@@ -438,7 +514,7 @@ function workJob(id){
  if(!unlockedJob(j)){toast('Build the skills and following for this job first.');return}
  if((S.daily.work||0)>=2){toast('Two shifts is enough for one day. Make time for your music and yourself.');return}
  if(!spend(j.hours,j.energy))return;
- S.daily.work=(S.daily.work||0)+1;earn(j.pay);S.mood=clamp(S.mood-3);S.production=clamp(S.production+(j.prod?2:0));S.friends.rowan=clamp(S.friends.rowan+2);
+ S.daily.work=(S.daily.work||0)+1;S.career.jobs++;earn(j.pay);S.mood=clamp(S.mood-3);S.production=clamp(S.production+(j.prod?2:0));S.friends.rowan=clamp(S.friends.rowan+2);
  finish(j.name+' shift complete in '+district().name+'. Earned '+rupees(j.pay)+'.',20+j.tier*15);showJobs();
 }
 function showRecordShop(){
@@ -502,7 +578,7 @@ function renderSpot(){
   a=actionButton('Take a slow walk','+mood & energy · 1h',"act('walk')")+actionButton('Record the city','+inspiration · 1h',"act('sample')")+actionButton('Community meal','Free · daily',"act('picnic')");
  }else if(p.kind==='station'){
   desc='The city moves on its locals. Choose a district, or explore the street connections on foot.';
-  a=actionButton('City & local trains','₹20 · 15 minutes',"showControlSection('city')");
+  a=actionButton('City & local trains',rupees(trainFare())+' · 15 minutes',"showControlSection('city')");
  }
  openModal(p.name,'<div class="locationIntro"><div class="eyebrow">'+district().name+' · '+p.kind+'</div><p>'+desc+'</p></div><div class="locationActions">'+a+'</div><button class="quiet locationBack" onclick="closeModal()">Back to the street</button>');
 }
@@ -513,14 +589,11 @@ function showGigs(){
  }).join('')+'</div>');
 }
 function objective(){
- if(S.gigs===0)return ['Your first rooftop set','Practice in your Dadar room, then play Gully Signal.',(S.skill>=5?'✓':'○')+' Mixing 5 · ○ First gig'];
- return [
- ['A name in the neighbourhood','Play local sets, earn a living, and make your first friends.',S.fans+'/60 fans'],
- ['Find your own sound','Reach club residency. Discover record shops and release an original.',S.fans+'/300 fans · '+S.tracks.length+' originals'],
- ['A city starts listening','Better rooms need better skills. Upgrade your decks and build your catalogue.',S.fans+'/1,200 fans · mixing '+Math.floor(S.skill)],
- ['The sea of lights','Prepare for Monsoon Frequency: 3 originals, mixing 75, and 3,400 fans.',S.fans+'/3,400 fans · '+S.tracks.length+'/3 originals'],
- ['Mumbai knows your name','Festival icon. Keep making music and a life worth coming home to.',S.fans.toLocaleString()+' fans · '+S.gigs+' gigs']
- ][tier()];
+ const index=activeGoalIndex();
+ if(index<0)return ['Monsoon headliner','You completed all ten primary goals. Keep playing, making music, and building your life.','10 / 10 goals complete'];
+ const goal=primaryGoals[index],done=goal.quests.filter(q=>S.goalProgress.quests.includes(questKey(goal,q))).length;
+ const next=goal.quests.find(q=>!S.goalProgress.quests.includes(questKey(goal,q)));
+ return [goal.title,goal.story,done+' / '+goal.quests.length+' quests · '+(next?next.label+' '+questValue(next)+' / '+next.target:'Reward ready')];
 }
 function showCareer(){
  openModal('From chawl room to main stage','<p>Every successful activity earns XP. Each level costs more XP and opens new parts of the city and career. Skills, original releases, and fans still matter for bookings.</p><h3>Player Levels</h3><div class="timeline">'+Object.entries(levelUnlocks).map(([n,reward])=>'<div class="card"><div class="row"><h3>Level '+n+'</h3><span class="pill">'+(Number(n)<playerLevel()?'UNLOCKED':Number(n)===playerLevel()?'YOU ARE HERE':'AHEAD')+'</span></div><p>'+reward+'</p><span class="meta">'+xpAtLevel(Number(n)).toLocaleString()+' total XP</span></div>').join('')+'</div><p class="sub">After Level 10, each level adds 1% gig pay and royalties.</p><h3>Fan milestones</h3><div class="timeline">'+tiers.map((r,i)=>'<div class="card"><div class="row"><h3>'+r.name+'</h3><span class="pill">'+(i<tier()?'ACHIEVED':i===tier()?'YOU ARE HERE':'AHEAD')+'</span></div><span class="meta">'+r.fans.toLocaleString()+' fans</span></div>').join('')+'</div><p>'+S.gigs+' gigs · '+S.tracks.length+' releases · '+S.records+' records · '+Object.values(S.friends).filter(n=>n>=40).length+' close connections</p>');
@@ -808,7 +881,7 @@ function changeDistrict(id,entry=null){
  S.district=id;spots=createSpots(id);currentSpot='home';path=[];pendingSpot=null;hoverSpot=null;keys={};
  const spawn={n:[640,72],s:[640,824],w:[78,446],e:[1200,446]};
  [S.x,S.y]=spawn[entry]||[643,353];travelCooldown=performance.now()+800;backgroundSeason='';activeRecordStore=null;
- if(first){S.discovered.push(id);awardXP(xpCosts.discovery);log('First visit to '+district().name+'. +'+xpCosts.discovery+' XP.')}
+ if(first){S.discovered.push(id);awardXP(xpCosts.discovery);log('First visit to '+district().name+'. +'+xpCosts.discovery+' XP.');checkGoals()}
  makeBackground();render();updateCamera();announceDistrict();save();return true;
 }
 function travelTo(id,mode='train'){
@@ -817,7 +890,7 @@ function travelTo(id,mode='train'){
  if(gig){toast('Finish your set before catching a train.');return}
  if(!levelGate(districtLevels[id]))return;
  if((mode==='rickshaw'&&!levelGate(4))||(mode==='taxi'&&!levelGate(7)))return;
- const fares={train:[.25,20],rickshaw:[.1,60],taxi:[.05,150]},[hours,cost]=fares[mode];
+ const fares={train:[.25,trainFare()],rickshaw:[.1,60],taxi:[.05,150]},[hours,cost]=fares[mode];
  if(!spend(hours,0,cost))return;
  if(menuMode)closeMenu(false);if($('modal').open)$('modal').close();changeDistrict(id);
  log('Traveled by '+mode+' to '+districts[id].name+'. Fare ₹'+cost+'.');save();
@@ -941,7 +1014,7 @@ function finishGig(left){
  const v=venues[result.i],accuracy=result.score/(v.notes*100),grade=left?'—':accuracy>=.9?'S':accuracy>=.78?'A':accuracy>=.6?'B':accuracy>=.4?'C':'D';
  const reward=left?0:Math.round(v.pay*(.5+accuracy*.9)*(S.friends.sol>=40?1.2:1)*levelBonus());
  const fanGain=left?0:Math.round(v.gain*(.4+accuracy*1.2)*(S.friends.kit>=40?1.2:1)*(S.mood<20?.8:1));
- earn(reward);S.fans+=fanGain;S.skill=clamp(S.skill+(left?1:4+accuracy*3));S.mood=clamp(S.mood+(left?-5:10));S.rep+=left?0:Math.round(accuracy*10);S.best=Math.max(S.best,result.best);if(!left)S.gigs++;
+ earn(reward);S.fans+=fanGain;S.skill=clamp(S.skill+(left?1:4+accuracy*3));S.mood=clamp(S.mood+(left?-5:10));S.rep+=left?0:Math.round(accuracy*10);S.best=Math.max(S.best,result.best);if(!left){S.gigs++;if(!S.career.venues.includes(result.i))S.career.venues.push(result.i)}
  const msg=left?'Left the set early. There will be another night.':'Played '+v.name+'. '+grade+' grade, ₹'+reward+' earned, '+fanGain+' new fans.';
  finish(msg,left?0:60+v.tier*25+Math.round(accuracy*35));
  const festival=!left&&result.i===venues.length-1;
@@ -951,11 +1024,11 @@ $('modal').addEventListener('cancel',e=>{e.preventDefault();toggleGameMenu()});
 $('menuDialog').addEventListener('cancel',e=>{e.preventDefault();toggleGameMenu()});
 $('savefile').addEventListener('change',async e=>{
  const file=e.target.files[0];if(!file)return;
- try{if(file.size>2000000)throw Error('File too large');const parsed=validateSave(JSON.parse(await file.text()));gig=null;S=parsed;spots=createSpots(S.district);backgroundSeason='';muted=!S.settings.sound;path=[];pendingSpot=null;currentSpot='home';render();save();if(menuMode)closeMenu();closeModal();toast('Your story is back. Welcome home.')}catch(err){toast('That save could not be loaded. Choose a Project SuperDJ or Afterhours save file.')}
+ try{if(file.size>2000000)throw Error('File too large');const parsed=validateSave(JSON.parse(await file.text()));gig=null;S=parsed;spots=createSpots(S.district);backgroundSeason='';muted=!S.settings.sound;path=[];pendingSpot=null;currentSpot='home';checkGoals();render();save();if(menuMode)closeMenu();closeModal();toast('Your story is back. Welcome home.')}catch(err){toast('That save could not be loaded. Choose a Project SuperDJ or Afterhours save file.')}
  e.target.value='';
 });
 try{const saved=localStorage.getItem('project-superdj-v2')||localStorage.getItem('afterhours-v1');if(saved)S=validateSave(JSON.parse(saved))}catch(e){storageOK=false}
-spots=createSpots(S.district);muted=!S.settings.sound;resizeWorld();render();makeBackground();requestAnimationFrame(loop);
+spots=createSpots(S.district);muted=!S.settings.sound;const restoredGoals=checkGoals();resizeWorld();render();if(restoredGoals)save();makeBackground();requestAnimationFrame(loop);
 if(!S.started)intro();else{showControlHint();announceDistrict()}
 if(!storageOK)$('saved').textContent='Use Export save to keep your story';
 window.addEventListener('beforeunload',()=>{if(S.started)save()});

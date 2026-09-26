@@ -57,23 +57,24 @@ test('curve grows, levels unlock in order, and HUD shows current progress', () =
 test('successful activities earn defined XP; failed and duplicate actions do not', () => {
   const g = game();
   g.run("act('practice')");
-  assert.equal(g.run('S.xp'), 20);
+  assert.equal(g.run('S.xp'), 35); // Activity XP plus the first quest's one-time reward.
   g.run("S.energy=0;act('practice')");
-  assert.equal(g.run('S.xp'), 20);
+  assert.equal(g.run('S.xp'), 35);
   g.run("S.energy=100;social('mira','chat')");
-  assert.equal(g.run('S.xp'), 28);
+  assert.equal(g.run('S.xp'), 43);
   g.run("social('mira','chat')");
-  assert.equal(g.run('S.xp'), 28);
+  assert.equal(g.run('S.xp'), 43);
   g.run("act('picnic');act('picnic')");
-  assert.equal(g.run('S.xp'), 36);
+  assert.equal(g.run('S.xp'), 51);
   g.run('save()');
-  assert.equal(JSON.parse(g.saved.get('project-superdj-v2')).xp, 36);
+  assert.equal(JSON.parse(g.saved.get('project-superdj-v2')).xp, 51);
 });
 
 test('a first practice and finished set unlock level 2 work in play order', () => {
   const g = game();
   g.run("act('practice');S.hour=9;S.energy=100;startGig(0);gig.score=1000;finishGig(false)");
   assert.equal(g.run('playerLevel()'), 2);
+  assert.equal(g.run('S.goalProgress.goals[0]'), 'first-set');
   g.run("S.hour=9;S.energy=100;changeDistrict('bandra');S.skill=20;workJob('records')");
   assert.equal(g.run('S.daily.work'), 1);
   assert.ok(g.run('S.xp') > g.run('xpAtLevel(2)'));
@@ -147,11 +148,13 @@ test('cancelled gig earns no XP; completed gig pays once', () => {
   const before = g.run('S.xp');
   g.run('finishGig(true)');
   assert.equal(g.run('S.xp'), before);
+  assert.equal(g.run('S.career.venues.length'), 0);
   g.run('finishGig(false)');
   assert.equal(g.run('S.xp'), before);
   g.run('S.daily.gig=0;S.hour=9;S.energy=100;startGig(2);gig.score=1400;finishGig(false)');
   const earned = g.run('S.xp');
   assert.ok(earned > before);
+  assert.deepEqual(Array.from(g.run('S.career.venues')), [2]);
   g.run('finishGig(false)');
   assert.equal(g.run('S.xp'), earned);
 });
@@ -160,4 +163,99 @@ test('offline build remains one HTML file with no external resources', () => {
   assert.match(html, /function downloadGame\(\)/);
   assert.match(html, /cloneNode\(true\)/);
   assert.doesNotMatch(html, /<script[^>]+src=|<link[^>]+href=|<img[^>]+src=/i);
+});
+
+test('the top-left HUD opens all ten goals and shows the current quest', () => {
+  const g = game();
+  assert.equal(g.run('primaryGoals.length'), 10);
+  g.run('render();showGoals()');
+  assert.equal((g.elements.get('modalBody').innerHTML.match(/class="goalCard /g) || []).length, 10);
+  assert.match(g.elements.get('modalBody').innerHTML, /Monsoon Main Stage/);
+  assert.match(g.elements.get('goalCount').textContent, /GOAL 1 \/ 10/);
+  assert.match(g.elements.get('goalCount').textContent, /0\/2 QUESTS/);
+  assert.match(g.elements.get('questLine').textContent, /Reach Mixing 5/);
+  assert.match(html, /class="hudQuest" onclick="showControlSection\('goals'\)"/);
+  g.run('S.skill=5;checkGoals();render()');
+  assert.match(g.elements.get('goalCount').textContent, /1\/2 QUESTS/);
+  assert.match(g.elements.get('questLine').textContent, /Complete your first gig/);
+});
+
+test('quest and goal rewards are claimed once and useful items change play', () => {
+  const g = game();
+  g.run('S.skill=5;S.gigs=1;checkGoals()');
+  assert.equal(g.run('S.goalProgress.quests.length'), 2);
+  assert.equal(g.run('S.goalProgress.goals.length'), 1);
+  assert.equal(g.run('S.xp'), 70);
+  assert.equal(g.run('S.money'), 1600);
+  assert.equal(g.run('S.rep'), 1);
+  g.run("S.career.jobs=2;S.fans=60;S.discovered.push('bandra');checkGoals()");
+  assert.equal(g.run('S.goalProgress.goals.length'), 2);
+  assert.equal(g.run('trainFare()'), 10);
+  assert.ok(g.run("S.items.includes('localPass')"));
+  const before = [g.run('S.xp'), g.run('S.money'), g.run('S.rep')];
+  g.run('checkGoals()');
+  assert.deepEqual([g.run('S.xp'), g.run('S.money'), g.run('S.rep')], before);
+  g.run('S.xp=xpAtLevel(2);travelTo(\'bandra\')');
+  assert.equal(g.run('S.money'), before[1] - 10);
+});
+
+test('old saves reconstruct career history and claimed rewards survive reload', () => {
+  const g = game();
+  const old = JSON.parse(g.run('JSON.stringify(initial())'));
+  delete old.career; delete old.goalProgress; delete old.items;
+  old.skill = 5; old.gigs = 1; old.fans = 60; old.discovered = ['dadar', 'bandra'];
+  old.journal = [
+    { day: 2, text: 'Played Gully Signal. B grade.' },
+    { day: 1, text: 'Chai-stall shift complete in Dadar.' },
+    { day: 1, text: 'Lunch delivery round shift complete in Dadar.' },
+  ];
+  g.context.old = old;
+  const migrated = g.run('validateSave(old)');
+  assert.equal(migrated.career.jobs, 2);
+  assert.deepEqual(Array.from(migrated.career.venues), [0]);
+  g.context.migrated = migrated;
+  g.run('S=migrated;checkGoals();save()');
+  assert.equal(g.run('S.goalProgress.goals.length'), 2);
+  const xp = g.run('S.xp');
+  g.context.roundTrip = JSON.parse(g.saved.get('project-superdj-v2'));
+  g.run('S=validateSave(roundTrip);checkGoals()');
+  assert.equal(g.run('S.xp'), xp);
+  assert.equal(g.run('S.items.filter(x=>x===\'localPass\').length'), 1);
+});
+
+test('all ten goals can complete in sequence with escalating requirements', () => {
+  const g = game();
+  g.run("S.xp=xpAtLevel(10);S.skill=100;S.gigs=20;S.fans=5000;S.records=3;S.production=100;S.tracks=[{name:'A',quality:70,day:1,fans:100},{name:'B',quality:70,day:2,fans:100},{name:'C',quality:70,day:3,fans:100}];S.discovered=Object.keys(districts);S.career={jobs:2,collabs:1,venues:[5,6,7,8]};S.friends.mira=40;S.gear=3;S.rep=50;checkGoals();render()");
+  assert.equal(g.run('S.goalProgress.goals.length'), 10);
+  assert.equal(g.run('S.goalProgress.quests.length'), 35);
+  assert.deepEqual(Array.from(g.run('S.items')).sort(), ['headlinerPlaque', 'localPass', 'masterTape']);
+  assert.match(g.elements.get('goalCount').textContent, /ALL 10 GOALS COMPLETE/);
+  const xp = g.run('S.xp');
+  g.run('checkGoals()');
+  assert.equal(g.run('S.xp'), xp);
+});
+
+test('Mira’s tape improves a real track release by five quality points', () => {
+  function release(withTape) {
+    const g = game();
+    g.run('S.xp=xpAtLevel(5);S.production=30;S.inspiration=50;S.energy=100;S.money=1500');
+    if (withTape) g.run("S.items.push('masterTape')");
+    g.run('releaseTrack()');
+    return g.run('S.tracks[0].quality');
+  }
+  assert.equal(release(true) - release(false), 5);
+});
+
+test('startup migrates eligible old quest progress and saves it immediately', () => {
+  const g = game();
+  const old = JSON.parse(g.run('JSON.stringify(initial())'));
+  delete old.career; delete old.goalProgress; delete old.items;
+  old.skill = 5;
+  g.saved.set('project-superdj-v2', JSON.stringify(old));
+  const startup = script.slice(script.indexOf("$('modal').addEventListener('cancel'"));
+  vm.runInContext(startup, g.context);
+  const persisted = JSON.parse(g.saved.get('project-superdj-v2'));
+  assert.equal(persisted.goalProgress.quests.length, 1);
+  assert.equal(persisted.xp, 15);
+  assert.match(g.elements.get('questLine').textContent, /Complete your first gig/);
 });
