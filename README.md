@@ -31,6 +31,14 @@ Select the current quest on the top-left HUD, or open **I → Goals**, to see al
 
 Goal, quest, item, and career progress are saved in the same version 2 JSON format. Older saves infer completed work and gigs from their journal where possible; remaining quests can be completed normally.
 
+## Quest deadlines and pins
+
+Open **I → Goals** or select the top-left goal card to see three optional timed opportunities alongside the ten primary goals. Accepting an opportunity starts its deadline in **in-game hours**. Time advances when you take actions, travel, or sleep; the goal menu and pinned HUD show the time remaining. Work, sampling, and gig progress count only after acceptance. The primary goals have no deadlines.
+
+You can pin any incomplete primary quest or active timed opportunity from the Goals menu. The top-left HUD shows up to **three** pins with their progress or countdown. Unpin one at any time, or choose which existing pin to replace when all three slots are full. Completed or expired quests unpin automatically. Pins and timed quest state persist in browser and exported saves.
+
+Chai Rush fails when its eight-hour window closes. City Sound Hunt disappears until the next in-game day if its ten-hour window closes. Booker’s Booking fails after 30 hours and costs three reputation. Successful opportunities award XP, cash, and sometimes reputation. Each offer can be accepted once per in-game day, including after a previous completion or expiry.
+
 ## Tests
 
 Run `node --test tests/progression.test.cjs`. Tests use Node's built-in test runner and need no installed packages.

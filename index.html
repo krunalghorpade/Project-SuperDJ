@@ -17,9 +17,10 @@ dialog{width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 40px);border
 
 .menuTabs[hidden]{display:none}
 
-.levelHUD{position:fixed;top:max(18px,env(safe-area-inset-top));left:max(18px,env(safe-area-inset-left));z-index:3;width:230px;padding:11px 13px;background:#111e2aee;border:2px solid #617682;box-shadow:inset 0 0 0 2px #233646,3px 4px 0 #070f1b66;color:#e6d6b9;user-select:none}
+.levelHUD{position:fixed;top:max(18px,env(safe-area-inset-top));left:max(18px,env(safe-area-inset-left));z-index:3;width:230px;max-height:calc(100dvh - 36px);overflow-y:auto;padding:11px 13px;background:#111e2aee;border:2px solid #617682;box-shadow:inset 0 0 0 2px #233646,3px 4px 0 #070f1b66;color:#e6d6b9;user-select:none}
 .levelHUD .levelTitle{display:flex;justify-content:space-between;gap:8px;color:#e8c38e;font-size:13px}.levelHUD .levelTitle strong{font-size:16px}.levelHUD .track{height:8px;margin:7px 0 5px;background:#0b1520}.levelHUD .fill{background:#e3ad6c}.levelHUD .levelDetail{font-size:10px;color:#b9cbd0}.levelHUD .levelUnlock{font-size:10px;color:#8ac0bc;margin-top:5px;line-height:1.3}
 .hudQuest{display:block;width:100%;margin-top:9px;padding:8px;text-align:left;background:#213747;border-color:#466775;box-shadow:none}.hudQuest:hover:not(:disabled){background:#304b5a}.hudQuest span,.hudQuest small{display:block;font-size:10px;color:#a6c8ce;line-height:1.3}.hudQuest strong{display:block;font-size:12px;color:#f0d1a2;margin:2px 0}.hudQuest small{color:#e0d2bb}.hudQuest em{display:block;margin-top:5px;font-size:9px;font-style:normal;color:#8fc5bd}
+.pinnedQuests{margin-top:9px;border-top:1px solid #415867;padding-top:7px}.pinnedHeading{font-size:10px;letter-spacing:1px;color:#e8c38e}.pinnedEmpty{display:block;color:#a6b9bf;font-size:10px;margin-top:4px}.pinnedQuest{display:flex;align-items:start;gap:4px;border-top:1px solid #304858;padding:5px 0}.pinnedQuest:first-of-type{margin-top:5px}.pinnedQuest span{min-width:0;flex:1;font-size:10px;line-height:1.3}.pinnedQuest strong,.pinnedQuest small{display:block;overflow-wrap:anywhere}.pinnedQuest small{color:#a6c8ce}.pinnedQuest button{padding:1px 4px;font-size:12px;line-height:1.1;background:transparent;border:0;box-shadow:none}.timedQuestList{display:grid;gap:10px;margin:12px 0 20px}.timedQuestCard{border:1px solid #496477;background:#1a3040;padding:12px}.timedQuestCard h3{margin:4px 0}.timedQuestCard p{margin:4px 0!important}.timedQuestCard .meta{font-size:11px;color:#e4c58d}.goalQuest button{padding:3px 7px;font-size:11px;white-space:nowrap}.goalQuest span{flex:1}
 #menuBody,#modalBody{max-height:calc(100dvh - 190px);overflow-y:auto}.goalList{display:grid;gap:11px;padding-right:5px}.goalCard{padding:14px;border:1px solid #385568;background:#142838}.goalCard.active{border-color:#d7a966;background:#203545}.goalCard.complete{border-color:#638774}.goalCard h3{font-size:17px;margin:4px 0}.goalCard p{margin:4px 0 9px!important;font-size:12px}.goalQuest{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-top:1px solid #334b5a;font-size:12px}.goalQuest.done{color:#9acbb4}.goalQuest b{white-space:nowrap;color:#e7c690}.goalReward{margin-top:8px;color:#dfbd83;font-size:11px;line-height:1.45}
 .districtBanner{top:136px}.districtCard.locked{opacity:.56}.districtCard.locked small{color:#e2a69f}
 @media(max-width:780px){.levelHUD{left:10px;top:10px;width:174px;padding:8px 10px}.levelHUD .levelTitle{font-size:11px}.levelHUD .levelTitle strong{font-size:13px}.levelHUD .levelDetail,.levelHUD .levelUnlock{font-size:9px}.districtBanner{top:114px;left:10px;padding:9px 12px}.districtBanner strong{font-size:17px}}
@@ -59,7 +60,7 @@ dialog::backdrop{background:#040c168c;backdrop-filter:blur(1px)}
 @media(max-width:360px){.levelHUD{width:130px}.gameHUD{width:155px}.levelHUD .levelDetail{font-size:8px}}
 </style></head><body>
 <main class="gameSurface" aria-label="Project SuperDJ game"><canvas id="world" width="720" height="450" tabindex="0" aria-label="Mumbai. Move with WASD or arrow keys. E interacts, I opens your journal and character menus, Escape opens settings and saving."></canvas></main><div class="districtBanner" id="districtBanner"><small>PROJECT SUPERDJ · MUMBAI</small><strong id="districtTitle">Dadar</strong><span id="districtSubtitle">The city starts here</span></div>
-<aside class="levelHUD" aria-label="Player level, experience, and goals"><div class="levelTitle"><span>PLAYER LEVEL</span><strong id="playerLevel">1</strong></div><div class="track" id="xpMeter" role="progressbar" aria-label="Experience toward next level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fill" id="xpFill" style="width:0%"></div></div><div class="levelDetail" id="xpDetail">0 / 100 XP</div><div class="levelUnlock" id="nextUnlock">Next: Bandra and new gigs</div><button class="hudQuest" onclick="showControlSection('goals')" aria-label="Open all ten goals and current quests"><span id="goalCount">GOAL 1 / 10</span><strong id="goalTitle">The First Set</strong><small id="questLine">Reach Mixing 5 · 0 / 5</small><em>View all goals and quests →</em></button></aside>
+<aside class="levelHUD" aria-label="Player level, experience, and goals"><div class="levelTitle"><span>PLAYER LEVEL</span><strong id="playerLevel">1</strong></div><div class="track" id="xpMeter" role="progressbar" aria-label="Experience toward next level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fill" id="xpFill" style="width:0%"></div></div><div class="levelDetail" id="xpDetail">0 / 100 XP</div><div class="levelUnlock" id="nextUnlock">Next: Bandra and new gigs</div><button class="hudQuest" onclick="showControlSection('goals')" aria-label="Open all ten goals and current quests"><span id="goalCount">GOAL 1 / 10</span><strong id="goalTitle">The First Set</strong><small id="questLine">Reach Mixing 5 · 0 / 5</small><em>View all goals and quests →</em></button><div class="pinnedQuests" id="pinnedQuests" aria-label="Pinned quests"></div></aside>
 <aside class="gameHUD" aria-label="Essential status">
  <div class="hudDistrict" id="hudDistrict">Dadar</div><div class="hudDate"><span id="weather" aria-label="Weather">☀</span><span id="date">Spring · Day 1</span></div>
  <div class="hudTime"><strong id="clock">9:00 AM</strong><span id="money">₹1,500</span></div>
@@ -80,7 +81,7 @@ dialog::backdrop{background:#040c168c;backdrop-filter:blur(1px)}
 const $=id=>document.getElementById(id);
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const initial=()=>({version:2,district:'dadar',name:'NOVA',day:1,hour:9,money:1500,debt:0,energy:100,hunger:85,mood:80,health:100,skill:0,production:0,inspiration:30,fans:0,rep:0,gear:0,home:0,records:0,tracks:[],gigs:0,best:0,xp:0,discovered:['dadar'],career:{jobs:0,collabs:0,venues:[]},goalProgress:{quests:[],goals:[]},items:[],partner:null,friends:{mira:0,rowan:0,sol:0,kit:0},daily:{},journal:[{day:1,text:'Moved into a Dadar chawl room with ₹1,500 and a borrowed controller. Mumbai is waiting.'}],x:640,y:445,started:false,achievements:[],settings:{sound:false,motion:true}});
+const initial=()=>({version:2,district:'dadar',name:'NOVA',day:1,hour:9,money:1500,debt:0,energy:100,hunger:85,mood:80,health:100,skill:0,production:0,inspiration:30,fans:0,rep:0,gear:0,home:0,records:0,tracks:[],gigs:0,best:0,xp:0,discovered:['dadar'],career:{jobs:0,collabs:0,samples:0,venues:[]},goalProgress:{quests:[],goals:[]},timedQuests:{},pinnedQuests:[],items:[],partner:null,friends:{mira:0,rowan:0,sol:0,kit:0},daily:{},journal:[{day:1,text:'Moved into a Dadar chawl room with ₹1,500 and a borrowed controller. Mumbai is waiting.'}],x:640,y:445,started:false,achievements:[],settings:{sound:false,motion:true}});
 let S=initial(),currentSpot='home',pendingSpot=null,path=[],keys={},last=0,frame=0,muted=true,audioCtx=null,gig=null,toastTimer,lastSaved=0,storageOK=true;
 const people={
  mira:{name:'Mira',role:'Producer & night owl',color:'#bb84c8',line:'A rough idea with feeling beats a perfect loop with nothing to say.',perk:'At 40 friendship: collaboration sessions unlock.'},
@@ -159,6 +160,11 @@ const primaryGoals=[
  {id:'main-stage',title:'Monsoon Main Stage',story:'Complete the journey from a chawl room to a festival headliner.',questXP:140,quests:[quest('festival','Complete Monsoon Frequency',1,()=>Number(S.career.venues.includes(8))),quest('fans','Reach 5,000 fans',5000,()=>S.fans),quest('gigs','Complete 20 gigs',20,()=>S.gigs),quest('skill','Reach Mixing 85',85,()=>S.skill)],reward:{xp:900,money:25000,rep:25,item:'headlinerPlaque'}}
 ];
 const goalItems={localPass:{name:'Local travel pass',description:'Local train fares are ₹10 cheaper.'},masterTape:{name:'Mira’s master tape',description:'Adds 5 quality to every new original.'},headlinerPlaque:{name:'Monsoon headliner plaque',description:'A reminder that the city knows your sound.'}};
+const timedQuestDefs=[
+ {id:'rush',title:'Chai Rush',description:'Complete one paid shift after accepting this offer.',hours:8,read:()=>S.career.jobs,reward:{xp:35,money:250,rep:1},expiry:'failed'},
+ {id:'field',title:'City Sound Hunt',description:'Sample the city once after accepting this offer.',hours:10,read:()=>S.career.samples||0,reward:{xp:30,money:100,rep:0},expiry:'gone'},
+ {id:'booker',title:'Booker’s Booking',description:'Complete one gig after accepting this booking.',hours:30,read:()=>S.gigs,reward:{xp:90,money:650,rep:3},expiry:'failed',penalty:3}
+];
 function xpForNext(level){return Math.round(100*Math.pow(level,1.4))}
 function xpAtLevel(level){let n=0;for(let i=1;i<level;i++)n+=xpForNext(i);return n}
 function playerLevel(xp=S.xp){let level=1,remaining=xp;while(remaining>=xpForNext(level)){remaining-=xpForNext(level);level++}return level}
@@ -216,6 +222,73 @@ function goalRewardText(goal){
  const r=goal.reward;
  return '+'+r.xp+' XP · '+rupees(r.money)+' · +'+r.rep+' reputation'+(r.item?' · '+goalItems[r.item].name:'');
 }
+function gameTime(){return (S.day-1)*24+S.hour}
+function remainingTime(deadline){
+ const minutes=Math.max(0,Math.ceil((deadline-gameTime())*60-1e-7));
+ const days=Math.floor(minutes/1440),hours=Math.floor(minutes%1440/60),mins=minutes%60;
+ return (days?days+'d ':'')+hours+'h '+mins+'m left';
+}
+function timedKey(id){return 'timed:'+id}
+function pinInfo(key){
+ if(key.startsWith('timed:')){
+  const def=timedQuestDefs.find(q=>timedKey(q.id)===key),record=def&&S.timedQuests[def.id];
+  return record?.status==='active'?{title:def.title,detail:remainingTime(record.deadlineAt)+' · '+Math.min(1,Math.max(0,def.read()-record.startValue))+'/1'}:null;
+ }
+ for(const goal of primaryGoals)for(const quest of goal.quests)if(questKey(goal,quest)===key&&!S.goalProgress.quests.includes(key))return {title:quest.label,detail:questValue(quest)+'/'+quest.target+' · No deadline'};
+ return null;
+}
+function prunePins(){
+ const valid=[...new Set(S.pinnedQuests.filter(key=>typeof key==='string'&&pinInfo(key)))].slice(0,3);
+ if(valid.length===S.pinnedQuests.length&&valid.every((key,i)=>key===S.pinnedQuests[i]))return false;
+ S.pinnedQuests=valid;return true;
+}
+function checkTimedQuests(){
+ let changed=false,notice='';
+ for(const def of timedQuestDefs){
+  const record=S.timedQuests[def.id];if(record?.status!=='active')continue;
+  if(gameTime()>record.deadlineAt){
+   record.status=def.expiry;if(def.penalty)S.rep=Math.max(0,S.rep-def.penalty);
+   notice=def.title+(def.expiry==='gone'?' disappeared.':' expired.')+(def.penalty?' Reputation −'+def.penalty+'.':'');
+   log(notice);changed=true;
+  }else if(def.read()>record.startValue){
+   record.status='completed';awardXP(def.reward.xp);earn(def.reward.money);S.rep+=def.reward.rep;
+   notice='Timed quest complete: '+def.title+'. +'+def.reward.xp+' XP, '+rupees(def.reward.money)+(def.reward.rep?', +'+def.reward.rep+' reputation':'')+'.';
+   log(notice);changed=true;
+  }
+ }
+ if(prunePins())changed=true;
+ if(notice)toast(notice);
+ return changed;
+}
+function acceptTimedQuest(id){
+ const def=timedQuestDefs.find(q=>q.id===id);if(!def)return;
+ const old=S.timedQuests[id];if(old&&(old.status==='active'||old.acceptedDay===S.day))return;
+ S.timedQuests[id]={status:'active',acceptedDay:S.day,startValue:def.read(),deadlineAt:gameTime()+def.hours};
+ log('Accepted '+def.title+'. Deadline: '+def.hours+' in-game hours.');toast(def.title+' accepted · '+remainingTime(S.timedQuests[id].deadlineAt));render();save();showGoals();
+}
+function pinQuest(key){
+ if(!pinInfo(key)||S.pinnedQuests.includes(key))return;
+ if(S.pinnedQuests.length===3){showPinReplacement(key);return}
+ S.pinnedQuests.push(key);render();save();showGoals();
+}
+function unpinQuest(key){
+ if(!S.pinnedQuests.includes(key))return;
+ S.pinnedQuests=S.pinnedQuests.filter(id=>id!==key);render();save();
+ if(menuMode==='inventory'&&menuSection==='goals')showGoals();
+}
+function showPinReplacement(key){
+ const info=pinInfo(key);if(!info)return;
+ openModal('Replace a pinned quest','<p>Choose a quest to replace with '+esc(info.title)+'. You can change pins at any time.</p>'+S.pinnedQuests.map(old=>'<button onclick="replacePinned(\''+old+'\',\''+key+'\')">Replace '+esc(pinInfo(old)?.title||old)+'</button>').join('')+'<button class="quiet" onclick="showGoals()">Back to goals</button>');
+}
+function replacePinned(oldKey,newKey){
+ const index=S.pinnedQuests.indexOf(oldKey);if(index<0||!pinInfo(newKey)||S.pinnedQuests.includes(newKey))return;
+ S.pinnedQuests[index]=newKey;render();save();showGoals();
+}
+function renderPinnedHUD(){
+ $('pinnedQuests').innerHTML='<div class="pinnedHeading">PINNED QUESTS · '+S.pinnedQuests.length+'/3</div>'+(S.pinnedQuests.length?S.pinnedQuests.map(key=>{
+  const info=pinInfo(key);return info?'<div class="pinnedQuest"><span><strong>'+esc(info.title)+'</strong><small>'+esc(info.detail)+'</small></span><button onclick="unpinQuest(\''+key+'\')" aria-label="Unpin '+esc(info.title)+'" title="Unpin">×</button></div>':'';
+ }).join(''):'<small class="pinnedEmpty">Open Goals to pin up to three quests.</small>');
+}
 function checkGoals(){
  let notice='';
  for(const goal of primaryGoals){
@@ -233,17 +306,19 @@ function checkGoals(){
   log('Primary goal complete: '+goal.title+'. '+goalRewardText(goal)+'.');
   notice='Goal complete: '+goal.title+' · '+goalRewardText(goal);
  }
+ prunePins();
  if(notice)toast(notice);
  return notice;
 }
 function renderGoalHUD(){
  const index=activeGoalIndex();
- if(index<0){$('goalCount').textContent='ALL 10 GOALS COMPLETE';$('goalTitle').textContent='Monsoon headliner';$('questLine').textContent='Your full journey is complete.';return}
+ if(index<0){$('goalCount').textContent='ALL 10 GOALS COMPLETE';$('goalTitle').textContent='Monsoon headliner';$('questLine').textContent='Your full journey is complete.';renderPinnedHUD();return}
  const goal=primaryGoals[index],quest=goal.quests.find(q=>!S.goalProgress.quests.includes(questKey(goal,q)));
  const done=goal.quests.length-goal.quests.filter(q=>!S.goalProgress.quests.includes(questKey(goal,q))).length;
  $('goalCount').textContent='GOAL '+(index+1)+' / 10 · '+done+'/'+goal.quests.length+' QUESTS';
  $('goalTitle').textContent=goal.title;
  $('questLine').textContent=quest?quest.label+' · '+questValue(quest)+' / '+quest.target:'Goal rewards ready';
+ renderPinnedHUD();
 }
 
 function save(){
@@ -267,7 +342,7 @@ function spend(hours,energy,cost=0){
  if(S.energy<15)S.mood=clamp(S.mood-3);
  return true;
 }
-function finish(msg,xp=0){const before=playerLevel();if(xp)awardXP(xp);const levelUp=playerLevel()>before;log(msg+(xp?' +'+xp+' XP.':''));toast(msg+(xp?' +'+xp+' XP.':'')+(levelUp?' Level '+playerLevel()+' unlocked!':''));checkAchievements();if(xp)checkGoals();render();save()}
+function finish(msg,xp=0){const before=playerLevel();if(xp)awardXP(xp);const levelUp=playerLevel()>before;log(msg+(xp?' +'+xp+' XP.':''));toast(msg+(xp?' +'+xp+' XP.':'')+(levelUp?' Level '+playerLevel()+' unlocked!':''));checkAchievements();const timedChanged=checkTimedQuests();if(xp||timedChanged)checkGoals();render();save()}
 function meter(label,value,color){return '<div class="meterrow"><span>'+label+'</span><div class="track"><div class="fill" style="width:'+clamp(value)+'%;background:'+color+'"></div></div><span>'+Math.round(value)+'</span></div>'}
 function clock(){let h=Math.floor(S.hour)%24,m=Math.round(S.hour%1*60);return (h%12||12)+':'+String(m).padStart(2,'0')+' '+(h>=12?'PM':'AM')}
 function season(){return ['Spring','Summer','Autumn','Winter'][Math.floor((S.day-1)/28)%4]}
@@ -299,7 +374,7 @@ function act(type){
  if(type==='work'){workJob(district().job);return}
  if(type==='eat'){if(!spend(.5,0,S.friends.rowan>=40?40:60))return;S.hunger=clamp(S.hunger+50);S.health=clamp(S.health+10);msg='A warm bowl at the local café. Hunger +50, health +10.'}
  if(type==='walk'){if(S.daily.walk>=3){toast('You have had a good rest today. A full night of sleep will help more.');return}if(!spend(1,0))return;S.daily.walk=(S.daily.walk||0)+1;S.energy=clamp(S.energy+10);S.mood=clamp(S.mood+18);S.health=clamp(S.health+3);msg='A slow walk through the city. Energy +10, mood +18.'}
- if(type==='sample'){if(!spend(1,6))return;S.inspiration=clamp(S.inspiration+20);msg='You sampled the local trains, street chatter, rain, and the sea. Inspiration +20.'}
+ if(type==='sample'){if(!spend(1,6))return;S.career.samples=(S.career.samples||0)+1;S.inspiration=clamp(S.inspiration+20);msg='You sampled the local trains, street chatter, rain, and the sea. Inspiration +20.'}
  if(type==='picnic'){if(S.daily.picnic){toast('The community picnic happens once a day. Come back tomorrow.');return}if(!spend(1,0))return;S.daily.picnic=1;S.hunger=clamp(S.hunger+35);S.mood=clamp(S.mood+8);msg='You shared a free community lunch by a landmark. Hunger +35.'}
  if(type==='dig'){buyRecord();return}
  if(type==='study'){if(!spend(2,18))return;S.production=clamp(S.production+12+S.gear*2);S.inspiration=clamp(S.inspiration+8);msg='You studied arrangement and sound design. Production skill improved.'}
@@ -428,12 +503,19 @@ function showBag(){
 function showJournal(){openModal('Notes from a life in music','<div class="cards">'+S.journal.map(e=>'<div class="card"><span class="meta">DAY '+e.day+'</span><p>'+esc(e.text)+'</p></div>').join('')+'</div>')}
 function showGoals(){
  const active=activeGoalIndex();
- openModal('Your 10 primary goals','<p>All ten goals are visible from the start. Complete the current goal’s quests to claim its reward and begin the next. Each quest awards XP once. Goal rewards add XP, money, reputation, and sometimes a useful item.</p><div class="goalList">'+primaryGoals.map((goal,i)=>{
+ const timedCards=timedQuestDefs.map(def=>{
+  const record=S.timedQuests[def.id],sameDay=record?.acceptedDay===S.day,status=record?.status==='active'?'active':sameDay?record.status:'available';
+  if(status==='gone')return '';
+  const key=timedKey(def.id),pinned=S.pinnedQuests.includes(key);
+  const detail=status==='active'?remainingTime(record.deadlineAt)+' · '+Math.min(1,Math.max(0,def.read()-record.startValue))+' / 1 complete':status==='completed'?'Completed today':status==='failed'?'Expired today'+(def.penalty?' · reputation −'+def.penalty:''):'Available · '+def.hours+' in-game hours after accepting';
+  return '<article class="timedQuestCard"><div class="row"><span class="eyebrow">TIMED OPPORTUNITY</span><span class="pill">'+status.toUpperCase()+'</span></div><h3>'+esc(def.title)+'</h3><p>'+esc(def.description)+'</p><p class="meta">'+esc(detail)+'</p><p class="sub">Reward: +'+def.reward.xp+' XP · '+rupees(def.reward.money)+(def.reward.rep?' · +'+def.reward.rep+' reputation':'')+'. On expiry: '+(def.expiry==='gone'?'offer disappears until tomorrow':def.penalty?'fail and lose '+def.penalty+' reputation':'quest fails')+'.</p>'+(status==='available'?'<button onclick="acceptTimedQuest(\''+def.id+'\')">Accept quest</button>':status==='active'?'<button onclick="'+(pinned?'unpinQuest':'pinQuest')+'(\''+key+'\')">'+(pinned?'Unpin':'Pin to HUD')+'</button>':'')+'</article>';
+ }).join('');
+ openModal('Your 10 primary goals','<p>All ten primary goals are visible from the start. Their quests have no deadlines. Complete the current goal to advance. Optional timed opportunities use in-game hours; accept one to start its clock. Pin up to three quests to the top-left HUD.</p><h3>Timed opportunities</h3><div class="timedQuestList">'+timedCards+'</div><h3>Primary goals</h3><div class="goalList">'+primaryGoals.map((goal,i)=>{
   const claimed=S.goalProgress.goals.includes(goal.id),state=claimed?'complete':i===active?'active':'future';
   const earned=goal.quests.filter(q=>S.goalProgress.quests.includes(questKey(goal,q))).length;
   return '<article class="goalCard '+state+'"><div class="row"><span class="eyebrow">GOAL '+(i+1)+' / 10</span><span class="pill">'+(claimed?'COMPLETE':i===active?'CURRENT':'UP AHEAD')+'</span></div><h3>'+esc(goal.title)+'</h3><p>'+esc(goal.story)+'</p><p class="sub">'+earned+' / '+goal.quests.length+' quest rewards earned · each quest +'+goal.questXP+' XP</p>'+goal.quests.map(q=>{
-   const paid=S.goalProgress.quests.includes(questKey(goal,q)),value=paid?q.target:questValue(q),ready=value>=q.target;
-   return '<div class="goalQuest '+(paid?'done':'')+'"><span>'+(paid?'✓ ':ready?'◌ ':'○ ')+esc(q.label)+(ready&&!paid?' · ready when active':'')+'</span><b>'+value+' / '+q.target+'</b></div>';
+   const key=questKey(goal,q),paid=S.goalProgress.quests.includes(key),value=paid?q.target:questValue(q),ready=value>=q.target,pinned=S.pinnedQuests.includes(key);
+   return '<div class="goalQuest '+(paid?'done':'')+'"><span>'+(paid?'✓ ':ready?'◌ ':'○ ')+esc(q.label)+(ready&&!paid?' · ready when active':'')+'</span><b>'+value+' / '+q.target+'</b>'+(paid?'':'<button onclick="'+(pinned?'unpinQuest':'pinQuest')+'(\''+key+'\')">'+(pinned?'Unpin':'Pin')+'</button>')+'</div>';
   }).join('')+'<div class="goalReward">Goal reward: '+esc(goalRewardText(goal))+(claimed?' · Claimed':'')+'</div></article>';
  }).join('')+'</div>');
 }
@@ -465,7 +547,7 @@ function validateSave(o){
  const oldJournal=base.journal.map(e=>e.text);
  const oldVenues=venues.flatMap((v,i)=>oldJournal.some(text=>text.startsWith('Played '+v.name+'.'))?[i]:[]);
  const count=(value,fallback)=>Number.isSafeInteger(value)&&value>=0&&value<=1e6?value:fallback;
- base.career={jobs:count(o.career?.jobs,oldJournal.filter(text=>text.includes('shift complete')).length),collabs:count(o.career?.collabs,oldJournal.filter(text=>text.startsWith('A studio session with Mira.')).length),venues:Array.isArray(o.career?.venues)?[...new Set(o.career.venues.filter(i=>Number.isInteger(i)&&i>=0&&i<venues.length))]:oldVenues};
+ base.career={jobs:count(o.career?.jobs,oldJournal.filter(text=>text.includes('shift complete')).length),collabs:count(o.career?.collabs,oldJournal.filter(text=>text.startsWith('A studio session with Mira.')).length),samples:count(o.career?.samples,oldJournal.filter(text=>text.startsWith('You sampled the local trains')).length),venues:Array.isArray(o.career?.venues)?[...new Set(o.career.venues.filter(i=>Number.isInteger(i)&&i>=0&&i<venues.length))]:oldVenues};
  const validQuestKeys=new Set(primaryGoals.flatMap(goal=>goal.quests.map(q=>questKey(goal,q))));
  const savedQuests=Array.isArray(o.goalProgress?.quests)?o.goalProgress.quests:[];
  const savedGoals=Array.isArray(o.goalProgress?.goals)?o.goalProgress.goals:[];
@@ -473,6 +555,14 @@ function validateSave(o){
  for(const goal of primaryGoals){if(!savedGoals.includes(goal.id))break;base.goalProgress.goals.push(goal.id);for(const q of goal.quests){const key=questKey(goal,q);if(!base.goalProgress.quests.includes(key))base.goalProgress.quests.push(key)}}
  base.items=Array.isArray(o.items)?[...new Set(o.items.filter(id=>!!goalItems[id]))]:[];
  for(const goal of primaryGoals)if(base.goalProgress.goals.includes(goal.id)&&goal.reward.item&&!base.items.includes(goal.reward.item))base.items.push(goal.reward.item);
+ if(o.timedQuests&&typeof o.timedQuests==='object'&&!Array.isArray(o.timedQuests))for(const def of timedQuestDefs){
+  const record=o.timedQuests[def.id];
+  if(!record||!['active','completed','failed','gone'].includes(record.status)||!Number.isSafeInteger(record.acceptedDay)||record.acceptedDay<1||record.acceptedDay>base.day||!Number.isSafeInteger(record.startValue)||record.startValue<0||record.startValue>1e6||!Number.isFinite(record.deadlineAt)||record.deadlineAt<0||record.deadlineAt>1e10)continue;
+  base.timedQuests[def.id]={status:record.status,acceptedDay:record.acceptedDay,startValue:record.startValue,deadlineAt:record.deadlineAt};
+ }
+ const validPins=new Set([...validQuestKeys,...timedQuestDefs.map(def=>timedKey(def.id))]);
+ base.pinnedQuests=Array.isArray(o.pinnedQuests)?[...new Set(o.pinnedQuests.filter(key=>typeof key==='string'&&validPins.has(key)))].slice(0,3):[];
+ base.pinnedQuests=base.pinnedQuests.filter(key=>key.startsWith('timed:')?base.timedQuests[key.slice(6)]?.status==='active':!base.goalProgress.quests.includes(key));
  return base;
 }
 
@@ -881,7 +971,8 @@ function changeDistrict(id,entry=null){
  S.district=id;spots=createSpots(id);currentSpot='home';path=[];pendingSpot=null;hoverSpot=null;keys={};
  const spawn={n:[640,72],s:[640,824],w:[78,446],e:[1200,446]};
  [S.x,S.y]=spawn[entry]||[643,353];travelCooldown=performance.now()+800;backgroundSeason='';activeRecordStore=null;
- if(first){S.discovered.push(id);awardXP(xpCosts.discovery);log('First visit to '+district().name+'. +'+xpCosts.discovery+' XP.');checkGoals()}
+ if(first){S.discovered.push(id);awardXP(xpCosts.discovery);log('First visit to '+district().name+'. +'+xpCosts.discovery+' XP.')}
+ const timedChanged=checkTimedQuests();if(first||timedChanged)checkGoals();
  makeBackground();render();updateCamera();announceDistrict();save();return true;
 }
 function travelTo(id,mode='train'){
@@ -976,6 +1067,7 @@ function startGig(i){
  if(!unlockedVenue(v)||S.daily.gig){toast('This stage needs '+levelRequirement(venueLevels[i])+', the listed skills and fans, and an unused booking today.');return}
  if(v.district!==S.district){toast('Travel to '+districts[v.district].name+' to play this venue.');return}
  if(!spend(3,25))return;
+ if(checkTimedQuests())checkGoals();
  if(menuMode)closeMenu(false);
  S.daily.gig=1;S.x=spots.club.door[0];S.y=spots.club.door[1];path=[];pendingSpot=null;currentSpot='club';
  gig={i,start:performance.now(),notes:Array.from({length:v.notes},(_,n)=>({lane:(n*3+Math.floor(n/4)+(i>1?Math.floor(n/7):0))%4,t:2.5+n*.46,done:false,hit:false})),score:0,combo:0,best:0,judgment:'GET READY',judgeAt:0,lastBeat:-1,flashes:[0,0,0,0],paused:false};
@@ -1024,11 +1116,11 @@ $('modal').addEventListener('cancel',e=>{e.preventDefault();toggleGameMenu()});
 $('menuDialog').addEventListener('cancel',e=>{e.preventDefault();toggleGameMenu()});
 $('savefile').addEventListener('change',async e=>{
  const file=e.target.files[0];if(!file)return;
- try{if(file.size>2000000)throw Error('File too large');const parsed=validateSave(JSON.parse(await file.text()));gig=null;S=parsed;spots=createSpots(S.district);backgroundSeason='';muted=!S.settings.sound;path=[];pendingSpot=null;currentSpot='home';checkGoals();render();save();if(menuMode)closeMenu();closeModal();toast('Your story is back. Welcome home.')}catch(err){toast('That save could not be loaded. Choose a Project SuperDJ or Afterhours save file.')}
+ try{if(file.size>2000000)throw Error('File too large');const parsed=validateSave(JSON.parse(await file.text()));gig=null;S=parsed;spots=createSpots(S.district);backgroundSeason='';muted=!S.settings.sound;path=[];pendingSpot=null;currentSpot='home';checkTimedQuests();checkGoals();render();save();if(menuMode)closeMenu();closeModal();toast('Your story is back. Welcome home.')}catch(err){toast('That save could not be loaded. Choose a Project SuperDJ or Afterhours save file.')}
  e.target.value='';
 });
 try{const saved=localStorage.getItem('project-superdj-v2')||localStorage.getItem('afterhours-v1');if(saved)S=validateSave(JSON.parse(saved))}catch(e){storageOK=false}
-spots=createSpots(S.district);muted=!S.settings.sound;const restoredGoals=checkGoals();resizeWorld();render();if(restoredGoals)save();makeBackground();requestAnimationFrame(loop);
+spots=createSpots(S.district);muted=!S.settings.sound;const restoredTimed=checkTimedQuests(),restoredGoals=checkGoals();resizeWorld();render();if(restoredTimed||restoredGoals)save();makeBackground();requestAnimationFrame(loop);
 if(!S.started)intro();else{showControlHint();announceDistrict()}
 if(!storageOK)$('saved').textContent='Use Export save to keep your story';
 window.addEventListener('beforeunload',()=>{if(S.started)save()});

@@ -259,3 +259,128 @@ test('startup migrates eligible old quest progress and saves it immediately', ()
   assert.equal(persisted.xp, 15);
   assert.match(g.elements.get('questLine').textContent, /Complete your first gig/);
 });
+
+test('timed quests start from acceptance, show in-game countdowns, and pay once at the deadline', () => {
+  const g = game();
+  g.run("S.career.jobs=3;acceptTimedQuest('rush')");
+  assert.equal(g.run('S.timedQuests.rush.startValue'), 3);
+  assert.equal(g.run('S.timedQuests.rush.deadlineAt'), 17);
+  assert.match(g.elements.get('modalBody').innerHTML, /8h 0m left/);
+  g.run('checkTimedQuests()');
+  assert.equal(g.run('S.timedQuests.rush.status'), 'active');
+  g.run("pinQuest('timed:rush');S.hour=16.5;render()");
+  assert.match(g.elements.get('pinnedQuests').innerHTML, /0h 30m left/);
+  g.run('S.hour=17;S.career.jobs++;checkTimedQuests();render();save()');
+  assert.equal(g.run('S.timedQuests.rush.status'), 'completed');
+  assert.equal(g.run('S.xp'), 35);
+  assert.equal(g.run('S.money'), 1750);
+  assert.equal(g.run('S.rep'), 1);
+  assert.equal(g.run('S.pinnedQuests.length'), 0);
+  g.run('checkTimedQuests()');
+  assert.equal(g.run('S.xp'), 35);
+  g.run("acceptTimedQuest('rush')");
+  assert.equal(g.run('S.timedQuests.rush.acceptedDay'), 1);
+});
+
+test('sampling quest uses a real action and can be accepted again the next day', () => {
+  const g = game();
+  g.run("S.career.samples=2;acceptTimedQuest('field')");
+  assert.equal(g.run('S.timedQuests.field.startValue'), 2);
+  g.run("act('sample')");
+  assert.equal(g.run('S.timedQuests.field.status'), 'completed');
+  assert.equal(g.run('S.career.samples'), 3);
+  assert.equal(g.run('S.money'), 1600);
+  assert.ok(g.run('S.xp') >= 30);
+  g.run('S.day=2;S.hour=8;acceptTimedQuest(\'field\')');
+  assert.equal(g.run('S.timedQuests.field.status'), 'active');
+  assert.equal(g.run('S.timedQuests.field.startValue'), 3);
+});
+
+test('paid work completes a timed quest; travel and sleep resolve passed deadlines', () => {
+  const worked = game();
+  worked.run("acceptTimedQuest('rush');workJob('chai')");
+  assert.equal(worked.run('S.timedQuests.rush.status'), 'completed');
+  assert.equal(worked.run('S.money'), 2000);
+
+  const traveled = game();
+  traveled.run("S.xp=xpAtLevel(2);acceptTimedQuest('rush');pinQuest('timed:rush');S.hour=16.9;travelTo('bandra')");
+  assert.equal(traveled.run('S.timedQuests.rush.status'), 'failed');
+  assert.equal(traveled.run('S.pinnedQuests.length'), 0);
+
+  const slept = game();
+  slept.run("acceptTimedQuest('rush');sleepDay()");
+  assert.equal(slept.run('S.timedQuests.rush.status'), 'failed');
+});
+
+test('a completed gig fulfills a booking, while leaving the stage does not', () => {
+  const g = game();
+  g.run("S.skill=5;acceptTimedQuest('booker');startGig(0);leaveGig()");
+  assert.equal(g.run('S.timedQuests.booker.status'), 'active');
+  g.run("S.daily.gig=0;S.energy=100;startGig(0);gig.score=1000;finishGig(false)");
+  assert.equal(g.run('S.timedQuests.booker.status'), 'completed');
+  assert.ok(g.run('S.rep') >= 3);
+  const xp = g.run('S.xp');
+  g.run('checkTimedQuests()');
+  assert.equal(g.run('S.xp'), xp);
+});
+
+test('expired opportunities fail, disappear, and apply one reputation consequence', () => {
+  const g = game();
+  g.run("S.rep=5;acceptTimedQuest('rush');acceptTimedQuest('field');acceptTimedQuest('booker');pinQuest('timed:rush');pinQuest('timed:field');pinQuest('timed:booker')");
+  assert.equal(g.run('S.pinnedQuests.length'), 3);
+  g.run('S.hour=20;checkTimedQuests();render()');
+  assert.equal(g.run('S.timedQuests.rush.status'), 'failed');
+  assert.equal(g.run('S.timedQuests.field.status'), 'gone');
+  assert.equal(g.run('S.timedQuests.booker.status'), 'active');
+  assert.equal(g.run('S.pinnedQuests.length'), 1);
+  g.run('showGoals()');
+  assert.doesNotMatch(g.elements.get('modalBody').innerHTML, /City Sound Hunt/);
+  g.run('S.day=2;S.hour=15.1;checkTimedQuests();render()');
+  assert.equal(g.run('S.timedQuests.booker.status'), 'failed');
+  assert.equal(g.run('S.rep'), 2);
+  assert.equal(g.run('S.pinnedQuests.length'), 0);
+  g.run('checkTimedQuests()');
+  assert.equal(g.run('S.rep'), 2);
+  g.run("acceptTimedQuest('field')");
+  assert.equal(g.run('S.timedQuests.field.acceptedDay'), 2);
+});
+
+test('HUD enforces three pins, supports replacement and unpinning, and drops completed quests', () => {
+  const g = game();
+  g.run("pinQuest('first-set:practice');pinQuest('first-set:gig');pinQuest('neighbourhood:jobs');acceptTimedQuest('rush');pinQuest('timed:rush')");
+  assert.equal(g.run('S.pinnedQuests.length'), 3);
+  assert.equal(g.elements.get('modalTitle').textContent, 'Replace a pinned quest');
+  assert.match(g.elements.get('modalBody').innerHTML, /Replace Reach Mixing 5/);
+  g.run("replacePinned('first-set:gig','timed:rush');render()");
+  assert.equal(g.run('S.pinnedQuests.length'), 3);
+  assert.ok(g.run("S.pinnedQuests.includes('timed:rush')"));
+  assert.match(g.elements.get('pinnedQuests').innerHTML, /No deadline/);
+  assert.match(g.elements.get('pinnedQuests').innerHTML, /8h 0m left/);
+  g.run("unpinQuest('neighbourhood:jobs');S.skill=5;checkGoals();render()");
+  assert.equal(g.run('S.pinnedQuests.length'), 1);
+  assert.doesNotMatch(g.elements.get('pinnedQuests').innerHTML, /Reach Mixing 5/);
+});
+
+test('save migration sanitizes pins and timed records; expired load resolves once', () => {
+  const g = game();
+  const old = JSON.parse(g.run('JSON.stringify(initial())'));
+  delete old.career.samples; delete old.timedQuests; delete old.pinnedQuests;
+  old.journal.unshift({ day: 1, text: 'You sampled the local trains, street chatter, rain, and the sea. Inspiration +20.' });
+  g.context.old = old;
+  const migrated = g.run('validateSave(old)');
+  assert.equal(migrated.career.samples, 1);
+  assert.deepEqual(Array.from(migrated.pinnedQuests), []);
+  g.run("acceptTimedQuest('booker');pinQuest('timed:booker');save()");
+  const roundTrip = JSON.parse(g.saved.get('project-superdj-v2'));
+  roundTrip.pinnedQuests = ['timed:booker', 'timed:booker', 'invalid', 'first-set:practice', 'first-set:gig', 'neighbourhood:jobs'];
+  g.context.roundTrip = roundTrip;
+  g.run('S=validateSave(roundTrip);render()');
+  assert.deepEqual(Array.from(g.run('S.pinnedQuests')), ['timed:booker', 'first-set:practice', 'first-set:gig']);
+  g.run('S.day=3;S.hour=9;checkTimedQuests();save()');
+  assert.equal(g.run('S.timedQuests.booker.status'), 'failed');
+  assert.equal(g.run('S.pinnedQuests.includes(\'timed:booker\')'), false);
+  const rep = g.run('S.rep');
+  g.context.savedAgain = JSON.parse(g.saved.get('project-superdj-v2'));
+  g.run('S=validateSave(savedAgain);checkTimedQuests()');
+  assert.equal(g.run('S.rep'), rep);
+});
