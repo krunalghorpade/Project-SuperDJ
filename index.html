@@ -17,6 +17,12 @@ dialog{width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 40px);border
 
 .menuTabs[hidden]{display:none}
 
+.levelHUD{position:fixed;top:max(18px,env(safe-area-inset-top));left:max(18px,env(safe-area-inset-left));z-index:3;width:230px;padding:11px 13px;background:#111e2aee;border:2px solid #617682;box-shadow:inset 0 0 0 2px #233646,3px 4px 0 #070f1b66;color:#e6d6b9;user-select:none}
+.levelHUD .levelTitle{display:flex;justify-content:space-between;gap:8px;color:#e8c38e;font-size:13px}.levelHUD .levelTitle strong{font-size:16px}.levelHUD .track{height:8px;margin:7px 0 5px;background:#0b1520}.levelHUD .fill{background:#e3ad6c}.levelHUD .levelDetail{font-size:10px;color:#b9cbd0}.levelHUD .levelUnlock{font-size:10px;color:#8ac0bc;margin-top:5px;line-height:1.3}
+.districtBanner{top:136px}.districtCard.locked{opacity:.56}.districtCard.locked small{color:#e2a69f}
+@media(max-width:780px){.levelHUD{left:10px;top:10px;width:174px;padding:8px 10px}.levelHUD .levelTitle{font-size:11px}.levelHUD .levelTitle strong{font-size:13px}.levelHUD .levelDetail,.levelHUD .levelUnlock{font-size:9px}.districtBanner{top:114px;left:10px;padding:9px 12px}.districtBanner strong{font-size:17px}}
+@media(max-width:390px){.levelHUD{width:145px}.levelHUD .levelUnlock{display:none}}
+
 @media(pointer:fine){.hudButtons{display:none}.gameHUD{padding-bottom:12px}}
 
 :root{--ink:#090f18;--panel:#121e2a;--edge:#354756;--cream:#e4ddd0;--muted:#9cafbb;--gold:#e1af72;--mint:#8ac0bc;--pink:#c58c9b}
@@ -45,8 +51,13 @@ dialog::backdrop{background:#040c168c;backdrop-filter:blur(1px)}
 .seaLabel{grid-column:3;grid-row:1;align-self:center;justify-self:center;color:#6c96b3;font-size:12px;letter-spacing:4px;text-align:center;line-height:1.8;opacity:.65}
 .cityDetails{border:1px solid #3a5365;background:#182d3c;padding:18px}.cityDetails h3{font-size:23px;margin:5px 0}.cityDetails p{font-size:14px}.cityFacts{display:grid;gap:7px;font-size:12px;color:#cebd9d}
 @media(max-width:600px){.districtBanner{left:14px;top:15px;max-width:calc(100% - 215px);padding:10px}.districtBanner strong{font-size:19px}.districtBanner span{display:none}.districtBanner small{font-size:7px;letter-spacing:1px}.gameHUD{width:185px}.cityChart{gap:7px;padding:9px;grid-template-rows:repeat(3,94px)}.districtCard{padding:7px!important}.districtCard b{font-size:12px}.districtCard span{font-size:9px}.districtCard small{font-size:6px}.seaLabel{font-size:9px;letter-spacing:2px}}
+#districtBanner{top:136px} .districtCard.locked{opacity:.56}
+@media(max-width:780px){#districtBanner{top:114px;left:10px}}
+@media(max-width:480px){.levelHUD{width:155px}.gameHUD{width:168px}}
+@media(max-width:360px){.levelHUD{width:130px}.gameHUD{width:155px}.levelHUD .levelDetail{font-size:8px}}
 </style></head><body>
 <main class="gameSurface" aria-label="Project SuperDJ game"><canvas id="world" width="720" height="450" tabindex="0" aria-label="Mumbai. Move with WASD or arrow keys. E interacts, I opens your journal and character menus, Escape opens settings and saving."></canvas></main><div class="districtBanner" id="districtBanner"><small>PROJECT SUPERDJ · MUMBAI</small><strong id="districtTitle">Dadar</strong><span id="districtSubtitle">The city starts here</span></div>
+<aside class="levelHUD" aria-label="Player level and experience"><div class="levelTitle"><span>PLAYER LEVEL</span><strong id="playerLevel">1</strong></div><div class="track" id="xpMeter" role="progressbar" aria-label="Experience toward next level" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fill" id="xpFill" style="width:0%"></div></div><div class="levelDetail" id="xpDetail">0 / 100 XP</div><div class="levelUnlock" id="nextUnlock">Next: Bandra and new gigs</div></aside>
 <aside class="gameHUD" aria-label="Essential status">
  <div class="hudDistrict" id="hudDistrict">Dadar</div><div class="hudDate"><span id="weather" aria-label="Weather">☀</span><span id="date">Spring · Day 1</span></div>
  <div class="hudTime"><strong id="clock">9:00 AM</strong><span id="money">₹1,500</span></div>
@@ -67,7 +78,7 @@ dialog::backdrop{background:#040c168c;backdrop-filter:blur(1px)}
 const $=id=>document.getElementById(id);
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const initial=()=>({version:2,district:'dadar',name:'NOVA',day:1,hour:9,money:1500,debt:0,energy:100,hunger:85,mood:80,health:100,skill:0,production:0,inspiration:30,fans:0,rep:0,gear:0,home:0,records:0,tracks:[],gigs:0,best:0,partner:null,friends:{mira:0,rowan:0,sol:0,kit:0},daily:{},journal:[{day:1,text:'Moved into a Dadar chawl room with ₹1,500 and a borrowed controller. Mumbai is waiting.'}],x:640,y:445,started:false,achievements:[],settings:{sound:false,motion:true}});
+const initial=()=>({version:2,district:'dadar',name:'NOVA',day:1,hour:9,money:1500,debt:0,energy:100,hunger:85,mood:80,health:100,skill:0,production:0,inspiration:30,fans:0,rep:0,gear:0,home:0,records:0,tracks:[],gigs:0,best:0,xp:0,discovered:['dadar'],partner:null,friends:{mira:0,rowan:0,sol:0,kit:0},daily:{},journal:[{day:1,text:'Moved into a Dadar chawl room with ₹1,500 and a borrowed controller. Mumbai is waiting.'}],x:640,y:445,started:false,achievements:[],settings:{sound:false,motion:true}});
 let S=initial(),currentSpot='home',pendingSpot=null,path=[],keys={},last=0,frame=0,muted=true,audioCtx=null,gig=null,toastTimer,lastSaved=0,storageOK=true;
 const people={
  mira:{name:'Mira',role:'Producer & night owl',color:'#bb84c8',line:'A rough idea with feeling beats a perfect loop with nothing to say.',perk:'At 40 friendship: collaboration sessions unlock.'},
@@ -124,6 +135,34 @@ const venues=[
  {name:'Deco After Dark',place:'Marine Drive · Art Deco hall',district:'fort',type:'Concert club',tier:5,skill:68,fans:2400,pay:23000,gain:720,notes:40,tracks:2,desc:'Your name outside a landmark room on the boulevard.'},
  {name:'Monsoon Frequency',place:'Juhu · beach festival',district:'juhu',type:'Festival main stage',tier:5,skill:75,fans:3400,pay:35000,gain:1200,notes:44,tracks:3,desc:'An original sound, a sea of people, and a city behind you.'}
 ];
+// Every level has a gameplay reward. Levels after 10 add a 1% encore bonus to gig pay and royalties.
+const levelUnlocks={1:'Dadar, starter work, Gully Signal and Gully Crates',2:'Bandra, tier 2 jobs, Vinyl Veranda and secondhand decks',3:'Fort, Shaadi Circuit and original releases',4:'Lower Parel, tier 3 jobs, Mill 46, auto-rickshaws and studio flats',5:'Andheri, Neon Local, club-ready setup and Mira collaborations',6:'Worli, tier 4 jobs and rare record stores',7:'Arabian Rooftop and express taxis',8:'Colaba, The Harbour Room, dream studio rigs and skyline homes',9:'Juhu, music director work and Deco After Dark',10:'Monsoon Frequency festival main stage'};
+const districtLevels={dadar:1,bandra:2,fort:3,parel:4,andheri:5,worli:6,colaba:8,juhu:9};
+const jobTierLevels={1:1,2:2,3:4,4:6,5:9};
+const storeTierLevels={1:1,2:3,3:5,4:6,5:8};
+const venueLevels=[1,2,3,4,5,7,8,9,10];
+const gearLevels=[1,2,5,8],homeLevels=[1,4,8];
+const xpCosts={practice:20,cook:8,eat:8,walk:8,sample:12,picnic:8,study:22,listen:12,sleep:5,release:65,collaborate:50,record:25,gear:25,home:30,chat:8,hang:18,gift:10,date:30,discovery:15};
+function xpForNext(level){return Math.round(100*Math.pow(level,1.4))}
+function xpAtLevel(level){let n=0;for(let i=1;i<level;i++)n+=xpForNext(i);return n}
+function playerLevel(xp=S.xp){let level=1,remaining=xp;while(remaining>=xpForNext(level)){remaining-=xpForNext(level);level++}return level}
+function levelBonus(){return 1+Math.max(0,playerLevel()-10)*.01}
+function levelRequirement(level){return 'Player Level '+level}
+function levelGate(level){if(playerLevel()>=level)return true;toast('Reach '+levelRequirement(level)+' to unlock this.');return false}
+function unlockText(level){return levelUnlocks[level]||'Encore mastery: +1% gig pay and royalties'}
+function awardXP(amount){
+ if(!Number.isFinite(amount)||amount<=0)return;
+ const before=playerLevel();S.xp+=Math.round(amount);const after=playerLevel();
+ for(let level=before+1;level<=after;level++)log('Reached Player Level '+level+'. Unlocked: '+unlockText(level)+'.');
+ if(after>before)toast('Player Level '+after+'! '+unlockText(after));
+}
+function legacyXP(o){
+ // Existing careers keep their place in the city when first loaded with XP support.
+ const fanLevels=[[3400,10],[2400,9],[1800,8],[1100,7],[600,6],[300,5],[120,4],[60,2]];
+ let level=1;for(const [fans,n] of fanLevels)if(o.fans>=fans){level=n;break}
+ level=Math.max(level,Math.min(10,1+Math.floor(o.gigs/5)),o.tracks.length>=3?7:o.tracks.length?3:1,gearLevels[o.gear]||1,homeLevels[o.home]||1);
+ return xpAtLevel(level);
+}
 function createSpots(id){
  const d=districts[id],rs=recordStores[d.store];
  const place=(name,kind,x,y,w,h,extra={})=>({name,kind,x,y,w,h,door:[x+w/2,y+h+22],...extra});
@@ -146,9 +185,9 @@ function createSpots(id){
 let spots=createSpots('dadar');
 let districtAnnounceTimer=0,travelCooldown=0,activeRecordStore=null;
 function district(){return districts[S.district]||districts.dadar}
-function unlockedJob(j){return S.skill>=j.skill&&S.production>=j.prod&&S.fans>=j.fans}
-function unlockedStore(r){return S.skill>=r.skill&&S.fans>=r.fans}
-function unlockedVenue(v){return S.skill>=v.skill&&S.fans>=v.fans&&S.tracks.length>=(v.tracks||0)}
+function unlockedJob(j){return playerLevel()>=(jobTierLevels[j.tier]||1)&&S.skill>=j.skill&&S.production>=j.prod&&S.fans>=j.fans}
+function unlockedStore(r){return playerLevel()>=(storeTierLevels[r.tier]||1)&&S.skill>=r.skill&&S.fans>=r.fans}
+function unlockedVenue(v){return playerLevel()>=(venueLevels[venues.indexOf(v)]||1)&&S.skill>=v.skill&&S.fans>=v.fans&&S.tracks.length>=(v.tracks||0)}
 function requirements(skill,prod,fans){return (skill?'Mixing '+skill+' · ':'')+(prod?'Production '+prod+' · ':'')+(fans?fans.toLocaleString()+' fans':'Open to everyone')}
 
 function tier(){let n=0;tiers.forEach((t,i)=>{if(S.fans>=t.fans)n=i});return n}
@@ -176,13 +215,18 @@ function spend(hours,energy,cost=0){
  if(S.energy<15)S.mood=clamp(S.mood-3);
  return true;
 }
-function finish(msg){log(msg);toast(msg);checkAchievements();render();save()}
+function finish(msg,xp=0){const before=playerLevel();if(xp)awardXP(xp);const levelUp=playerLevel()>before;log(msg+(xp?' +'+xp+' XP.':''));toast(msg+(xp?' +'+xp+' XP.':'')+(levelUp?' Level '+playerLevel()+' unlocked!':''));checkAchievements();render();save()}
 function meter(label,value,color){return '<div class="meterrow"><span>'+label+'</span><div class="track"><div class="fill" style="width:'+clamp(value)+'%;background:'+color+'"></div></div><span>'+Math.round(value)+'</span></div>'}
 function clock(){let h=Math.floor(S.hour)%24,m=Math.round(S.hour%1*60);return (h%12||12)+':'+String(m).padStart(2,'0')+' '+(h>=12?'PM':'AM')}
 function season(){return ['Spring','Summer','Autumn','Winter'][Math.floor((S.day-1)/28)%4]}
 
 function render(){
  $('money').textContent=rupees(S.money);$('hudDistrict').textContent=district().name;
+ const level=playerLevel(),start=xpAtLevel(level),cost=xpForNext(level),progress=S.xp-start;
+ $('playerLevel').textContent=level;$('xpFill').style.width=clamp(progress/cost*100)+'%';
+ $('xpDetail').textContent=progress.toLocaleString()+' / '+cost.toLocaleString()+' XP · '+S.xp.toLocaleString()+' total';
+ $('xpMeter').setAttribute('aria-valuenow',progress);$('xpMeter').setAttribute('aria-valuemax',cost);
+ $('nextUnlock').textContent='Next: '+unlockText(level+1);
  $('date').textContent=season()+' · Day '+S.day;$('clock').textContent=clock();
  $('weather').textContent=S.day%3===0?'☂':S.hour>=19?'☾':'☀';
  $('weather').setAttribute('title',S.day%3===0?'Rain':S.hour>=19?'Clear night':'Sunny');
@@ -207,18 +251,19 @@ function act(type){
  if(type==='dig'){buyRecord();return}
  if(type==='study'){if(!spend(2,18))return;S.production=clamp(S.production+12+S.gear*2);S.inspiration=clamp(S.inspiration+8);msg='You studied arrangement and sound design. Production skill improved.'}
  if(type==='listen'){if(!spend(1,6,100))return;S.skill=clamp(S.skill+3);S.inspiration=clamp(S.inspiration+15);S.mood=clamp(S.mood+10);msg='A beautiful set reminded you why you started. Mixing +3, inspiration +15.'}
- finish(msg);
+ if(!msg)return;
+ finish(msg,xpCosts[type]);
 }
 function sleepDay(){
  if(gig)return;
  if(S.district!=='dadar'){toast('Head back to your Dadar home to sleep.');return}
  const oldDay=S.day,early=S.hour<18;S.day++;S.hour=8;S.energy=clamp(80+S.home*7+(S.hunger>30?10:0));S.hunger=clamp(S.hunger-12);S.mood=clamp(S.mood+8+(S.partner?6:0));S.health=clamp(S.health+(S.hunger>20?10:-6));S.daily={};S.district='dadar';spots=createSpots('dadar');backgroundSeason='';S.x=207;S.y=383;path=[];pendingSpot=null;currentSpot='home';
  let txt='Day '+S.day+'. A fresh start.';
- if(S.tracks.length){let royalties=S.tracks.reduce((n,t)=>n+Math.max(1,Math.round(t.quality*(2+S.fans/180)/5)),0);earn(royalties);txt+=' Your music earned ₹'+royalties+' in royalties.'}
+ if(S.tracks.length){let royalties=Math.round(S.tracks.reduce((n,t)=>n+Math.max(1,Math.round(t.quality*(2+S.fans/180)/5)),0)*levelBonus());earn(royalties);txt+=' Your music earned ₹'+royalties+' in royalties.'}
  if(oldDay%7===0){let rent=rentCost(),paid=Math.min(S.money,rent);S.money-=paid;S.debt+=rent-paid;txt+=' Weekly rent: ₹'+rent+'.'+(S.debt?' Overdue rent: ₹'+S.debt+'. Future earnings help pay it down.':' Paid in full.');Object.keys(S.friends).forEach(k=>S.friends[k]=clamp(S.friends[k]-2))}
  if(S.day%4===0){S.inspiration=clamp(S.inspiration+12);txt+=' A strange melody arrived in a dream. Inspiration +12.'}
  if(S.day%6===0&&S.gigs>0){S.fans+=5;txt+=' A clip of your last set found 5 new fans.'}
- finish(txt);closeModal();openModal('Morning in Mumbai','<p class="legend">'+season()+' · Day '+S.day+'</p><p>'+esc(txt)+'</p>'+(early?'<p>You turned in early. Sometimes that is exactly what you need.</p>':'')+'<button class="gold" onclick="closeModal()">Let the day begin</button>');
+ finish(txt,xpCosts.sleep);closeModal();openModal('Morning in Mumbai','<p class="legend">'+season()+' · Day '+S.day+'</p><p>'+esc(txt)+'</p>'+(early?'<p>You turned in early. Sometimes that is exactly what you need.</p>':'')+'<button class="gold" onclick="closeModal()">Let the day begin</button>');
 }
 function checkAchievements(){
  const list=[['first_gig',S.gigs>=1,'First time behind the decks'],['first_track',S.tracks.length>=1,'A sound of your own'],['friend',Object.values(S.friends).some(n=>n>=40),'Better together'],['fans100',S.fans>=100,'One hundred listeners'],['love',!!S.partner,'Someone to come home to'],['hero',S.fans>=5000,'From bedroom to headliner']];
@@ -266,7 +311,7 @@ function closeModal(){
 }
 function showCharacter(){
  let q=objective();
- openModal('Your character','<div class="characterHeading"><canvas class="avatar" id="avatar" width="26" height="30"></canvas><div><div class="eyebrow">'+tiers[tier()].name+'</div><h3>DJ '+esc(S.name)+'</h3><span class="sub">Chapter '+(tier()+1)+' · '+['First local','The neighbourhood','Your Mumbai sound','Sea of lights','The main stage'][tier()]+'</span></div></div><div class="characterGrid"><div>'+meter('Energy',S.energy,'#dfb56a')+meter('Hunger',S.hunger,'#91b880')+meter('Mood',S.mood,'#d98eb0')+meter('Health',S.health,'#7fb7b9')+'</div><div class="characterFacts"><div><strong>'+S.fans.toLocaleString()+'</strong><small>FANS</small></div><div><strong>'+Math.floor(S.skill)+'</strong><small>MIXING / 100</small></div><div><strong>'+Math.floor(S.production)+'</strong><small>PRODUCTION / 100</small></div><div><strong>'+Math.floor(S.inspiration)+'</strong><small>INSPIRATION</small></div></div></div><div class="objectiveCard"><div class="eyebrow">ON YOUR HORIZON</div><h3 style="margin-top:8px">'+q[0]+'</h3><p>'+q[1]+'</p><span class="sub">'+q[2]+'</span></div>');
+ openModal('Your character','<div class="characterHeading"><canvas class="avatar" id="avatar" width="26" height="30"></canvas><div><div class="eyebrow">'+tiers[tier()].name+'</div><h3>DJ '+esc(S.name)+'</h3><span class="sub">Player Level '+playerLevel()+' · '+S.xp.toLocaleString()+' total XP · Chapter '+(tier()+1)+'</span></div></div><div class="characterGrid"><div>'+meter('Energy',S.energy,'#dfb56a')+meter('Hunger',S.hunger,'#91b880')+meter('Mood',S.mood,'#d98eb0')+meter('Health',S.health,'#7fb7b9')+'</div><div class="characterFacts"><div><strong>'+S.fans.toLocaleString()+'</strong><small>FANS</small></div><div><strong>'+Math.floor(S.skill)+'</strong><small>MIXING / 100</small></div><div><strong>'+Math.floor(S.production)+'</strong><small>PRODUCTION / 100</small></div><div><strong>'+Math.floor(S.inspiration)+'</strong><small>INSPIRATION</small></div></div></div><div class="objectiveCard"><div class="eyebrow">ON YOUR HORIZON</div><h3 style="margin-top:8px">'+q[0]+'</h3><p>'+q[1]+'</p><span class="sub">'+q[2]+'</span></div>');
  drawAvatar();
 }
 function showGameMenu(){
@@ -291,20 +336,22 @@ async function toggleFullscreen(){
 function showControlHint(){clearTimeout(hintTimer);$('controlHint').classList.add('visible');hintTimer=setTimeout(()=>$('controlHint').classList.remove('visible'),7000)}
 
 function showStudio(){
- openModal('Signal · your music','<p>Production '+Math.floor(S.production)+'/100 · Inspiration '+Math.floor(S.inspiration)+'/100</p><p>Record an original for ₹350, 3 hours, 24 energy, and 20 inspiration. Production skill, equipment, and mood affect quality. Released music earns royalties each morning.</p><label for="trackName">Track title</label><input id="trackName" maxlength="36" placeholder="e.g. Last local to Dadar"><button class="gold" onclick="releaseTrack()">Record & release · ₹350</button><button onclick="act(\'study\');showStudio()">Study production · 2h</button>'+(S.friends.mira>=40?'<button onclick="collaborate()">Collaborate with Mira · 2h</button>':'<p class="sub">Become friends with Mira to unlock collaboration.</p>')+'<h3 style="margin-top:24px">Your discography</h3><div class="cards">'+(S.tracks.length?S.tracks.slice().reverse().map(t=>'<div class="card"><h3>♫ '+esc(t.name)+'</h3><span class="meta">Day '+t.day+' · '+t.quality+'/100 quality · '+t.fans+' release-day fans</span></div>').join(''):'<p>Your first record is waiting to happen.</p>')+'</div>');
+ openModal('Signal · your music','<p>Production '+Math.floor(S.production)+'/100 · Inspiration '+Math.floor(S.inspiration)+'/100</p><p>Record an original for ₹350, 3 hours, 24 energy, and 20 inspiration. Production skill, equipment, and mood affect quality. Released music earns royalties each morning.</p><label for="trackName">Track title</label><input id="trackName" maxlength="36" placeholder="e.g. Last local to Dadar"><button class="gold" onclick="releaseTrack()" '+(playerLevel()<3?'disabled':'')+'>Record & release · ₹350'+(playerLevel()<3?' · Level 3':'')+'</button><button onclick="act(\'study\');showStudio()">Study production · 2h</button>'+(S.friends.mira>=40&&playerLevel()>=5?'<button onclick="collaborate()">Collaborate with Mira · 2h</button>':'<p class="sub">Mira collaborations unlock at Player Level 5 with 40 friendship.</p>')+'<h3 style="margin-top:24px">Your discography</h3><div class="cards">'+(S.tracks.length?S.tracks.slice().reverse().map(t=>'<div class="card"><h3>♫ '+esc(t.name)+'</h3><span class="meta">Day '+t.day+' · '+t.quality+'/100 quality · '+t.fans+' release-day fans</span></div>').join(''):'<p>Your first record is waiting to happen.</p>')+'</div>');
 }
 function releaseTrack(){
+ if(!levelGate(3))return;
  if(S.inspiration<20){toast('You need 20 inspiration. Sample sounds around the city landmarks or dig for records.');return}
  if(S.daily.track){toast('One release a day. Give your listeners time to hear it.');return}
  let name=$('trackName').value.trim()||['Windowlight','Monsoon local','Last train','Midnight postcards','Maximum City frequencies'][S.tracks.length%5]+' '+(S.tracks.length+1);
  if(!spend(3,24,350))return;
  let quality=Math.round(clamp(20+S.production*.45+S.gear*7+S.mood*.12+Math.min(12,S.records*2),1,100));
  let fans=Math.round(quality*.5+S.fans*.025);S.inspiration-=20;S.production=clamp(S.production+8);S.tracks.push({name,quality,fans,day:S.day});S.fans+=fans;S.daily.track=1;
- finish('Released “'+name+'”. Quality '+quality+'/100, '+fans+' new listeners.');showStudio();
+ finish('Released “'+name+'”. Quality '+quality+'/100, '+fans+' new listeners.',xpCosts.release+Math.round(quality/4));showStudio();
 }
 function collaborate(){
+ if(!levelGate(5))return;
  if(S.friends.mira<40||S.daily.collab){toast('Mira can collaborate once a day once your friendship reaches 40.');return}
- if(!spend(2,14))return;S.daily.collab=1;S.production=clamp(S.production+16);S.inspiration=clamp(S.inspiration+25);S.friends.mira=clamp(S.friends.mira+5);finish('A studio session with Mira. Production +16, inspiration +25.');showStudio();
+ if(!spend(2,14))return;S.daily.collab=1;S.production=clamp(S.production+16);S.inspiration=clamp(S.inspiration+25);S.friends.mira=clamp(S.friends.mira+5);finish('A studio session with Mira. Production +16, inspiration +25.',xpCosts.collaborate);showStudio();
 }
 function showPeople(){
  openModal('The people in your corner','<p>A career is only part of a life. Friendships open doors, but they are also worth having on their own.</p><div class="cards">'+Object.entries(people).map(([id,p])=>'<div class="card"><div class="row"><h3>'+p.name+(S.partner===id?' ♡':'')+'</h3><span class="pill">'+(S.friends[id]>=70?'CLOSE':S.friends[id]>=40?'FRIEND':'GETTING TO KNOW YOU')+'</span></div><p>'+p.role+'</p>'+meter('Bond',S.friends[id],p.color)+'<button onclick="showPerson(\''+id+'\')">Spend time together</button></div>').join('')+'</div>');
@@ -320,13 +367,13 @@ function social(id,kind){
  if(!spend(c[0],c[1],c[2]))return;
  S.daily[key]=1;S.friends[id]=clamp(S.friends[id]+c[3]);S.mood=clamp(S.mood+(kind==='chat'?8:20));S.inspiration=clamp(S.inspiration+5);
  if(kind==='date')S.partner=id;
- finish(kind==='date'?'You and '+people[id].name+' watched the lights come on across the bay. A new chapter begins.':'Spent time with '+people[id].name+'. Friendship +'+c[3]+'.');showPerson(id);
+ finish(kind==='date'?'You and '+people[id].name+' watched the lights come on across the bay. A new chapter begins.':'Spent time with '+people[id].name+'. Friendship +'+c[3]+'.',xpCosts[kind]);showPerson(id);
 }
 function showBag(){
  openModal('Your backpack','<div class="cards"><div class="card"><h3>♫ Your setup</h3><p>'+gearNames[S.gear]+'</p><button onclick="showShop()">Browse local equipment</button></div><div class="card"><h3>▣ '+S.records+' records collected</h3><p>Every record adds inspiration and helps you discover your own sound.</p></div><div class="card"><h3>✦ '+Math.floor(S.inspiration)+' inspiration</h3><p>Gather it from living, listening, and time with people. Spend it making music.</p></div><div class="card"><h3>Your finances</h3><p>₹'+Math.floor(S.money)+' cash · ₹'+S.debt+' overdue rent · ₹'+rentCost()+' weekly rent</p><button onclick="showHome()">Your home</button></div></div>');
 }
 function showJournal(){openModal('Notes from a life in music','<div class="cards">'+S.journal.map(e=>'<div class="card"><span class="meta">DAY '+e.day+'</span><p>'+esc(e.text)+'</p></div>').join('')+'</div>')}
-function help(){openModal('Welcome to Mumbai','<p><b>Move:</b> WASD / arrow keys, or click a building. Press E near a place to interact. Location actions appear when you arrive. Press I for your character, career, gigs and journal. Press M for the city map and trains. Press Esc for settings and saving.</p><p><b>Start small:</b> practice at home once, then press I and choose Gigs → Gully Signal. Use D F J K or tap the four pads as notes reach the gold line.</p><p><b>Build a life:</b> neighbourhood jobs pay the bills. Eat, rest, make friends, upgrade equipment, and release original tracks. Time passes when you choose activities; exploring is free. Menus pause any active set.</p><p><b>Grow:</b> gigs and releases earn fans. Better skills unlock larger venues. Reach 5,000 fans to become a festival icon.</p><p><b>Save:</b> progress is saved in this browser when available. Export a save as a backup. Download game gives you a standalone HTML file that works offline.</p><button class="gold" onclick="closeModal()">Back to the city</button>')}
+function help(){openModal('Welcome to Mumbai','<p><b>Move:</b> WASD / arrow keys, or click a building. Press E near a place to interact. Location actions appear when you arrive. Press I for your character, career, gigs and journal. Press M for the city map and trains. Press Esc for settings and saving.</p><p><b>Start small:</b> practice at home once, then press I and choose Gigs → Gully Signal. Use D F J K or tap the four pads as notes reach the gold line.</p><p><b>Build a life:</b> neighbourhood jobs pay the bills. Eat, rest, make friends, upgrade equipment, and release original tracks. Time passes when you choose activities; exploring is free. Menus pause any active set.</p><p><b>Grow:</b> gigs and releases earn fans. Player Levels unlock districts, jobs, equipment, transport and stages. Each later level needs more XP; skills, fans and originals also matter. Reach 5,000 fans to become a festival icon.</p><p><b>Save:</b> progress is saved in this browser when available. Export a save as a backup. Download game gives you a standalone HTML file that works offline.</p><button class="gold" onclick="closeModal()">Back to the city</button>')}
 function intro(){
  openModal('PROJECT SUPERDJ','<div class="introTitle">THIS IS YOUR<br>FIRST TRACK.</div><p>A Dadar chawl room. ₹1,500 in your pocket. A borrowed controller. Eight districts, a million sounds, and a dream bigger than your bedroom.</p><div class="introGrid"><div><b>Make music</b>Practice, produce, play.</div><div><b>Make a life</b>Eat, work, love, rest.</div><div><b>Find your people</b>Find your Mumbai family.</div></div><label for="nameInput">What is your DJ name?</label><input id="nameInput" maxlength="20" value="NOVA" autocomplete="off"><button class="gold" onclick="begin()">Start your Mumbai story →</button><p class="sub">A complete little career awaits. No rush. No wrong way to find your sound.</p>');
 }
@@ -346,7 +393,12 @@ function validateSave(o){
  if(!Array.isArray(o.tracks)||o.tracks.length>5000||!Array.isArray(o.journal)||!Array.isArray(o.achievements))throw Error('Invalid entries');
  base.tracks=o.tracks.map(t=>{if(typeof t.name!=='string'||!Number.isFinite(t.quality)||!Number.isFinite(t.day)||!Number.isFinite(t.fans))throw Error('Invalid track');return {name:t.name.slice(0,36),quality:clamp(t.quality),day:Math.max(1,t.day),fans:Math.max(0,t.fans)}});
  base.journal=o.journal.slice(0,100).map(e=>({day:Number.isFinite(e.day)?e.day:1,text:String(e.text).slice(0,600)}));
- base.achievements=o.achievements.filter(x=>typeof x==='string').slice(0,100);base.name=o.name.slice(0,20);base.partner=people[o.partner]?o.partner:null;base.daily={...o.daily};base.started=!!o.started;base.settings={sound:o.settings?.sound===true,motion:o.settings?.motion!==false};base.district=o.version===2&&districts[o.district]?o.district:'dadar';base.x=o.version===2?clamp(o.x,16,WORLD_W-16):640;base.y=o.version===2?clamp(o.y,32,WORLD_H-20):445;if(o.version===1){base.money*=10;base.debt*=10;delete base.daily.work;delete base.daily.gig;}return base;
+ base.achievements=o.achievements.filter(x=>typeof x==='string').slice(0,100);base.name=o.name.slice(0,20);base.partner=people[o.partner]?o.partner:null;base.daily={...o.daily};base.started=!!o.started;base.settings={sound:o.settings?.sound===true,motion:o.settings?.motion!==false};base.district=o.version===2&&districts[o.district]?o.district:'dadar';base.x=o.version===2?clamp(o.x,16,WORLD_W-16):640;base.y=o.version===2?clamp(o.y,32,WORLD_H-20):445;if(o.version===1){base.money*=10;base.debt*=10;delete base.daily.work;delete base.daily.gig;}
+ if(o.xp!==undefined&&(!Number.isSafeInteger(o.xp)||o.xp<0||o.xp>1e9))throw Error('Invalid XP');
+ base.xp=o.xp===undefined?legacyXP(o):o.xp;
+ base.discovered=Array.isArray(o.discovered)?[...new Set(o.discovered.filter(id=>!!districts[id]))]:[base.district];
+ if(!base.discovered.includes(base.district))base.discovered.push(base.district);
+ return base;
 }
 
 function downloadGame(){
@@ -364,18 +416,21 @@ const gearNames=['Borrowed controller','Secondhand decks','Club-ready setup','Dr
 const gearCosts=[0,2500,10000,28000];
 const rentCost=()=>[1200,2200,4000][S.home];
 function showCity(selected=S.district){
+ if(!districts[selected])selected=S.district;
  const d=districts[selected]||district(),r=recordStores[d.store],v=venues[d.venue];
- openModal('Mumbai · your city after dark','<p class="sub">Eight connected neighbourhoods. Walk through the street exits for free, or take a local train for ₹20 and 15 minutes.</p><div class="cityChart"><div class="seaLabel">ARABIAN<br>SEA</div>'+Object.entries(districts).map(([id,a])=>'<button class="districtCard '+(id===S.district?'here ':'')+(id===selected?'selected':'')+'" style="grid-column:'+(a.grid[0]+1)+';grid-row:'+(a.grid[1]+1)+';--district-accent:'+a.accent+'" onclick="showCity(\''+id+'\')"><small>'+(id===S.district?'● YOU ARE HERE':'DISTRICT 0'+(Object.keys(districts).indexOf(id)+1))+'</small><b>'+a.name+'</b><span>'+a.landmark+'</span></button>').join('')+'</div><div class="cityDetails"><div class="eyebrow">'+d.subtitle+'</div><h3>'+d.name+'</h3><p>'+d.description+'</p><div class="cityFacts"><span>♫ '+r.name+' · T'+r.tier+'</span><span>◈ '+v.name+' · T'+v.tier+'</span><span>Work: '+jobs[d.job].name+' / '+jobs[d.job2].name+'</span></div><p class="sub">Street connections: '+Object.values(d.links).map(id=>districts[id].name).join(' · ')+'</p><button class="gold" onclick="'+(selected===S.district?'closeModal()':'travelTo(\''+selected+'\')')+'" '+(gig?'disabled':'')+'>'+(selected===S.district?'Explore this district':'Take the local · ₹20')+'</button></div><p class="sub">A fictional, condensed Mumbai. Streets, businesses and train connections are designed for play.</p>');
+ const locked=playerLevel()<districtLevels[selected];
+ const travel=selected===S.district?'<button class="gold" onclick="closeModal()">Explore this district</button>':locked?'<button disabled>Unlock at '+levelRequirement(districtLevels[selected])+'</button>':'<button class="gold" onclick="travelTo(\''+selected+'\',\'train\')" '+(gig?'disabled':'')+'>Local train · ₹20 · 15m</button><button onclick="travelTo(\''+selected+'\',\'rickshaw\')" '+(gig||playerLevel()<4?'disabled':'')+'>Auto-rickshaw · ₹60 · 6m'+(playerLevel()<4?' · Level 4':'')+'</button><button onclick="travelTo(\''+selected+'\',\'taxi\')" '+(gig||playerLevel()<7?'disabled':'')+'>Express taxi · ₹150 · 3m'+(playerLevel()<7?' · Level 7':'')+'</button>';
+ openModal('Mumbai · your city after dark','<p class="sub">Eight connected neighbourhoods. Street exits are free. Trains, auto-rickshaws, and taxis shorten the journey.</p><div class="cityChart"><div class="seaLabel">ARABIAN<br>SEA</div>'+Object.entries(districts).map(([id,a])=>'<button class="districtCard '+(id===S.district?'here ':'')+(id===selected?'selected ':'')+(playerLevel()<districtLevels[id]?'locked':'')+'" style="grid-column:'+(a.grid[0]+1)+';grid-row:'+(a.grid[1]+1)+';--district-accent:'+a.accent+'" onclick="showCity(\''+id+'\')"><small>'+(id===S.district?'● YOU ARE HERE':playerLevel()<districtLevels[id]?'LEVEL '+districtLevels[id]:'DISTRICT 0'+(Object.keys(districts).indexOf(id)+1))+'</small><b>'+a.name+'</b><span>'+a.landmark+'</span></button>').join('')+'</div><div class="cityDetails"><div class="eyebrow">'+d.subtitle+'</div><h3>'+d.name+'</h3><p>'+d.description+'</p><div class="cityFacts"><span>'+levelRequirement(districtLevels[selected])+'</span><span>♫ '+r.name+' · T'+r.tier+'</span><span>◈ '+v.name+' · T'+v.tier+'</span><span>Work: '+jobs[d.job].name+' / '+jobs[d.job2].name+'</span></div><p class="sub">Street connections: '+Object.values(d.links).map(id=>districts[id].name).join(' · ')+'</p>'+travel+'</div><p class="sub">A fictional, condensed Mumbai. Streets, businesses and train connections are designed for play.</p>');
 }
 function showJobs(){
  const ids=[...new Set([district().job,district().job2])];
  const local=ids.map(id=>jobCard(id,true)).join('');
  const others=Object.entries(jobs).filter(([id])=>!ids.includes(id)).map(([id])=>jobCard(id,false)).join('');
- openModal('Work your way up','<p>From a cutting-chai shift to directing a studio session. Your skills unlock better work. Two paid shifts per day.</p><h3>In '+district().name+'</h3><div class="cards">'+local+'</div><h3 style="margin-top:24px">Across Mumbai</h3><div class="cards">'+others+'</div>');
+ openModal('Work your way up','<p>From a cutting-chai shift to directing a studio session. Player Level, skills, and fans unlock better work. Two paid shifts per day.</p><h3>In '+district().name+'</h3><div class="cards">'+local+'</div><h3 style="margin-top:24px">Across Mumbai</h3><div class="cards">'+others+'</div>');
 }
 function jobCard(id,local){
  const j=jobs[id],ok=unlockedJob(j),where=Object.entries(districts).filter(([,d])=>d.job===id||d.job2===id);
- return '<div class="card"><div class="row"><h3>'+j.name+'</h3><span class="pill">TIER '+j.tier+'</span></div><p>'+j.desc+'</p><div class="meta">'+rupees(j.pay)+' · '+j.hours+'h · −'+j.energy+' energy</div><p class="sub">'+requirements(j.skill,j.prod,j.fans)+'</p>'+(local?'<button class="gold" onclick="workJob(\''+id+'\')" '+(!ok||(S.daily.work||0)>=2?'disabled':'')+'>'+(!ok?'Build your skills':(S.daily.work||0)>=2?'Shifts finished today':'Work this shift')+'</button>':where.map(([key,d])=>'<button onclick="showCity(\''+key+'\')">'+d.name+' →</button>').join(''))+'</div>';
+ return '<div class="card"><div class="row"><h3>'+j.name+'</h3><span class="pill">TIER '+j.tier+'</span></div><p>'+j.desc+'</p><div class="meta">'+rupees(j.pay)+' · '+j.hours+'h · −'+j.energy+' energy</div><p class="sub">'+levelRequirement(jobTierLevels[j.tier])+' · '+requirements(j.skill,j.prod,j.fans)+'</p>'+(local?'<button class="gold" onclick="workJob(\''+id+'\')" '+(!ok||(S.daily.work||0)>=2?'disabled':'')+'>'+(!ok?'Requirements unmet':(S.daily.work||0)>=2?'Shifts finished today':'Work this shift')+'</button>':where.map(([key,d])=>'<button onclick="showCity(\''+key+'\')">'+d.name+' →</button>').join(''))+'</div>';
 }
 function workJob(id){
  const j=jobs[id];if(!j||gig)return;
@@ -384,42 +439,42 @@ function workJob(id){
  if((S.daily.work||0)>=2){toast('Two shifts is enough for one day. Make time for your music and yourself.');return}
  if(!spend(j.hours,j.energy))return;
  S.daily.work=(S.daily.work||0)+1;earn(j.pay);S.mood=clamp(S.mood-3);S.production=clamp(S.production+(j.prod?2:0));S.friends.rowan=clamp(S.friends.rowan+2);
- finish(j.name+' shift complete in '+district().name+'. Earned '+rupees(j.pay)+'.');showJobs();
+ finish(j.name+' shift complete in '+district().name+'. Earned '+rupees(j.pay)+'.',20+j.tier*15);showJobs();
 }
 function showRecordShop(){
  const id=district().store,r=recordStores[id],ok=unlockedStore(r);activeRecordStore=id;
- openModal(r.name,'<div class="eyebrow">TIER '+r.tier+' · '+district().name+'</div><p>'+r.desc+'</p><p class="sub">'+requirements(r.skill,0,r.fans)+'</p><div class="card"><h3>Dig the crates</h3><p>A new record, +'+r.inspiration+' inspiration and +'+r.production+' production. Each shop has one fresh find per day.</p><button class="gold" onclick="buyRecord()" '+(!ok||S.daily['record_'+id]?'disabled':'')+'>'+(!ok?'Build your reputation':S.daily['record_'+id]?'Crates explored today':'Find a record · '+rupees(r.price)+' · 1h')+'</button></div><div class="card" style="margin-top:12px"><h3>Equipment counter</h3><p>Stocks upgrades up to '+gearNames[r.gear]+'.</p><button onclick="showShop()">Browse equipment</button></div><button class="quiet" onclick="showPeople()">Talk to the local music community</button>');
+ openModal(r.name,'<div class="eyebrow">TIER '+r.tier+' · '+district().name+'</div><p>'+r.desc+'</p><p class="sub">'+levelRequirement(storeTierLevels[r.tier])+' · '+requirements(r.skill,0,r.fans)+'</p><div class="card"><h3>Dig the crates</h3><p>A new record, +'+r.inspiration+' inspiration and +'+r.production+' production. Each shop has one fresh find per day.</p><button class="gold" onclick="buyRecord()" '+(!ok||S.daily['record_'+id]?'disabled':'')+'>'+(!ok?'Requirements unmet':S.daily['record_'+id]?'Crates explored today':'Find a record · '+rupees(r.price)+' · 1h')+'</button></div><div class="card" style="margin-top:12px"><h3>Equipment counter</h3><p>Stocks upgrades up to '+gearNames[r.gear]+'.</p><button onclick="showShop()">Browse equipment</button></div><button class="quiet" onclick="showPeople()">Talk to the local music community</button>');
 }
 function buyRecord(){
  const id=district().store,r=recordStores[id];
  if(gig||!unlockedStore(r)||S.daily['record_'+id])return;
  if(!spend(1,6,r.price))return;
  S.daily['record_'+id]=true;S.records++;S.inspiration=clamp(S.inspiration+r.inspiration);S.production=clamp(S.production+r.production);S.skill=clamp(S.skill+1);
- finish('Found a record at '+r.name+'. Inspiration +'+r.inspiration+', production +'+r.production+'.');showRecordShop();
+ finish('Found a record at '+r.name+'. Inspiration +'+r.inspiration+', production +'+r.production+'.',xpCosts.record+r.tier*5);showRecordShop();
 }
 function showShop(){
  const r=recordStores[district().store];
  openModal(r.name+' · equipment','<p>Local stock: tier '+r.tier+'. Upgrades improve practice and track quality.</p><div class="cards">'+gearNames.map((g,i)=>{
   const stocked=i<=r.gear,ok=unlockedStore(r);
-  return '<div class="card"><h3>'+g+'</h3><p>'+(i?'+'+(i*2)+' mixing per practice · improved production quality.':'Your first little setup. A start is a start.')+'</p><button '+(i!==S.gear+1||S.money<gearCosts[i]||!stocked||!ok?'disabled':'')+' onclick="buyGear('+i+')">'+(i<=S.gear?'Owned':!stocked?'Find at a higher-tier store':!ok?'Store reputation required':'Buy · '+rupees(gearCosts[i]))+'</button></div>';
+  return '<div class="card"><h3>'+g+'</h3><p>'+(i?'+'+(i*2)+' mixing per practice · improved production quality. '+levelRequirement(gearLevels[i])+'.':'Your first little setup. A start is a start.')+'</p><button '+(i!==S.gear+1||S.money<gearCosts[i]||!stocked||!ok||playerLevel()<gearLevels[i]?'disabled':'')+' onclick="buyGear('+i+')">'+(i<=S.gear?'Owned':playerLevel()<gearLevels[i]?levelRequirement(gearLevels[i]):!stocked?'Find at a higher-tier store':!ok?'Store reputation required':'Buy · '+rupees(gearCosts[i]))+'</button></div>';
  }).join('')+'</div><button class="quiet" onclick="showCity()">Find another record store →</button>');
 }
 function buyGear(i){
  const r=recordStores[district().store];
- if(gig||i!==S.gear+1||!gearCosts[i]||i>r.gear||!unlockedStore(r)||!spend(.5,0,gearCosts[i]))return;
- S.gear=i;finish('Upgraded to '+gearNames[i]+'. Your sound is growing.');showShop();
+ if(gig||i!==S.gear+1||!gearCosts[i]||i>r.gear||!unlockedStore(r)||!levelGate(gearLevels[i])||!spend(.5,0,gearCosts[i]))return;
+ S.gear=i;finish('Upgraded to '+gearNames[i]+'. Your sound is growing.',xpCosts.gear);showShop();
 }
 function showHome(){
  openModal('A place in the city','<p>Your home base is Dadar. Weekly rent: '+rupees(rentCost())+'. Due after day '+(Math.ceil(S.day/7)*7)+'.'+(S.debt?' Overdue rent: '+rupees(S.debt)+'. 40% of new earnings pays it down.':'')+'</p><div class="cards">'+[
  ['Chawl room',0,'One room, shared corridors, and neighbours who know your first mix. ₹1,200 weekly rent.'],
  ['Studio flat',6500,'A little privacy and a proper music corner. Better rest. ₹2,200 weekly rent.'],
  ['Skyline apartment',20000,'Space to create and room for your people. Best rest. ₹4,000 weekly rent.']
- ].map((h,i)=>'<div class="card"><h3>'+h[0]+'</h3><p>'+h[2]+'</p><button '+(i!==S.home+1||S.money<h[1]?'disabled':'')+' onclick="upgradeHome('+i+')">'+(i<=S.home?'Home':'Move in · '+rupees(h[1]))+'</button></div>').join('')+'</div><button class="quiet" onclick="showCity(\'dadar\')">Find home on the city map</button>');
+ ].map((h,i)=>'<div class="card"><h3>'+h[0]+'</h3><p>'+h[2]+' '+levelRequirement(homeLevels[i])+'.</p><button '+(i!==S.home+1||S.money<h[1]||playerLevel()<homeLevels[i]?'disabled':'')+' onclick="upgradeHome('+i+')">'+(i<=S.home?'Home':playerLevel()<homeLevels[i]?levelRequirement(homeLevels[i]):'Move in · '+rupees(h[1]))+'</button></div>').join('')+'</div><button class="quiet" onclick="showCity(\'dadar\')">Find home on the city map</button>');
 }
 function upgradeHome(i){
  const cost=[0,6500,20000][i];
- if(gig||i!==S.home+1||!cost||!spend(2,10,cost))return;
- S.home=i;S.mood=clamp(S.mood+25);finish('Moved into a new home. A little more room for your life in Mumbai.');showHome();
+ if(gig||i!==S.home+1||!cost||!levelGate(homeLevels[i])||!spend(2,10,cost))return;
+ S.home=i;S.mood=clamp(S.mood+25);finish('Moved into a new home. A little more room for your life in Mumbai.',xpCosts.home);showHome();
 }
 function renderSpot(){
  const p=spots[currentSpot];if(!p)return;
@@ -454,7 +509,7 @@ function renderSpot(){
 function showGigs(){
  openModal('Mumbai after dark · stages','<p>Listening bars, weddings, warehouses, rooftops, hotel clubs and a beach festival. Travel to the venue’s district to play. One set per day · 3 hours · 25 energy.</p><p class="sub">Play with D F J K or the four pads. Match the notes to the gold line. Esc pauses your set.</p><div class="cards">'+venues.map((v,i)=>{
  const ok=unlockedVenue(v),here=S.district===v.district;
- return '<div class="card"><div class="row"><h3>'+v.name+'</h3><span class="pill">TIER '+v.tier+' · '+v.type+'</span></div><p>'+v.place+'<br>'+v.desc+'</p><div class="meta">From '+rupees(v.pay)+' · ~'+v.gain+' new fans</div><p class="sub">'+requirements(v.skill,0,v.fans)+(v.tracks?' · '+v.tracks+' originals':'')+'</p>'+(!here?'<button onclick="showCity(\''+v.district+'\')">Find in '+districts[v.district].name+' →</button>':'<button class="gold" onclick="startGig('+i+')" '+(!ok||S.daily.gig||gig?'disabled':'')+'>'+(S.daily.gig?'Played today':ok?'Take the stage':'Build your following')+'</button>')+'</div>';
+ return '<div class="card"><div class="row"><h3>'+v.name+'</h3><span class="pill">TIER '+v.tier+' · '+v.type+'</span></div><p>'+v.place+'<br>'+v.desc+'</p><div class="meta">From '+rupees(v.pay)+' · ~'+v.gain+' new fans</div><p class="sub">'+levelRequirement(venueLevels[i])+' · '+requirements(v.skill,0,v.fans)+(v.tracks?' · '+v.tracks+' originals':'')+'</p>'+(!here?'<button onclick="showCity(\''+v.district+'\')">Find in '+districts[v.district].name+' →</button>':'<button class="gold" onclick="startGig('+i+')" '+(!ok||S.daily.gig||gig?'disabled':'')+'>'+(S.daily.gig?'Played today':ok?'Take the stage':'Requirements unmet')+'</button>')+'</div>';
  }).join('')+'</div>');
 }
 function objective(){
@@ -468,7 +523,7 @@ function objective(){
  ][tier()];
 }
 function showCareer(){
- openModal('From chawl room to main stage','<p>Build a sound the city recognises. Skills, original releases and your following open bigger opportunities.</p><div class="timeline">'+tiers.map((r,i)=>'<div class="card"><div class="row"><h3>'+r.name+'</h3><span class="pill">'+(i<tier()?'ACHIEVED':i===tier()?'YOU ARE HERE':'AHEAD')+'</span></div><p>'+['Learn the decks, work local shifts, and play a terrace.','Explore listening bars and the wedding circuit.','Step into mill warehouses and Andheri club rooms.','Take the rooftops, hotel lounges and concert halls.','Your original sound reaches the festival main stage.'][i]+'</p><span class="meta">'+r.fans.toLocaleString()+' fans</span></div>').join('')+'</div><p>'+S.gigs+' gigs · '+S.tracks.length+' releases · '+S.records+' records · '+Object.values(S.friends).filter(n=>n>=40).length+' close connections</p>');
+ openModal('From chawl room to main stage','<p>Every successful activity earns XP. Each level costs more XP and opens new parts of the city and career. Skills, original releases, and fans still matter for bookings.</p><h3>Player Levels</h3><div class="timeline">'+Object.entries(levelUnlocks).map(([n,reward])=>'<div class="card"><div class="row"><h3>Level '+n+'</h3><span class="pill">'+(Number(n)<playerLevel()?'UNLOCKED':Number(n)===playerLevel()?'YOU ARE HERE':'AHEAD')+'</span></div><p>'+reward+'</p><span class="meta">'+xpAtLevel(Number(n)).toLocaleString()+' total XP</span></div>').join('')+'</div><p class="sub">After Level 10, each level adds 1% gig pay and royalties.</p><h3>Fan milestones</h3><div class="timeline">'+tiers.map((r,i)=>'<div class="card"><div class="row"><h3>'+r.name+'</h3><span class="pill">'+(i<tier()?'ACHIEVED':i===tier()?'YOU ARE HERE':'AHEAD')+'</span></div><span class="meta">'+r.fans.toLocaleString()+' fans</span></div>').join('')+'</div><p>'+S.gigs+' gigs · '+S.tracks.length+' releases · '+S.records+' records · '+Object.values(S.friends).filter(n=>n>=40).length+' close connections</p>');
 }
 
 function character(c,x,y,color='#e3ab68',style=0,walk=0,scale=1,face=1){
@@ -748,20 +803,28 @@ function announceDistrict(){
  clearTimeout(districtAnnounceTimer);districtAnnounceTimer=setTimeout(()=>$('districtBanner').classList.remove('show'),3800);
 }
 function changeDistrict(id,entry=null){
- if(!districts[id])return;
+ if(!districts[id]||!levelGate(districtLevels[id]))return false;
+ const first=!S.discovered.includes(id);
  S.district=id;spots=createSpots(id);currentSpot='home';path=[];pendingSpot=null;hoverSpot=null;keys={};
  const spawn={n:[640,72],s:[640,824],w:[78,446],e:[1200,446]};
- [S.x,S.y]=spawn[entry]||[643,353];travelCooldown=performance.now()+800;backgroundSeason='';activeRecordStore=null;makeBackground();render();updateCamera();announceDistrict();save();
+ [S.x,S.y]=spawn[entry]||[643,353];travelCooldown=performance.now()+800;backgroundSeason='';activeRecordStore=null;
+ if(first){S.discovered.push(id);awardXP(xpCosts.discovery);log('First visit to '+district().name+'. +'+xpCosts.discovery+' XP.')}
+ makeBackground();render();updateCamera();announceDistrict();save();return true;
 }
-function travelTo(id){
+function travelTo(id,mode='train'){
+ if(!districts[id]||!['train','rickshaw','taxi'].includes(mode))return;
  if(id===S.district){toast('You are already in '+district().name+'.');return}
  if(gig){toast('Finish your set before catching a train.');return}
- if(!spend(.25,0,20))return;
- if(menuMode)closeMenu(false);$('modal').close();changeDistrict(id);
- log('Caught the local to '+districts[id].name+'. Fare ₹20.');save();
+ if(!levelGate(districtLevels[id]))return;
+ if((mode==='rickshaw'&&!levelGate(4))||(mode==='taxi'&&!levelGate(7)))return;
+ const fares={train:[.25,20],rickshaw:[.1,60],taxi:[.05,150]},[hours,cost]=fares[mode];
+ if(!spend(hours,0,cost))return;
+ if(menuMode)closeMenu(false);if($('modal').open)$('modal').close();changeDistrict(id);
+ log('Traveled by '+mode+' to '+districts[id].name+'. Fare ₹'+cost+'.');save();
 }
 function visit(id){
  const p=spots[id];if(!p)return;
+ if(p.kind==='exit'&&!levelGate(districtLevels[p.to])){pendingSpot=null;path=[];return}
  pendingSpot=null;path=[];currentSpot=id;
  if(p.kind==='exit'){changeDistrict(p.to,{n:'s',s:'n',e:'w',w:'e'}[p.dir]);return}
  renderSpot();
@@ -837,7 +900,7 @@ function drum(strong){
 }
 function startGig(i){
  if(!venues[i]||gig)return;let v=venues[i];
- if(S.skill<v.skill||S.fans<v.fans||S.tracks.length<(v.tracks||0)||S.daily.gig){toast('This stage is not available yet.');return}
+ if(!unlockedVenue(v)||S.daily.gig){toast('This stage needs '+levelRequirement(venueLevels[i])+', the listed skills and fans, and an unused booking today.');return}
  if(v.district!==S.district){toast('Travel to '+districts[v.district].name+' to play this venue.');return}
  if(!spend(3,25))return;
  if(menuMode)closeMenu(false);
@@ -876,11 +939,11 @@ function leaveGig(){if(!gig)return;finishGig(true)}
 function finishGig(left){
  if(!gig)return;const result=gig;gig=null;
  const v=venues[result.i],accuracy=result.score/(v.notes*100),grade=left?'—':accuracy>=.9?'S':accuracy>=.78?'A':accuracy>=.6?'B':accuracy>=.4?'C':'D';
- const reward=left?0:Math.round(v.pay*(.5+accuracy*.9)*(S.friends.sol>=40?1.2:1));
+ const reward=left?0:Math.round(v.pay*(.5+accuracy*.9)*(S.friends.sol>=40?1.2:1)*levelBonus());
  const fanGain=left?0:Math.round(v.gain*(.4+accuracy*1.2)*(S.friends.kit>=40?1.2:1)*(S.mood<20?.8:1));
  earn(reward);S.fans+=fanGain;S.skill=clamp(S.skill+(left?1:4+accuracy*3));S.mood=clamp(S.mood+(left?-5:10));S.rep+=left?0:Math.round(accuracy*10);S.best=Math.max(S.best,result.best);if(!left)S.gigs++;
  const msg=left?'Left the set early. There will be another night.':'Played '+v.name+'. '+grade+' grade, ₹'+reward+' earned, '+fanGain+' new fans.';
- finish(msg);
+ finish(msg,left?0:60+v.tier*25+Math.round(accuracy*35));
  const festival=!left&&result.i===venues.length-1;
  openModal(festival?'From the bedroom to the main stage':left?'There is always another night':'One more night to remember','<div class="result"><div class="eyebrow">'+(left?'SET ENDED':v.name.toUpperCase())+'</div><strong>'+grade+'</strong><p>'+Math.round(accuracy*100)+'% accuracy · '+result.best+' best combo</p><h3>+₹'+reward+' &nbsp; +'+fanGain+' fans</h3><p>'+(left?'You stepped away. Rest, reset, and come back when you are ready.':accuracy>=.78?'The room was with you. Those little hours of practice are becoming something real.':'Every room teaches you something. Keep practicing, and your next set will feel better.')+'</p>'+(festival?'<p class="note">You remember the borrowed controller and that first room of ten people. The stage is bigger now. The feeling is the same. This is your sound, and this is your life.</p>':'')+'<button class="gold" onclick="closeModal()">Back to Mumbai</button></div>');
 }
