@@ -1,0 +1,899 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#111e2a"><meta name="description" content="Project SuperDJ — a pixel-art DJ life across eight districts of a Mumbai-inspired city."><title>Project SuperDJ · Mumbai After Dark</title><style>
+:root{--ink:#090f18;--panel:#121c2a;--edge:#334553;--cream:#e4ddd0;--muted:#9aadb8;--gold:#e3ad6c;--mint:#7ebcb4;--pink:#c98191}
+*{box-sizing:border-box}body{margin:0;background:#090f18;color:var(--cream);font:15px/1.45 ui-monospace,SFMono-Regular,Consolas,monospace}button,input{font:inherit}button{cursor:pointer;border:1px solid #435565;color:var(--cream);background:#213041;border-radius:4px;padding:10px 14px;transition:background .15s,transform .15s}button:hover:not(:disabled){background:#554153;transform:translateY(-1px)}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible{outline:3px solid var(--mint);outline-offset:3px}.gold{background:var(--gold);color:#2e2431;border-color:#facd88;font-weight:bold}.gold:hover:not(:disabled){background:#f6cc8d}.quiet{background:transparent}.tiny{padding:6px 9px;font-size:12px}.app{max-width:1490px;margin:auto;padding:22px 30px 14px}.top{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:18px}.brand{display:flex;align-items:center;gap:14px}.record{width:40px;height:40px;border-radius:50%;border:6px solid #524050;background:var(--gold);box-shadow:inset 0 0 0 7px #292336;position:relative}.record:after{content:"";position:absolute;width:4px;height:4px;border-radius:100%;background:#292336;left:12px;top:12px}h1{font-size:27px;letter-spacing:4px;line-height:1.1;margin:0}h1 small{display:block;font-size:10px;color:var(--muted);font-weight:normal;letter-spacing:3px;margin-top:6px}.topRight{display:flex;align-items:center;gap:12px}.money{color:var(--gold);font-size:21px;font-weight:bold}.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px}.worldbox{border:2px solid #645069;border-radius:7px;overflow:hidden;background:#31293e;position:relative;box-shadow:0 10px 30px #100f1855}.worldhead{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 17px;font-size:13px;background:#2b263a;border-bottom:2px solid #645069}.worldhead strong{letter-spacing:1px}.daytime{color:var(--gold)}.canvaswrap{position:relative;background:#637851;aspect-ratio:768/496;overflow:hidden}#world{width:100%;height:100%;display:block;image-rendering:pixelated;touch-action:none;cursor:crosshair}.locationChip{position:absolute;top:14px;left:14px;padding:6px 10px;background:#211d31db;border:1px solid #786172;border-radius:3px;font-size:12px;pointer-events:none}.worldfoot{padding:11px 15px;display:flex;justify-content:space-between;gap:10px;background:#282336;color:var(--muted);font-size:12px}.key{display:inline-block;border:1px solid #705d71;border-bottom:3px solid #705d71;padding:0 5px;border-radius:3px;color:var(--cream);font-size:11px}aside{display:flex;flex-direction:column;gap:14px}.panel{border:1px solid var(--edge);background:var(--panel);border-radius:6px;padding:17px}.profile{display:flex;align-items:center;gap:12px;margin-bottom:16px}.avatar{width:52px;height:60px;background:#483750;border:1px solid #6a536a;image-rendering:pixelated}.eyebrow{font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}.name{font-size:19px;font-weight:bold;margin-top:4px}.sub{font-size:12px;color:var(--muted)}.meterrow{display:grid;grid-template-columns:65px 1fr 34px;align-items:center;gap:8px;margin:9px 0;font-size:12px}.track{height:7px;background:#151322;border-radius:2px;overflow:hidden}.fill{height:100%;transition:width .3s}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;border-top:1px solid var(--edge);padding-top:13px;margin-top:15px}.stat strong{display:block;font-size:19px}.stat small{color:var(--muted);font-size:11px}h2{margin:0 0 10px;font-size:17px}h3{margin:0 0 8px;font-size:15px}p{margin:8px 0 15px}.context p{font-size:13px;color:var(--muted)}.actions{display:grid;gap:8px}.actions button{text-align:left;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px}.actions button small{font-size:11px;color:#cfbdc8;white-space:nowrap}.quest{border-left:3px solid var(--gold)}.quest p{font-size:13px;color:var(--muted);margin-bottom:8px}.questProgress{font-size:11px;color:var(--mint)}.dock{display:flex;gap:8px;margin-top:14px}.dock button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:#282337;padding:12px 6px;font-size:13px}.dock button span{color:var(--gold);font-size:19px}.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:18px;color:#8f8098;font-size:11px;gap:16px}.bottom button{color:#9aadb8;padding:3px 8px;font-size:11px;border:0}.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;padding:13px 20px;border:1px solid #a4816b;background:#142332;color:var(--cream);box-shadow:0 8px 30px #0008;max-width:600px;z-index:30;border-radius:5px;transition:.25s}.toast.show{opacity:1;transform:translate(-50%,0)}dialog{border:2px solid #a17a68;border-radius:8px;background:#111e2c;color:var(--cream);padding:0;width:min(640px,calc(100vw - 28px));max-height:88vh;box-shadow:0 20px 90px #0009}dialog::backdrop{background:#0b0915bf;backdrop-filter:blur(3px)}.modalhead{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--edge);background:#182a39}.modalhead h2{font-size:21px;margin:0}.modalbody{padding:24px}.modalbody p{color:#c6b7c5;font-size:14px}.modalbody button{margin:3px 4px 3px 0}.cards{display:grid;gap:12px}.card{padding:16px;border:1px solid #33495c;background:#192939;border-radius:5px}.card h3{font-size:16px}.card p{font-size:13px;margin:5px 0 10px}.card .meta{font-size:12px;color:var(--gold)}.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.pill{font-size:10px;letter-spacing:1px;padding:4px 7px;border:1px solid #766073;border-radius:3px;color:var(--mint)}input{background:#0c1722;color:var(--cream);border:1px solid #7c637d;border-radius:4px;width:100%;padding:11px 12px;margin:8px 0 16px}.timeline{border-left:2px solid #65526a;padding-left:18px}.timeline .card{margin:0 0 12px}.legend{color:var(--gold)!important}.gigLayout{text-align:center}#rhythm{width:100%;max-width:480px;height:auto;image-rendering:pixelated;display:block;margin:auto;background:#181522;border:1px solid #66506d}.padrow{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;max-width:480px;margin:12px auto}.padrow button{font-size:21px;padding:14px;touch-action:manipulation}.gigscore{display:flex;justify-content:space-around;margin-bottom:12px;font-size:14px}.result{text-align:center;padding:10px}.result strong{font-size:54px;color:var(--gold)}.note{border-left:3px solid var(--pink);padding-left:12px}.introTitle{font-size:33px;letter-spacing:3px;color:var(--gold)}.introGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}.introGrid div{background:#192939;padding:12px;font-size:12px;border:1px solid var(--edge)}.introGrid b{display:block;font-size:17px;color:var(--gold);margin-bottom:4px}.mobilepad{display:none}.flash{animation:flash .3s}@keyframes flash{50%{background:#d09d6f}}@media(max-width:1050px){.app{padding:16px}.main{grid-template-columns:minmax(0,1fr) 260px}.panel{padding:13px}.worldfoot{font-size:10px}.dock button{font-size:11px}.topRight{gap:8px}.money{font-size:18px}}@media(max-width:780px){.app{padding:10px}.top{gap:8px;margin:7px 0 13px}h1{font-size:20px;letter-spacing:2px}h1 small{font-size:8px;letter-spacing:1px}.record{width:32px;height:32px;border-width:4px}.record:after{left:10px;top:10px}.topRight .tiny{font-size:0}.topRight .tiny:first-letter{font-size:14px}.main{grid-template-columns:1fr}.worldhead{font-size:11px;padding:0 10px}.worldfoot{font-size:10px;flex-wrap:wrap}aside{display:grid;grid-template-columns:1fr 1fr}.profile{margin-bottom:10px}.quest{grid-column:1/-1}.dock{flex-wrap:wrap}.dock button{min-width:27%;font-size:12px;padding:9px}.bottom{flex-wrap:wrap;margin-top:12px}.bottom .version{display:none}.modalbody{padding:18px}.locationChip{font-size:10px;top:8px;left:8px}.canvaswrap{min-height:240px}.introTitle{font-size:26px}.introGrid{gap:5px}.introGrid div{padding:9px}.mobilepad{display:flex;gap:5px}.mobilepad button{padding:4px 11px;touch-action:none;font-size:15px}}@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none;background:#64794f}
+body{font-size:16px}.gameSurface{position:fixed;inset:0;overflow:hidden}
+#world{position:absolute;inset:0;width:100%;height:100%;display:block;image-rendering:pixelated;touch-action:none;outline:none;cursor:default}
+.gameHUD{position:fixed;right:max(18px,env(safe-area-inset-right));top:max(18px,env(safe-area-inset-top));display:block;width:210px;padding:12px 14px 8px;background:#111d2aee;border:2px solid #526a75;border-radius:3px;box-shadow:inset 0 0 0 2px #273c4d,3px 4px 0 #271f3066;color:#e6d6b9;z-index:3;user-select:none}
+.hudDate{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.2px;color:#edc994}.hudTime{display:flex;align-items:center;justify-content:space-between;gap:9px;margin:5px 0 10px}.hudTime strong{font-size:19px;color:#ffe6b4;font-weight:normal}.hudTime #money{font-size:16px;color:#f2c56d}.hudBar{display:grid;grid-template-columns:17px 1fr 25px;align-items:center;gap:7px;font-size:15px;margin:5px 0}.hudBar[hidden]{display:none}.hudBar .track{height:6px;background:#160f22;box-shadow:0 1px #72535f}.hudBar small{font-size:10px;text-align:right;color:#ebd5b6}.hudBar span{color:#e3b47c}#hudEnergy{background:#e5b458}#hudHunger{background:#94b972}#hudHealth{background:#dc8299}.hudButtons{display:flex;border-top:1px solid #355062;margin-top:9px;padding-top:6px;justify-content:space-between;gap:8px}.hudButtons button{border:0;background:none;padding:2px 1px;color:#efcea4;font-size:11px;box-shadow:none;line-height:1.5}.hudButtons span{margin-left:4px;color:#c4a8b0}.hudButtons button:hover{background:none!important;color:white!important;transform:none}.saveNotice{display:block;position:absolute;right:0;top:calc(100% + 8px);text-align:right;font-size:11px;text-shadow:1px 1px #171020;color:#fff0c8;opacity:0;transition:opacity .3s;white-space:nowrap}.saveNotice.visible{opacity:1}
+.controlHint{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;z-index:4;color:#ffe9c9;background:#241d30d9;border:1px solid #a27d62;padding:12px 18px;border-radius:3px;font-size:12px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .4s}.controlHint.visible{opacity:1}.controlHint .key{background:#3e3047}
+dialog{width:min(640px,calc(100vw - 32px));max-height:calc(100dvh - 40px);border:3px solid #526976;border-radius:4px;box-shadow:inset 0 0 0 1px #203648,0 14px 60px #100a1bb3}dialog::backdrop{background:#0b091587;backdrop-filter:blur(1px)}.modalhead{padding:18px 22px}.modalhead h2{font-size:21px;line-height:1.25}.modalbody{padding:22px}.modalbody p{font-size:15px}.modalbody .sub{font-size:12px}.modalhead .eyebrow{margin-bottom:6px}
+#menuDialog{width:min(780px,calc(100vw - 32px))}#menuDialog::backdrop{background:#0b0915b5}.menuTabs{display:flex;gap:0;padding:0 14px;border-bottom:1px solid #74556a;background:#142332;overflow-x:auto}.menuTabs button{white-space:nowrap;border:0;border-radius:0;background:none;color:#baa3b4;padding:14px 12px;font-size:13px;border-bottom:3px solid transparent}.menuTabs button.active{color:#ffe0ac;background:#294050;border-bottom-color:#e0ac69}.menuTabs button:hover{transform:none;background:#2e4558}.menuFoot{padding:11px 22px;border-top:1px solid #594459;text-align:center;color:#bfa8b7;font-size:12px;background:#101a27}
+.characterHeading{display:flex;align-items:center;gap:17px;margin-bottom:21px}.characterHeading .avatar{width:65px;height:75px}.characterHeading h3{font-size:24px;margin:4px 0}.characterGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.characterGrid .meterrow{font-size:14px;grid-template-columns:75px 1fr 34px;margin:13px 0}.characterGrid .track{height:9px}.characterFacts{display:grid;grid-template-columns:1fr 1fr;gap:12px}.characterFacts div{border:1px solid #624960;background:#182a39;padding:11px}.characterFacts strong{display:block;font-size:23px;color:#f2c38d}.characterFacts small{font-size:11px;color:#bea7b7}.objectiveCard{margin-top:20px;border-left:3px solid #e6b16b;background:#182a39;padding:15px 18px}.objectiveCard p{margin-bottom:4px;font-size:14px}.locationIntro .eyebrow{margin-bottom:10px}.locationActions{display:grid;gap:9px}.locationActions button{display:flex;justify-content:space-between;align-items:center;text-align:left;width:100%;margin:0;font-size:15px}.locationActions small{font-size:12px;color:#c6afb8}.locationBack{margin-top:18px!important}.pauseHero{color:#edc798!important;font-size:17px!important;margin:0 0 20px!important}.pauseGrid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.pauseGrid h3{font-size:14px;color:#ddb68e;margin-bottom:11px}.pauseActions{display:grid;gap:8px}.pauseActions button{width:100%;text-align:left;margin:0;font-size:14px}.settingRow{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 0;border-top:1px solid #59455b;font-size:14px}.settingRow button{margin:0;min-width:70px;font-size:13px}.pauseHelp{margin-top:23px;padding:14px 15px;background:#0c1825;border:1px solid #2a4356;font-size:12px;color:#c9b1bd;line-height:1.8}.resumeButton{display:block;width:100%;margin:19px 0 0!important;padding:13px!important}.pausedLabel{color:#dcbb92}.touchControls{display:none}.toast{z-index:40;background:#36283edb;bottom:30px;max-width:min(640px,calc(100vw - 34px));text-align:center;font-size:14px;border-color:#ad835f}.introGrid div{font-size:13px}.card p{font-size:14px}
+@media(max-width:780px){.gameHUD{right:10px;top:10px;width:190px;padding:10px 12px 6px}.hudTime strong{font-size:18px}.hudTime #money{font-size:14px}.modalhead{padding:14px 17px}.modalhead h2{font-size:18px}.modalbody{padding:18px}.menuTabs{padding:0 5px}.menuTabs button{font-size:12px;padding:11px 9px}.characterGrid{grid-template-columns:1fr}.characterFacts{grid-template-columns:repeat(4,1fr);gap:7px}.characterFacts div{padding:9px}.characterFacts strong{font-size:19px}.characterFacts small{font-size:10px}.controlHint{white-space:normal;width:max-content;max-width:calc(100vw - 24px);font-size:10px;gap:7px;padding:10px;flex-wrap:wrap;justify-content:center}.pauseGrid{gap:16px}.modalbody p{font-size:14px}.introTitle{font-size:28px}.toast{bottom:20px}}
+@media(max-width:480px){.pauseGrid{grid-template-columns:1fr}.characterFacts{grid-template-columns:1fr 1fr}.gameHUD{width:174px;font-size:11px}.hudTime strong{font-size:16px}.hudDate{font-size:11px}.hudButtons{margin-top:6px}.locationActions button{font-size:13px;padding:11px}.locationActions small{font-size:10px}.menuFoot{font-size:10px}.introGrid{grid-template-columns:1fr}.introGrid div{display:flex;align-items:center;gap:10px}.introGrid b{margin:0}}
+@media(pointer:coarse){.touchControls{display:flex;align-items:center;gap:6px;position:fixed;left:18px;bottom:max(20px,env(safe-area-inset-bottom));z-index:4;opacity:.78}.touchControls div{display:grid;gap:6px}.touchControls button{width:47px;height:47px;border:2px solid #b28b65;background:#31243dd9;font-size:23px;padding:0;touch-action:none}.touchControls .touchInteract{margin-left:8px}.controlHint{bottom:135px}.toast{bottom:136px}}
+
+.menuTabs[hidden]{display:none}
+
+@media(pointer:fine){.hudButtons{display:none}.gameHUD{padding-bottom:12px}}
+
+:root{--ink:#090f18;--panel:#121e2a;--edge:#354756;--cream:#e4ddd0;--muted:#9cafbb;--gold:#e1af72;--mint:#8ac0bc;--pink:#c58c9b}
+html,body{background:#172735;color:var(--cream)}
+button{border-radius:2px;box-shadow:0 2px 0 #080e1980}button:hover:not(:disabled){background:#344d5d}.gold:hover:not(:disabled){background:#edc28d}
+.gameHUD{width:218px;border-color:#617682;background:#111e2ae8;box-shadow:inset 0 0 0 2px #233646,3px 4px 0 #070f1b66}
+.hudDistrict{font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:#81b9c2;border-bottom:1px solid #354b5b;padding-bottom:7px;margin-bottom:7px}
+.hudDate{color:#aebdc3}.hudTime strong{color:#e4d8bc}.hudTime #money{color:#e8b774}
+.districtBanner{position:fixed;top:32px;left:34px;z-index:3;pointer-events:none;opacity:0;transform:translateY(-6px);transition:opacity .5s,transform .5s;background:#132232dc;border-left:3px solid #d5a967;padding:14px 22px;box-shadow:0 4px 25px #07132355}
+.districtBanner.show{opacity:1;transform:translateY(0)}
+.districtBanner small{font-size:9px;letter-spacing:3px;color:#87b5c3}.districtBanner strong{display:block;font-size:25px;font-weight:normal;color:#ecdfc6;margin:3px 0}.districtBanner span{font-size:11px;color:#b3c1c4}
+dialog{background:#111d2b;border-color:#536b7a;box-shadow:inset 0 0 0 1px #294353,0 14px 70px #030913bb}
+dialog::backdrop{background:#040c168c;backdrop-filter:blur(1px)}
+.modalhead{background:#152737;border-bottom-color:#38515e}.modalbody p{color:#afc0c9}.card{background:#182938;border-color:#344a5a}.card .meta{color:#dab77d}.pill{border-color:#486072;color:#89bfc0;letter-spacing:.6px;font-size:9px}
+.menuTabs{background:#132433;border-color:#3c5261;padding:0 9px}.menuTabs button{padding:13px 11px;font-size:12px;color:#98afbe}.menuTabs button.active{background:#263e4e;color:#eed4ad;border-bottom-color:#d7a966}.menuTabs button:hover{background:#293f50}
+.menuFoot{background:#0d1825;color:#9ab0c0;border-color:#324b5e}
+.characterFacts div,.objectiveCard{background:#192d3c;border-color:#3a5060}.characterFacts small{color:#a5bac4}.characterFacts strong{color:#e4b97e}.characterHeading .avatar{background:#253d4d;border-color:#4a6477}
+.settingRow{border-color:#334957}.pauseGrid h3{color:#9cbfca}.pauseHelp{background:#0c1724;border-color:#324b5e;color:#a5bbc9}.pauseHero{color:#d2bb91!important}
+.toast{background:#142635ed;border-color:#5c7a89;color:#e5d7be}.controlHint{background:#0f2131e8;border-color:#4e6b7d}.key{border-color:#526575;background:#26384a;color:#c9d7dc}.saveNotice{color:#d8e9df}
+.locationActions small{color:#a6becb}.locationIntro .eyebrow{color:#86bac5}
+.cityChart{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,96px);gap:13px;position:relative;background:repeating-linear-gradient(0deg,transparent,transparent 23px,#45627715 24px),repeating-linear-gradient(90deg,transparent,transparent 23px,#45627715 24px),#0a1d2a;padding:16px;border:1px solid #355165;margin:17px 0}
+.cityChart:before{content:"";position:absolute;inset:58px 20% 52px 20%;border:2px dashed #69808844;pointer-events:none}
+.districtCard{position:relative;min-width:0;text-align:left;background:#142b39!important;border:1px solid #3b5669;border-top:3px solid var(--district-accent);padding:10px!important;margin:0!important;display:flex;flex-direction:column;justify-content:center;gap:4px;z-index:1}
+.districtCard.selected{background:#284151!important;border-color:#c6a678;box-shadow:0 0 0 1px #bca37c66}
+.districtCard.here small{color:#b9ddbf}.districtCard small{font-size:8px;color:#8da7b9;letter-spacing:1px}.districtCard b{font-size:15px;font-weight:normal;color:#e2d8c1}.districtCard span{font-size:10px;color:#96b0bf;white-space:normal;line-height:1.3}
+.seaLabel{grid-column:3;grid-row:1;align-self:center;justify-self:center;color:#6c96b3;font-size:12px;letter-spacing:4px;text-align:center;line-height:1.8;opacity:.65}
+.cityDetails{border:1px solid #3a5365;background:#182d3c;padding:18px}.cityDetails h3{font-size:23px;margin:5px 0}.cityDetails p{font-size:14px}.cityFacts{display:grid;gap:7px;font-size:12px;color:#cebd9d}
+@media(max-width:600px){.districtBanner{left:14px;top:15px;max-width:calc(100% - 215px);padding:10px}.districtBanner strong{font-size:19px}.districtBanner span{display:none}.districtBanner small{font-size:7px;letter-spacing:1px}.gameHUD{width:185px}.cityChart{gap:7px;padding:9px;grid-template-rows:repeat(3,94px)}.districtCard{padding:7px!important}.districtCard b{font-size:12px}.districtCard span{font-size:9px}.districtCard small{font-size:6px}.seaLabel{font-size:9px;letter-spacing:2px}}
+</style></head><body>
+<main class="gameSurface" aria-label="Project SuperDJ game"><canvas id="world" width="720" height="450" tabindex="0" aria-label="Mumbai. Move with WASD or arrow keys. E interacts, I opens your journal and character menus, Escape opens settings and saving."></canvas></main><div class="districtBanner" id="districtBanner"><small>PROJECT SUPERDJ · MUMBAI</small><strong id="districtTitle">Dadar</strong><span id="districtSubtitle">The city starts here</span></div>
+<aside class="gameHUD" aria-label="Essential status">
+ <div class="hudDistrict" id="hudDistrict">Dadar</div><div class="hudDate"><span id="weather" aria-label="Weather">☀</span><span id="date">Spring · Day 1</span></div>
+ <div class="hudTime"><strong id="clock">9:00 AM</strong><span id="money">₹1,500</span></div>
+ <div class="hudBar"><span aria-hidden="true">ϟ</span><div class="track" role="meter" aria-label="Energy" aria-valuemin="0" aria-valuemax="100" id="energyMeter"><div class="fill" id="hudEnergy"></div></div><small id="energyValue">100</small></div>
+ <div class="hudBar"><span aria-hidden="true">♨</span><div class="track" role="meter" aria-label="Hunger" aria-valuemin="0" aria-valuemax="100" id="hungerMeter"><div class="fill" id="hudHunger"></div></div><small id="hungerValue">85</small></div>
+ <div class="hudBar" id="healthRow" hidden><span aria-hidden="true">♥</span><div class="track" role="meter" aria-label="Health" aria-valuemin="0" aria-valuemax="100" id="healthMeter"><div class="fill" id="hudHealth"></div></div><small id="healthValue">100</small></div>
+ <div class="hudButtons"><button onclick="toggleControlMenu()" aria-label="Open character and career menu (I)" title="Character, career & gigs · I">I <span>Journal</span></button><button onclick="toggleGameMenu()" aria-label="Open settings and saving (Escape)" title="Settings & saving · Esc">Esc <span>Menu</span></button></div>
+ <span id="saved" class="saveNotice" aria-live="polite"></span>
+</aside>
+<div id="controlHint" class="controlHint" role="status"><span class="key">W A S D</span> Move <span class="key">E</span> Interact <span class="key">I</span> Journal <span class="key">M</span> City <span class="key">Esc</span> Menu</div>
+<div class="touchControls" aria-label="Touch movement"><button aria-label="Walk left" data-dir="a">←</button><div><button aria-label="Walk up" data-dir="w">↑</button><button aria-label="Walk down" data-dir="s">↓</button></div><button aria-label="Walk right" data-dir="d">→</button><button class="touchInteract" onclick="interact()" aria-label="Interact">E</button></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog id="modal" aria-labelledby="modalTitle"><div class="modalhead"><h2 id="modalTitle"></h2><button class="quiet tiny" onclick="closeModal()" aria-label="Close dialog">✕</button></div><div class="modalbody" id="modalBody"></div></dialog>
+<dialog id="menuDialog" aria-labelledby="menuTitle"><div class="modalhead"><div><div class="eyebrow" id="menuEyebrow">YOUR LIFE IN MUSIC</div><h2 id="menuTitle">Your character</h2></div><button class="quiet" onclick="closeMenu()" aria-label="Resume game">✕</button></div><nav id="menuTabs" class="menuTabs" aria-label="Journal sections"></nav><div class="modalbody" id="menuBody"></div><div class="menuFoot" id="menuFoot">I to close · Esc for settings & saving</div></dialog>
+<input type="file" id="savefile" accept=".json" hidden>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const initial=()=>({version:2,district:'dadar',name:'NOVA',day:1,hour:9,money:1500,debt:0,energy:100,hunger:85,mood:80,health:100,skill:0,production:0,inspiration:30,fans:0,rep:0,gear:0,home:0,records:0,tracks:[],gigs:0,best:0,partner:null,friends:{mira:0,rowan:0,sol:0,kit:0},daily:{},journal:[{day:1,text:'Moved into a Dadar chawl room with ₹1,500 and a borrowed controller. Mumbai is waiting.'}],x:640,y:445,started:false,achievements:[],settings:{sound:false,motion:true}});
+let S=initial(),currentSpot='home',pendingSpot=null,path=[],keys={},last=0,frame=0,muted=true,audioCtx=null,gig=null,toastTimer,lastSaved=0,storageOK=true;
+const people={
+ mira:{name:'Mira',role:'Producer & night owl',color:'#bb84c8',line:'A rough idea with feeling beats a perfect loop with nothing to say.',perk:'At 40 friendship: collaboration sessions unlock.'},
+ rowan:{name:'Rohan',role:'Chai seller & your first supporter',color:'#dcac69',line:'A good set is like cutting chai. A little warmth, a little kick, and people come back.',perk:'At 40 friendship: meals cost ₹40.'},
+ sol:{name:'Soham',role:'Booker across Mumbai',color:'#83b4be',line:'A room of ten people still deserves your best set.',perk:'At 40 friendship: gigs pay 20% more.'},
+ kit:{name:'Kiran',role:'Photographer & crate digger',color:'#dd8d9c',line:'The best moments happen between the big moments.',perk:'At 40 friendship: gig fan gains increase 20%.'}
+};
+
+const WORLD_W=1280,WORLD_H=896;
+const districts={
+ dadar:{name:'Dadar',subtitle:'Chawl rooftops & first chances',grid:[1,1],tone:'#494b57',accent:'#d6a257',landmark:'Siddhivinayak',landmarkKind:'temple',description:'Flower sellers, local trains, cricket in the lane, and your first room above the street.',links:{n:'andheri',e:'parel',s:'fort',w:'bandra'},store:'gully',job:'chai',job2:'delivery',venue:0},
+ bandra:{name:'Bandra',subtitle:'Street art & sea air',grid:[0,1],tone:'#485e68',accent:'#df839f',landmark:'Bandra–Worli Sea Link',landmarkKind:'bridge',description:'Painted walls, old bungalows, listening bars, and the Sea Link beyond the promenade.',links:{n:'juhu',e:'dadar',s:'worli'},store:'bandra',job:'records',job2:'photo',venue:1},
+ andheri:{name:'Andheri West',subtitle:'Film studios & late-night sessions',grid:[1,0],tone:'#4b5163',accent:'#8d9cd9',landmark:'Metro & film-studio row',landmarkKind:'metro',description:'Elevated Metro tracks, recording rooms, film posters, and the city’s electronic underground.',links:{w:'juhu',s:'dadar'},store:'studio',job:'assistant',job2:'film',venue:4},
+ juhu:{name:'Juhu',subtitle:'Beach stalls to festival stages',grid:[0,0],tone:'#5d5260',accent:'#deaa7d',landmark:'Juhu Beach',landmarkKind:'beach',description:'Bhel puri, coconut carts, a wide beach, and a festival stage you can someday headline.',links:{e:'andheri',s:'bandra'},store:'beach',job:'beach',job2:'director',venue:8},
+ parel:{name:'Lower Parel',subtitle:'Mill walls & warehouse bass',grid:[2,1],tone:'#5c4b4c',accent:'#cf875f',landmark:'Mills & Dhobi Ghat',landmarkKind:'mills',description:'Brick chimneys, washing lines, glass towers, and old mill rooms reborn as music spaces.',links:{w:'dadar',s:'colaba'},store:'mill',job:'crew',job2:'tech',venue:3},
+ worli:{name:'Worli',subtitle:'Seaface lights & rooftop rooms',grid:[0,2],tone:'#3e5863',accent:'#9cb7bc',landmark:'Haji Ali & the seaface',landmarkKind:'hajiali',description:'Sea spray, fishing boats, distant towers, and a rooftop looking over the Arabian Sea.',links:{n:'bandra',e:'fort'},store:'coast',job:'events',job2:'tech',venue:5},
+ fort:{name:'Fort · Marine Drive',subtitle:'Heritage arches & the Queen’s Necklace',grid:[1,2],tone:'#65605a',accent:'#d8b889',landmark:'CSMT',landmarkKind:'csmt',description:'Gothic station arches, Art Deco facades, cricket on the maidan, and Marine Drive lights.',links:{n:'dadar',w:'worli',e:'colaba'},store:'kala',job:'records',job2:'radio',venue:7},
+ colaba:{name:'Colaba',subtitle:'Harbour arrivals & headline nights',grid:[2,2],tone:'#63535b',accent:'#d49b85',landmark:'Gateway of India & Taj',landmarkKind:'gateway',description:'The Gateway, red hotel domes, ferries, market lanes, and a polished harbour-side dance floor.',links:{w:'fort',n:'parel'},store:'harbour',job:'hotel',job2:'director',venue:6}
+};
+const jobs={
+ chai:{name:'Chai-stall shift',tier:1,pay:250,hours:3,energy:15,skill:0,prod:0,fans:0,desc:'Pour cutting chai and help the morning crowd.'},
+ delivery:{name:'Lunch delivery round',tier:1,pay:400,hours:3,energy:23,skill:0,prod:0,fans:0,desc:'Learn the neighbourhood while delivering lunch.'},
+ beach:{name:'Beach food-cart shift',tier:1,pay:300,hours:3,energy:17,skill:0,prod:0,fans:0,desc:'Serve the evening beach crowd.'},
+ records:{name:'Record-shop assistant',tier:2,pay:650,hours:3,energy:17,skill:12,prod:0,fans:0,desc:'Sort crates, recommend records, and develop your ears.'},
+ photo:{name:'Gig photo assistant',tier:2,pay:700,hours:3,energy:18,skill:10,prod:0,fans:40,desc:'Help document the local music scene.'},
+ crew:{name:'Live-event stage crew',tier:2,pay:850,hours:3,energy:25,skill:18,prod:0,fans:0,desc:'Load speakers and learn how a live show comes together.'},
+ assistant:{name:'Recording-room assistant',tier:3,pay:1400,hours:3,energy:20,skill:0,prod:25,fans:0,desc:'Prepare sessions, edit takes, and learn from engineers.'},
+ events:{name:'Event sound operator',tier:3,pay:1600,hours:3,energy:23,skill:35,prod:15,fans:100,desc:'Run sound for a waterfront event.'},
+ film:{name:'Film-loop editor',tier:4,pay:2600,hours:4,energy:24,skill:0,prod:45,fans:200,desc:'Turn a brief into tight musical cues.'},
+ tech:{name:'Club audio technician',tier:4,pay:2800,hours:4,energy:26,skill:50,prod:20,fans:300,desc:'Tune the system before the headliner arrives.'},
+ radio:{name:'Radio mix producer',tier:4,pay:2400,hours:3,energy:23,skill:40,prod:40,fans:500,desc:'Create a broadcast-ready mix for the city.'},
+ hotel:{name:'Lounge sound assistant',tier:3,pay:1500,hours:3,energy:20,skill:30,prod:0,fans:120,desc:'Keep the harbour lounge sounding smooth.'},
+ director:{name:'Music director session',tier:5,pay:5000,hours:4,energy:28,skill:55,prod:65,fans:1500,desc:'Lead the sound of a professional production.'}
+};
+const recordStores={
+ gully:{name:'Gully Crates',tier:1,price:100,skill:0,fans:0,inspiration:18,production:1,gear:1,desc:'Dadar bargain bins: film soundtracks, disco, and unexpected gems.'},
+ beach:{name:'Beachside Cassettes',tier:1,price:120,skill:0,fans:0,inspiration:20,production:1,gear:1,desc:'Old cassettes and coastal finds under a blue tarpaulin.'},
+ kala:{name:'Kala Ghoda Wax',tier:2,price:350,skill:15,fans:60,inspiration:26,production:3,gear:2,desc:'Jazz, soul, film scores, and carefully kept classics.'},
+ bandra:{name:'33 RPM Bandra',tier:3,price:650,skill:30,fans:250,inspiration:32,production:5,gear:2,desc:'House, broken beat, and records from independent labels.'},
+ studio:{name:'Andheri Sound Supply',tier:3,price:700,skill:30,fans:250,inspiration:30,production:6,gear:3,desc:'Production tools, sample records, and serious studio equipment.'},
+ mill:{name:'Mill Groove Exchange',tier:4,price:1000,skill:45,fans:700,inspiration:38,production:7,gear:3,desc:'Underground techno, dub, and records built for a big system.'},
+ coast:{name:'Seaface Selects',tier:3,price:650,skill:30,fans:250,inspiration:34,production:4,gear:2,desc:'Balearic grooves and deep cuts for the sunset hour.'},
+ harbour:{name:'Harbour Imports',tier:5,price:1600,skill:60,fans:1800,inspiration:45,production:10,gear:3,desc:'Rare imports and special pressings for established selectors.'}
+};
+const tiers=[{name:'Bedroom selector',fans:0},{name:'Neighbourhood DJ',fans:60},{name:'Club resident',fans:300},{name:'City headliner',fans:1200},{name:'Festival icon',fans:5000}];
+const venues=[
+ {name:'Gully Signal',place:'Dadar · community terrace',district:'dadar',type:'Open decks',tier:1,skill:5,fans:0,pay:600,gain:25,notes:24,desc:'Your neighbours, a borrowed PA, and your first proper set.'},
+ {name:'Vinyl Veranda',place:'Bandra · listening bar',district:'bandra',type:'Listening bar',tier:2,skill:15,fans:60,pay:1500,gain:65,notes:28,desc:'A close room for selectors with something to say.'},
+ {name:'Shaadi Circuit',place:'Dadar · banquet floor',district:'dadar',type:'Wedding & sangeet',tier:2,skill:22,fans:120,pay:2600,gain:95,notes:28,desc:'Read three generations of a dance floor.'},
+ {name:'Mill 46',place:'Lower Parel · mill compound',district:'parel',type:'Warehouse club',tier:3,skill:32,fans:300,pay:4500,gain:165,notes:32,desc:'Brick walls, heavy bass, and a growing underground crowd.'},
+ {name:'Neon Local',place:'Andheri · basement',district:'andheri',type:'Techno club',tier:3,skill:42,fans:600,pay:7000,gain:245,notes:34,desc:'A late-night room that cares about your transitions.'},
+ {name:'Arabian Rooftop',place:'Worli · seaface',district:'worli',type:'Rooftop club',tier:4,skill:52,fans:1100,pay:11000,gain:380,notes:36,tracks:1,desc:'A sunset crowd and the sea all around.'},
+ {name:'The Harbour Room',place:'Colaba · hotel lounge',district:'colaba',type:'Premium hotel club',tier:4,skill:62,fans:1800,pay:18000,gain:560,notes:38,tracks:2,desc:'A polished room with an international audience.'},
+ {name:'Deco After Dark',place:'Marine Drive · Art Deco hall',district:'fort',type:'Concert club',tier:5,skill:68,fans:2400,pay:23000,gain:720,notes:40,tracks:2,desc:'Your name outside a landmark room on the boulevard.'},
+ {name:'Monsoon Frequency',place:'Juhu · beach festival',district:'juhu',type:'Festival main stage',tier:5,skill:75,fans:3400,pay:35000,gain:1200,notes:44,tracks:3,desc:'An original sound, a sea of people, and a city behind you.'}
+];
+function createSpots(id){
+ const d=districts[id],rs=recordStores[d.store];
+ const place=(name,kind,x,y,w,h,extra={})=>({name,kind,x,y,w,h,door:[x+w/2,y+h+22],...extra});
+ const out={
+  home:place(id==='dadar'?'Your chawl room':jobs[d.job].name,id==='dadar'?'home':'work',112,173,190,182,{job:d.job}),
+  records:place(rs.name,'records',385,217,154,139,{store:d.store}),
+  landmark:place(d.landmark,'landmark',774,136,355,225,{description:d.description}),
+  club:place(venues[d.venue].name,'club',126,570,204,168,{venue:d.venue}),
+  cafe:place(id==='fort'?'Irani café':id==='colaba'?'Causeway café':'Cutting Chai & Vada Pav','food',424,625,137,127,{job:d.job}),
+  studio:place(id==='andheri'?'Signal Recording Rooms':id==='parel'?'Mill Sound Workshop':id==='colaba'?'Harbour Event Office':id==='worli'?'Seaface Event Office':id==='juhu'?'Beach Production House':id==='fort'?'Radio Bombay':id==='bandra'?'Veranda Creative Studio':'Gully Sound Room','studio',857,578,223,167,{job:d.job2}),
+  station:place(id==='fort'?'CSMT local services':d.name+' local station','station',590,162,98,100)
+ };
+ for(const [dir,to] of Object.entries(d.links)){
+  const xy={n:[625,9,30,35],e:[1230,416,38,45],s:[625,847,30,35],w:[12,416,35,45]}[dir];
+  out['exit_'+dir]=place('To '+districts[to].name,'exit',...xy,{to,dir});
+  out['exit_'+dir].door={n:[640,32],e:[1244,444],s:[640,865],w:[32,444]}[dir];
+ }
+ return out;
+}
+let spots=createSpots('dadar');
+let districtAnnounceTimer=0,travelCooldown=0,activeRecordStore=null;
+function district(){return districts[S.district]||districts.dadar}
+function unlockedJob(j){return S.skill>=j.skill&&S.production>=j.prod&&S.fans>=j.fans}
+function unlockedStore(r){return S.skill>=r.skill&&S.fans>=r.fans}
+function unlockedVenue(v){return S.skill>=v.skill&&S.fans>=v.fans&&S.tracks.length>=(v.tracks||0)}
+function requirements(skill,prod,fans){return (skill?'Mixing '+skill+' · ':'')+(prod?'Production '+prod+' · ':'')+(fans?fans.toLocaleString()+' fans':'Open to everyone')}
+
+function tier(){let n=0;tiers.forEach((t,i)=>{if(S.fans>=t.fans)n=i});return n}
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),4000)}
+function log(msg){S.journal.unshift({day:S.day,text:msg});S.journal=S.journal.slice(0,100)}
+
+function save(){
+ try{localStorage.setItem('project-superdj-v2',JSON.stringify(S));storageOK=true;lastSaved=Date.now();$('saved').textContent='Saved';}
+ catch(e){storageOK=false;$('saved').textContent='Export a save to keep your progress';}
+ $('saved').classList.add('visible');clearTimeout(saveHintTimer);saveHintTimer=setTimeout(()=>$('saved').classList.remove('visible'),3500);
+}
+
+function earn(amount){let debtPay=Math.min(S.debt,Math.floor(amount*.4));S.debt-=debtPay;S.money+=amount-debtPay;if(debtPay)toast('₹'+debtPay+' went toward overdue rent.')}
+function canSpend(hours,energy,cost=0){
+ if(gig){toast('Finish your current set before starting another activity.');return false}
+ if(S.hour+hours>24){toast('It is too late for that. Head home and sleep.');return false}
+ if(S.energy<energy){toast('You need more energy. Rest by the landmark or sleep at home.');return false}
+ if(S.money<cost){toast('Not enough cash yet. Find local paid work in I → Jobs.');return false}
+ return true;
+}
+function spend(hours,energy,cost=0){
+ if(!canSpend(hours,energy,cost))return false;
+ S.hour+=hours;S.energy=clamp(S.energy-energy);S.money-=cost;S.hunger=clamp(S.hunger-hours*4);
+ if(S.hunger<15){S.health=clamp(S.health-6);S.mood=clamp(S.mood-4)}
+ if(S.energy<15)S.mood=clamp(S.mood-3);
+ return true;
+}
+function finish(msg){log(msg);toast(msg);checkAchievements();render();save()}
+function meter(label,value,color){return '<div class="meterrow"><span>'+label+'</span><div class="track"><div class="fill" style="width:'+clamp(value)+'%;background:'+color+'"></div></div><span>'+Math.round(value)+'</span></div>'}
+function clock(){let h=Math.floor(S.hour)%24,m=Math.round(S.hour%1*60);return (h%12||12)+':'+String(m).padStart(2,'0')+' '+(h>=12?'PM':'AM')}
+function season(){return ['Spring','Summer','Autumn','Winter'][Math.floor((S.day-1)/28)%4]}
+
+function render(){
+ $('money').textContent=rupees(S.money);$('hudDistrict').textContent=district().name;
+ $('date').textContent=season()+' · Day '+S.day;$('clock').textContent=clock();
+ $('weather').textContent=S.day%3===0?'☂':S.hour>=19?'☾':'☀';
+ $('weather').setAttribute('title',S.day%3===0?'Rain':S.hour>=19?'Clear night':'Sunny');
+ for(const [key,label] of [['energy','Energy'],['hunger','Hunger'],['health','Health']]){
+  $('hud'+label).style.width=clamp(S[key])+'%';$(key+'Value').textContent=Math.round(S[key]);
+  $(key+'Meter').setAttribute('aria-valuenow',Math.round(S[key]));
+ }
+ $('healthRow').hidden=S.health>=70;
+}
+
+function actionButton(label,detail,fn){return '<button onclick="'+fn+'"><span>'+label+'</span><small>'+detail+'</small></button>'}
+
+function act(type){
+ let msg='';
+ if(type==='practice'){if(!spend(2,16))return;let gain=(5+S.gear*2)*(S.health<30?.6:1);S.skill=clamp(S.skill+gain);S.inspiration=clamp(S.inspiration+5);msg='Two hours on the decks. Mixing +'+gain+'. Your transitions feel a little smoother.'}
+ if(type==='cook'){if(!spend(1,3,50))return;S.hunger=clamp(S.hunger+55);S.health=clamp(S.health+8);S.mood=clamp(S.mood+5);msg='A homemade dinner. Hunger +55, health +8. Small comforts count.'}
+ if(type==='work'){workJob(district().job);return}
+ if(type==='eat'){if(!spend(.5,0,S.friends.rowan>=40?40:60))return;S.hunger=clamp(S.hunger+50);S.health=clamp(S.health+10);msg='A warm bowl at the local café. Hunger +50, health +10.'}
+ if(type==='walk'){if(S.daily.walk>=3){toast('You have had a good rest today. A full night of sleep will help more.');return}if(!spend(1,0))return;S.daily.walk=(S.daily.walk||0)+1;S.energy=clamp(S.energy+10);S.mood=clamp(S.mood+18);S.health=clamp(S.health+3);msg='A slow walk through the city. Energy +10, mood +18.'}
+ if(type==='sample'){if(!spend(1,6))return;S.inspiration=clamp(S.inspiration+20);msg='You sampled the local trains, street chatter, rain, and the sea. Inspiration +20.'}
+ if(type==='picnic'){if(S.daily.picnic){toast('The community picnic happens once a day. Come back tomorrow.');return}if(!spend(1,0))return;S.daily.picnic=1;S.hunger=clamp(S.hunger+35);S.mood=clamp(S.mood+8);msg='You shared a free community lunch by a landmark. Hunger +35.'}
+ if(type==='dig'){buyRecord();return}
+ if(type==='study'){if(!spend(2,18))return;S.production=clamp(S.production+12+S.gear*2);S.inspiration=clamp(S.inspiration+8);msg='You studied arrangement and sound design. Production skill improved.'}
+ if(type==='listen'){if(!spend(1,6,100))return;S.skill=clamp(S.skill+3);S.inspiration=clamp(S.inspiration+15);S.mood=clamp(S.mood+10);msg='A beautiful set reminded you why you started. Mixing +3, inspiration +15.'}
+ finish(msg);
+}
+function sleepDay(){
+ if(gig)return;
+ if(S.district!=='dadar'){toast('Head back to your Dadar home to sleep.');return}
+ const oldDay=S.day,early=S.hour<18;S.day++;S.hour=8;S.energy=clamp(80+S.home*7+(S.hunger>30?10:0));S.hunger=clamp(S.hunger-12);S.mood=clamp(S.mood+8+(S.partner?6:0));S.health=clamp(S.health+(S.hunger>20?10:-6));S.daily={};S.district='dadar';spots=createSpots('dadar');backgroundSeason='';S.x=207;S.y=383;path=[];pendingSpot=null;currentSpot='home';
+ let txt='Day '+S.day+'. A fresh start.';
+ if(S.tracks.length){let royalties=S.tracks.reduce((n,t)=>n+Math.max(1,Math.round(t.quality*(2+S.fans/180)/5)),0);earn(royalties);txt+=' Your music earned ₹'+royalties+' in royalties.'}
+ if(oldDay%7===0){let rent=rentCost(),paid=Math.min(S.money,rent);S.money-=paid;S.debt+=rent-paid;txt+=' Weekly rent: ₹'+rent+'.'+(S.debt?' Overdue rent: ₹'+S.debt+'. Future earnings help pay it down.':' Paid in full.');Object.keys(S.friends).forEach(k=>S.friends[k]=clamp(S.friends[k]-2))}
+ if(S.day%4===0){S.inspiration=clamp(S.inspiration+12);txt+=' A strange melody arrived in a dream. Inspiration +12.'}
+ if(S.day%6===0&&S.gigs>0){S.fans+=5;txt+=' A clip of your last set found 5 new fans.'}
+ finish(txt);closeModal();openModal('Morning in Mumbai','<p class="legend">'+season()+' · Day '+S.day+'</p><p>'+esc(txt)+'</p>'+(early?'<p>You turned in early. Sometimes that is exactly what you need.</p>':'')+'<button class="gold" onclick="closeModal()">Let the day begin</button>');
+}
+function checkAchievements(){
+ const list=[['first_gig',S.gigs>=1,'First time behind the decks'],['first_track',S.tracks.length>=1,'A sound of your own'],['friend',Object.values(S.friends).some(n=>n>=40),'Better together'],['fans100',S.fans>=100,'One hundred listeners'],['love',!!S.partner,'Someone to come home to'],['hero',S.fans>=5000,'From bedroom to headliner']];
+ list.forEach(([id,ok,title])=>{if(ok&&!S.achievements.includes(id)){S.achievements.push(id);log('Milestone: '+title);toast('★ '+title)}});
+}
+
+let menuMode=null,menuSection='character',saveHintTimer=0,hintTimer=0;
+const controlSections=[['city','City'],['jobs','Jobs'],['character','Character'],['career','Career'],['gigs','Gigs'],['studio','Studio'],['people','People'],['bag','Backpack'],['journal','Journal']];
+function pauseSetForMenu(){
+ if(gig&&!gig.paused){gig.paused=true;gig.pauseStart=performance.now();gig.pauseReason='menu'}
+}
+function resumeSetFromMenu(){
+ if(gig&&gig.paused&&!document.hidden){gig.start+=performance.now()-gig.pauseStart;gig.paused=false;gig.pauseReason=null}
+}
+function drawMenuTabs(){
+ $('menuTabs').hidden=menuMode!=='inventory';
+ $('menuTabs').innerHTML=menuMode==='inventory'?controlSections.map(([key,label])=>'<button class="'+(menuSection===key?'active':'')+'" aria-current="'+(menuSection===key?'page':'false')+'" onclick="showControlSection(\''+key+'\')">'+label+'</button>').join(''):'';
+}
+function prepareMenu(mode){
+ keys={};pauseSetForMenu();menuMode=mode;$('controlHint').classList.remove('visible');
+ $('menuEyebrow').textContent=mode==='inventory'?'YOUR LIFE IN MUSIC':'PROJECT SUPERDJ · PAUSED';
+ $('menuFoot').textContent=mode==='inventory'?'I to close · Esc for settings & saving':'Esc to resume · I for your journal';
+ drawMenuTabs();if(!$('menuDialog').open)$('menuDialog').showModal();
+}
+function showControlSection(section){
+ menuSection=controlSections.some(([key])=>key===section)?section:'character';
+ if(menuMode!=='inventory')prepareMenu('inventory');else drawMenuTabs();
+ const pages={city:showCity,jobs:showJobs,character:showCharacter,career:showCareer,gigs:showGigs,studio:showStudio,people:showPeople,bag:showBag,journal:showJournal};
+ pages[menuSection]();
+}
+function toggleControlMenu(){if(menuMode==='inventory'){closeMenu();return}prepareMenu('inventory');showControlSection(menuSection)}
+function toggleGameMenu(){if(menuMode==='pause'){closeMenu();return}showGameMenu()}
+function closeMenu(resume=true){
+ $('menuDialog').close();menuMode=null;keys={};if(resume)resumeSetFromMenu();
+ if(!$('modal').open)canvas.focus();
+}
+function openModal(title,html){
+ if(menuMode){$('menuTitle').textContent=title;$('menuBody').innerHTML=html;if(!$('menuDialog').open)$('menuDialog').showModal();return}
+ keys={};$('modalTitle').textContent=title;$('modalBody').innerHTML=html;if(!$('modal').open)$('modal').showModal();
+}
+function closeModal(){
+ if(menuMode){closeMenu();return}
+ if(gig){toast('Finish your set, or use Leave stage. Esc opens the pause menu.');return}
+ $('modal').close();keys={};canvas.focus();
+}
+function showCharacter(){
+ let q=objective();
+ openModal('Your character','<div class="characterHeading"><canvas class="avatar" id="avatar" width="26" height="30"></canvas><div><div class="eyebrow">'+tiers[tier()].name+'</div><h3>DJ '+esc(S.name)+'</h3><span class="sub">Chapter '+(tier()+1)+' · '+['First local','The neighbourhood','Your Mumbai sound','Sea of lights','The main stage'][tier()]+'</span></div></div><div class="characterGrid"><div>'+meter('Energy',S.energy,'#dfb56a')+meter('Hunger',S.hunger,'#91b880')+meter('Mood',S.mood,'#d98eb0')+meter('Health',S.health,'#7fb7b9')+'</div><div class="characterFacts"><div><strong>'+S.fans.toLocaleString()+'</strong><small>FANS</small></div><div><strong>'+Math.floor(S.skill)+'</strong><small>MIXING / 100</small></div><div><strong>'+Math.floor(S.production)+'</strong><small>PRODUCTION / 100</small></div><div><strong>'+Math.floor(S.inspiration)+'</strong><small>INSPIRATION</small></div></div></div><div class="objectiveCard"><div class="eyebrow">ON YOUR HORIZON</div><h3 style="margin-top:8px">'+q[0]+'</h3><p>'+q[1]+'</p><span class="sub">'+q[2]+'</span></div>');
+ drawAvatar();
+}
+function showGameMenu(){
+ prepareMenu('pause');
+ openModal('Take a breather','<p class="pauseHero">'+season()+' · Day '+S.day+' · '+clock()+'</p><div class="pauseGrid"><section><h3>YOUR STORY</h3><div class="pauseActions"><button class="gold" onclick="saveFromMenu()">Save game</button><button onclick="exportSave()">Export save file</button><button onclick="importSave()">Import save file</button><button onclick="downloadGame()">Download offline game ↓</button><button class="quiet" onclick="newGame()">New story…</button></div><p class="sub">'+(storageOK?'Progress saves automatically as you play.':'This preview cannot store saves in the browser. Save game downloads a save file.')+'</p></section><section><h3>SETTINGS</h3><div class="settingRow"><span>Sound</span><button onclick="toggleSound();showGameMenu()" aria-pressed="'+!muted+'">'+(muted?'Off':'On')+'</button></div><div class="settingRow"><span>Ambient motion</span><button onclick="toggleMotion()" aria-pressed="'+S.settings.motion+'">'+(S.settings.motion?'On':'Off')+'</button></div><div class="settingRow"><span>Display</span><button onclick="toggleFullscreen()">'+(document.fullscreenElement?'Window':'Fullscreen')+'</button></div><div class="pauseHelp"><span class="key">W A S D</span> or arrows — move<br><span class="key">E</span> interact · click a building to visit<br><span class="key">I</span> character, career & gigs<br><span class="key">M</span> Mumbai map & local trains<br><span class="key">Esc</span> settings & saving</div></section></div><button class="gold resumeButton" onclick="closeMenu()">Resume '+(gig?'set':'game')+'</button>');
+}
+function saveFromMenu(){save();if(!storageOK)exportSave();else toast('Game saved. Your story is safe.')}
+function toggleMotion(){S.settings.motion=!S.settings.motion;save();showGameMenu()}
+function tryFullscreen(){
+ if(!document.fullscreenElement&&document.documentElement.requestFullscreen&&document.fullscreenEnabled!==false){
+  const p=document.documentElement.requestFullscreen();if(p&&p.catch)p.catch(()=>{});
+ }
+}
+async function toggleFullscreen(){
+ try{
+  if(document.fullscreenElement&&document.exitFullscreen)await document.exitFullscreen();
+  else if(document.documentElement.requestFullscreen&&document.fullscreenEnabled!==false)await document.documentElement.requestFullscreen();
+  else toast('The game fills this browser panel. Expand the panel for more room.');
+ }catch(e){toast('The game fills this browser panel. Expand the panel for more room.')}
+ if(menuMode==='pause')showGameMenu();
+}
+function showControlHint(){clearTimeout(hintTimer);$('controlHint').classList.add('visible');hintTimer=setTimeout(()=>$('controlHint').classList.remove('visible'),7000)}
+
+function showStudio(){
+ openModal('Signal · your music','<p>Production '+Math.floor(S.production)+'/100 · Inspiration '+Math.floor(S.inspiration)+'/100</p><p>Record an original for ₹350, 3 hours, 24 energy, and 20 inspiration. Production skill, equipment, and mood affect quality. Released music earns royalties each morning.</p><label for="trackName">Track title</label><input id="trackName" maxlength="36" placeholder="e.g. Last local to Dadar"><button class="gold" onclick="releaseTrack()">Record & release · ₹350</button><button onclick="act(\'study\');showStudio()">Study production · 2h</button>'+(S.friends.mira>=40?'<button onclick="collaborate()">Collaborate with Mira · 2h</button>':'<p class="sub">Become friends with Mira to unlock collaboration.</p>')+'<h3 style="margin-top:24px">Your discography</h3><div class="cards">'+(S.tracks.length?S.tracks.slice().reverse().map(t=>'<div class="card"><h3>♫ '+esc(t.name)+'</h3><span class="meta">Day '+t.day+' · '+t.quality+'/100 quality · '+t.fans+' release-day fans</span></div>').join(''):'<p>Your first record is waiting to happen.</p>')+'</div>');
+}
+function releaseTrack(){
+ if(S.inspiration<20){toast('You need 20 inspiration. Sample sounds around the city landmarks or dig for records.');return}
+ if(S.daily.track){toast('One release a day. Give your listeners time to hear it.');return}
+ let name=$('trackName').value.trim()||['Windowlight','Monsoon local','Last train','Midnight postcards','Maximum City frequencies'][S.tracks.length%5]+' '+(S.tracks.length+1);
+ if(!spend(3,24,350))return;
+ let quality=Math.round(clamp(20+S.production*.45+S.gear*7+S.mood*.12+Math.min(12,S.records*2),1,100));
+ let fans=Math.round(quality*.5+S.fans*.025);S.inspiration-=20;S.production=clamp(S.production+8);S.tracks.push({name,quality,fans,day:S.day});S.fans+=fans;S.daily.track=1;
+ finish('Released “'+name+'”. Quality '+quality+'/100, '+fans+' new listeners.');showStudio();
+}
+function collaborate(){
+ if(S.friends.mira<40||S.daily.collab){toast('Mira can collaborate once a day once your friendship reaches 40.');return}
+ if(!spend(2,14))return;S.daily.collab=1;S.production=clamp(S.production+16);S.inspiration=clamp(S.inspiration+25);S.friends.mira=clamp(S.friends.mira+5);finish('A studio session with Mira. Production +16, inspiration +25.');showStudio();
+}
+function showPeople(){
+ openModal('The people in your corner','<p>A career is only part of a life. Friendships open doors, but they are also worth having on their own.</p><div class="cards">'+Object.entries(people).map(([id,p])=>'<div class="card"><div class="row"><h3>'+p.name+(S.partner===id?' ♡':'')+'</h3><span class="pill">'+(S.friends[id]>=70?'CLOSE':S.friends[id]>=40?'FRIEND':'GETTING TO KNOW YOU')+'</span></div><p>'+p.role+'</p>'+meter('Bond',S.friends[id],p.color)+'<button onclick="showPerson(\''+id+'\')">Spend time together</button></div>').join('')+'</div>');
+}
+function showPerson(id){
+ let p=people[id];openModal(p.name,'<p class="legend">'+p.role+'</p><p class="note">“'+p.line+'”</p>'+meter('Bond',S.friends[id],p.color)+'<p>'+p.perk+'</p><button onclick="social(\''+id+'\',\'chat\')">Catch up · ½h</button><button onclick="social(\''+id+'\',\'hang\')">Hang out · 2h</button><button onclick="social(\''+id+'\',\'gift\')">Thoughtful gift · ₹200</button>'+(S.friends[id]>=60&&!S.partner?'<button class="gold" onclick="social(\''+id+'\',\'date\')">Ask on a date · ₹150 · 2h</button>':'')+(S.partner===id?'<p class="legend">♡ You are building a life together. Waking up brings a little extra joy.</p>':'')+'<p class="sub">Each activity is available once per person per day. Friendships fade a little each week if life gets busy.</p>');
+}
+function social(id,kind){
+ if(!people[id]||!['chat','hang','gift','date'].includes(kind))return;
+ let key=id+kind;if(S.daily[key]){toast('You already did that together today. Come back tomorrow.');return}
+ const costs={chat:[.5,3,0,8],hang:[2,10,0,16],gift:[.5,2,200,12],date:[2,10,150,20]},c=costs[kind];
+ if(kind==='date'&&(S.friends[id]<60||S.partner))return;
+ if(!spend(c[0],c[1],c[2]))return;
+ S.daily[key]=1;S.friends[id]=clamp(S.friends[id]+c[3]);S.mood=clamp(S.mood+(kind==='chat'?8:20));S.inspiration=clamp(S.inspiration+5);
+ if(kind==='date')S.partner=id;
+ finish(kind==='date'?'You and '+people[id].name+' watched the lights come on across the bay. A new chapter begins.':'Spent time with '+people[id].name+'. Friendship +'+c[3]+'.');showPerson(id);
+}
+function showBag(){
+ openModal('Your backpack','<div class="cards"><div class="card"><h3>♫ Your setup</h3><p>'+gearNames[S.gear]+'</p><button onclick="showShop()">Browse local equipment</button></div><div class="card"><h3>▣ '+S.records+' records collected</h3><p>Every record adds inspiration and helps you discover your own sound.</p></div><div class="card"><h3>✦ '+Math.floor(S.inspiration)+' inspiration</h3><p>Gather it from living, listening, and time with people. Spend it making music.</p></div><div class="card"><h3>Your finances</h3><p>₹'+Math.floor(S.money)+' cash · ₹'+S.debt+' overdue rent · ₹'+rentCost()+' weekly rent</p><button onclick="showHome()">Your home</button></div></div>');
+}
+function showJournal(){openModal('Notes from a life in music','<div class="cards">'+S.journal.map(e=>'<div class="card"><span class="meta">DAY '+e.day+'</span><p>'+esc(e.text)+'</p></div>').join('')+'</div>')}
+function help(){openModal('Welcome to Mumbai','<p><b>Move:</b> WASD / arrow keys, or click a building. Press E near a place to interact. Location actions appear when you arrive. Press I for your character, career, gigs and journal. Press M for the city map and trains. Press Esc for settings and saving.</p><p><b>Start small:</b> practice at home once, then press I and choose Gigs → Gully Signal. Use D F J K or tap the four pads as notes reach the gold line.</p><p><b>Build a life:</b> neighbourhood jobs pay the bills. Eat, rest, make friends, upgrade equipment, and release original tracks. Time passes when you choose activities; exploring is free. Menus pause any active set.</p><p><b>Grow:</b> gigs and releases earn fans. Better skills unlock larger venues. Reach 5,000 fans to become a festival icon.</p><p><b>Save:</b> progress is saved in this browser when available. Export a save as a backup. Download game gives you a standalone HTML file that works offline.</p><button class="gold" onclick="closeModal()">Back to the city</button>')}
+function intro(){
+ openModal('PROJECT SUPERDJ','<div class="introTitle">THIS IS YOUR<br>FIRST TRACK.</div><p>A Dadar chawl room. ₹1,500 in your pocket. A borrowed controller. Eight districts, a million sounds, and a dream bigger than your bedroom.</p><div class="introGrid"><div><b>Make music</b>Practice, produce, play.</div><div><b>Make a life</b>Eat, work, love, rest.</div><div><b>Find your people</b>Find your Mumbai family.</div></div><label for="nameInput">What is your DJ name?</label><input id="nameInput" maxlength="20" value="NOVA" autocomplete="off"><button class="gold" onclick="begin()">Start your Mumbai story →</button><p class="sub">A complete little career awaits. No rush. No wrong way to find your sound.</p>');
+}
+function begin(){tryFullscreen();S.name=($('nameInput').value.trim()||'NOVA').slice(0,20);S.started=true;closeModal();render();save();announceDistrict();showControlHint();toast('Welcome to Dadar. Find your room to practice. M opens Mumbai; I opens your career.')}
+function newGame(){openModal('Begin a new story?','<p>This replaces the current story in this browser. Export your save first if you want to keep it.</p><button onclick="exportSave()">Export current story</button><button class="gold" onclick="resetGame()">Start a new story</button>')}
+function resetGame(){if(menuMode)closeMenu(false);S=initial();spots=createSpots(S.district);backgroundSeason='';muted=true;gig=null;path=[];pendingSpot=null;currentSpot='home';render();save();intro()}
+function downloadBlob(content,type,filename){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),3000)}
+function exportSave(){downloadBlob(JSON.stringify(S,null,2),'application/json','project-superdj-save-day-'+S.day+'.json');toast('Save exported. Keep it somewhere safe.')}
+function importSave(){$('savefile').click()}
+function validateSave(o){
+ if(!o||![1,2].includes(o.version)||typeof o.name!=='string'||!o.friends||!o.daily||typeof o.daily!=='object'||Array.isArray(o.daily))throw Error('Invalid save');
+ let base=initial();
+ ['day','hour','money','debt','energy','hunger','mood','health','skill','production','inspiration','fans','rep','gear','home','records','gigs','best','x','y'].forEach(k=>{if(typeof o[k]!=='number'||!Number.isFinite(o[k])||o[k]<0||o[k]>1e9)throw Error('Invalid '+k);base[k]=o[k]});
+ if(o.day<1||o.hour>24||o.gear>3||o.home>2||!Number.isInteger(o.gear)||!Number.isInteger(o.home))throw Error('Invalid progress');
+ for(let k of ['energy','hunger','mood','health','skill','production','inspiration'])base[k]=clamp(base[k]);
+ Object.keys(people).forEach(k=>{if(typeof o.friends[k]!=='number'||!Number.isFinite(o.friends[k]))throw Error('Invalid friend');base.friends[k]=clamp(o.friends[k])});
+ if(!Array.isArray(o.tracks)||o.tracks.length>5000||!Array.isArray(o.journal)||!Array.isArray(o.achievements))throw Error('Invalid entries');
+ base.tracks=o.tracks.map(t=>{if(typeof t.name!=='string'||!Number.isFinite(t.quality)||!Number.isFinite(t.day)||!Number.isFinite(t.fans))throw Error('Invalid track');return {name:t.name.slice(0,36),quality:clamp(t.quality),day:Math.max(1,t.day),fans:Math.max(0,t.fans)}});
+ base.journal=o.journal.slice(0,100).map(e=>({day:Number.isFinite(e.day)?e.day:1,text:String(e.text).slice(0,600)}));
+ base.achievements=o.achievements.filter(x=>typeof x==='string').slice(0,100);base.name=o.name.slice(0,20);base.partner=people[o.partner]?o.partner:null;base.daily={...o.daily};base.started=!!o.started;base.settings={sound:o.settings?.sound===true,motion:o.settings?.motion!==false};base.district=o.version===2&&districts[o.district]?o.district:'dadar';base.x=o.version===2?clamp(o.x,16,WORLD_W-16):640;base.y=o.version===2?clamp(o.y,32,WORLD_H-20):445;if(o.version===1){base.money*=10;base.debt*=10;delete base.daily.work;delete base.daily.gig;}return base;
+}
+
+function downloadGame(){
+ const clone=document.documentElement.cloneNode(true);
+ clone.querySelectorAll('dialog').forEach(d=>d.removeAttribute('open'));
+ for(const id of ['modalBody','menuBody','menuTabs']){const el=clone.querySelector('#'+id);if(el)el.innerHTML=''}
+ for(const id of ['controlHint','saved']){const el=clone.querySelector('#'+id);if(el)el.classList.remove('visible')}
+ downloadBlob('<!doctype html>\n'+clone.outerHTML,'text/html','Project-SuperDJ.html');
+ toast('Offline game downloaded. Export your save to take your story with you.');
+}
+
+
+const rupees=n=>'₹'+Math.floor(n).toLocaleString('en-IN');
+const gearNames=['Borrowed controller','Secondhand decks','Club-ready setup','Dream studio rig'];
+const gearCosts=[0,2500,10000,28000];
+const rentCost=()=>[1200,2200,4000][S.home];
+function showCity(selected=S.district){
+ const d=districts[selected]||district(),r=recordStores[d.store],v=venues[d.venue];
+ openModal('Mumbai · your city after dark','<p class="sub">Eight connected neighbourhoods. Walk through the street exits for free, or take a local train for ₹20 and 15 minutes.</p><div class="cityChart"><div class="seaLabel">ARABIAN<br>SEA</div>'+Object.entries(districts).map(([id,a])=>'<button class="districtCard '+(id===S.district?'here ':'')+(id===selected?'selected':'')+'" style="grid-column:'+(a.grid[0]+1)+';grid-row:'+(a.grid[1]+1)+';--district-accent:'+a.accent+'" onclick="showCity(\''+id+'\')"><small>'+(id===S.district?'● YOU ARE HERE':'DISTRICT 0'+(Object.keys(districts).indexOf(id)+1))+'</small><b>'+a.name+'</b><span>'+a.landmark+'</span></button>').join('')+'</div><div class="cityDetails"><div class="eyebrow">'+d.subtitle+'</div><h3>'+d.name+'</h3><p>'+d.description+'</p><div class="cityFacts"><span>♫ '+r.name+' · T'+r.tier+'</span><span>◈ '+v.name+' · T'+v.tier+'</span><span>Work: '+jobs[d.job].name+' / '+jobs[d.job2].name+'</span></div><p class="sub">Street connections: '+Object.values(d.links).map(id=>districts[id].name).join(' · ')+'</p><button class="gold" onclick="'+(selected===S.district?'closeModal()':'travelTo(\''+selected+'\')')+'" '+(gig?'disabled':'')+'>'+(selected===S.district?'Explore this district':'Take the local · ₹20')+'</button></div><p class="sub">A fictional, condensed Mumbai. Streets, businesses and train connections are designed for play.</p>');
+}
+function showJobs(){
+ const ids=[...new Set([district().job,district().job2])];
+ const local=ids.map(id=>jobCard(id,true)).join('');
+ const others=Object.entries(jobs).filter(([id])=>!ids.includes(id)).map(([id])=>jobCard(id,false)).join('');
+ openModal('Work your way up','<p>From a cutting-chai shift to directing a studio session. Your skills unlock better work. Two paid shifts per day.</p><h3>In '+district().name+'</h3><div class="cards">'+local+'</div><h3 style="margin-top:24px">Across Mumbai</h3><div class="cards">'+others+'</div>');
+}
+function jobCard(id,local){
+ const j=jobs[id],ok=unlockedJob(j),where=Object.entries(districts).filter(([,d])=>d.job===id||d.job2===id);
+ return '<div class="card"><div class="row"><h3>'+j.name+'</h3><span class="pill">TIER '+j.tier+'</span></div><p>'+j.desc+'</p><div class="meta">'+rupees(j.pay)+' · '+j.hours+'h · −'+j.energy+' energy</div><p class="sub">'+requirements(j.skill,j.prod,j.fans)+'</p>'+(local?'<button class="gold" onclick="workJob(\''+id+'\')" '+(!ok||(S.daily.work||0)>=2?'disabled':'')+'>'+(!ok?'Build your skills':(S.daily.work||0)>=2?'Shifts finished today':'Work this shift')+'</button>':where.map(([key,d])=>'<button onclick="showCity(\''+key+'\')">'+d.name+' →</button>').join(''))+'</div>';
+}
+function workJob(id){
+ const j=jobs[id];if(!j||gig)return;
+ if(![district().job,district().job2].includes(id)){toast('Visit the district where this work is available.');return}
+ if(!unlockedJob(j)){toast('Build the skills and following for this job first.');return}
+ if((S.daily.work||0)>=2){toast('Two shifts is enough for one day. Make time for your music and yourself.');return}
+ if(!spend(j.hours,j.energy))return;
+ S.daily.work=(S.daily.work||0)+1;earn(j.pay);S.mood=clamp(S.mood-3);S.production=clamp(S.production+(j.prod?2:0));S.friends.rowan=clamp(S.friends.rowan+2);
+ finish(j.name+' shift complete in '+district().name+'. Earned '+rupees(j.pay)+'.');showJobs();
+}
+function showRecordShop(){
+ const id=district().store,r=recordStores[id],ok=unlockedStore(r);activeRecordStore=id;
+ openModal(r.name,'<div class="eyebrow">TIER '+r.tier+' · '+district().name+'</div><p>'+r.desc+'</p><p class="sub">'+requirements(r.skill,0,r.fans)+'</p><div class="card"><h3>Dig the crates</h3><p>A new record, +'+r.inspiration+' inspiration and +'+r.production+' production. Each shop has one fresh find per day.</p><button class="gold" onclick="buyRecord()" '+(!ok||S.daily['record_'+id]?'disabled':'')+'>'+(!ok?'Build your reputation':S.daily['record_'+id]?'Crates explored today':'Find a record · '+rupees(r.price)+' · 1h')+'</button></div><div class="card" style="margin-top:12px"><h3>Equipment counter</h3><p>Stocks upgrades up to '+gearNames[r.gear]+'.</p><button onclick="showShop()">Browse equipment</button></div><button class="quiet" onclick="showPeople()">Talk to the local music community</button>');
+}
+function buyRecord(){
+ const id=district().store,r=recordStores[id];
+ if(gig||!unlockedStore(r)||S.daily['record_'+id])return;
+ if(!spend(1,6,r.price))return;
+ S.daily['record_'+id]=true;S.records++;S.inspiration=clamp(S.inspiration+r.inspiration);S.production=clamp(S.production+r.production);S.skill=clamp(S.skill+1);
+ finish('Found a record at '+r.name+'. Inspiration +'+r.inspiration+', production +'+r.production+'.');showRecordShop();
+}
+function showShop(){
+ const r=recordStores[district().store];
+ openModal(r.name+' · equipment','<p>Local stock: tier '+r.tier+'. Upgrades improve practice and track quality.</p><div class="cards">'+gearNames.map((g,i)=>{
+  const stocked=i<=r.gear,ok=unlockedStore(r);
+  return '<div class="card"><h3>'+g+'</h3><p>'+(i?'+'+(i*2)+' mixing per practice · improved production quality.':'Your first little setup. A start is a start.')+'</p><button '+(i!==S.gear+1||S.money<gearCosts[i]||!stocked||!ok?'disabled':'')+' onclick="buyGear('+i+')">'+(i<=S.gear?'Owned':!stocked?'Find at a higher-tier store':!ok?'Store reputation required':'Buy · '+rupees(gearCosts[i]))+'</button></div>';
+ }).join('')+'</div><button class="quiet" onclick="showCity()">Find another record store →</button>');
+}
+function buyGear(i){
+ const r=recordStores[district().store];
+ if(gig||i!==S.gear+1||!gearCosts[i]||i>r.gear||!unlockedStore(r)||!spend(.5,0,gearCosts[i]))return;
+ S.gear=i;finish('Upgraded to '+gearNames[i]+'. Your sound is growing.');showShop();
+}
+function showHome(){
+ openModal('A place in the city','<p>Your home base is Dadar. Weekly rent: '+rupees(rentCost())+'. Due after day '+(Math.ceil(S.day/7)*7)+'.'+(S.debt?' Overdue rent: '+rupees(S.debt)+'. 40% of new earnings pays it down.':'')+'</p><div class="cards">'+[
+ ['Chawl room',0,'One room, shared corridors, and neighbours who know your first mix. ₹1,200 weekly rent.'],
+ ['Studio flat',6500,'A little privacy and a proper music corner. Better rest. ₹2,200 weekly rent.'],
+ ['Skyline apartment',20000,'Space to create and room for your people. Best rest. ₹4,000 weekly rent.']
+ ].map((h,i)=>'<div class="card"><h3>'+h[0]+'</h3><p>'+h[2]+'</p><button '+(i!==S.home+1||S.money<h[1]?'disabled':'')+' onclick="upgradeHome('+i+')">'+(i<=S.home?'Home':'Move in · '+rupees(h[1]))+'</button></div>').join('')+'</div><button class="quiet" onclick="showCity(\'dadar\')">Find home on the city map</button>');
+}
+function upgradeHome(i){
+ const cost=[0,6500,20000][i];
+ if(gig||i!==S.home+1||!cost||!spend(2,10,cost))return;
+ S.home=i;S.mood=clamp(S.mood+25);finish('Moved into a new home. A little more room for your life in Mumbai.');showHome();
+}
+function renderSpot(){
+ const p=spots[currentSpot];if(!p)return;
+ let a='',desc='';
+ if(p.kind==='home'){
+  desc='Your Dadar home base. Practice, cook, rest, and make room for a bigger life.';
+  a=actionButton('Practice mixing','2h · −16 energy',"act('practice')")+actionButton('Cook a meal','₹50 · 1h',"act('cook')")+actionButton('Sleep until morning','Next day',"sleepDay()")+actionButton('Improve your home','Rest & rent',"showHome()");
+ }else if(p.kind==='work'){
+  desc='The neighbourhood is always working. Pick up a shift and keep your dream funded.';
+  a=actionButton('Find local work','Tiered jobs',"showJobs()");
+ }else if(p.kind==='records'){
+  desc=recordStores[p.store].desc;
+  a=actionButton('Explore the record shop','Tier '+recordStores[p.store].tier,"showRecordShop()")+actionButton('Browse equipment','Upgrade your setup',"showShop()")+actionButton('Talk to Kiran','Music & friendship',"showPerson('kit')");
+ }else if(p.kind==='club'){
+  desc=venues[p.venue].desc;
+  a=actionButton('Bookings & gigs','Tier '+venues[p.venue].tier,"showGigs()")+actionButton('Listen to a set','₹100 · 1h',"act('listen')")+actionButton('Talk to Soham','Meet the booker',"showPerson('sol')");
+ }else if(p.kind==='food'){
+  desc='Cutting chai, something hot to eat, and a little time between the rush.';
+  a=actionButton('Eat a warm meal','₹'+(S.friends.rowan>=40?40:60)+' · ½h',"act('eat')")+actionButton('Find a shift','Earn your way',"showJobs()")+actionButton('Talk to Rohan','A familiar face',"showPerson('rowan')");
+ }else if(p.kind==='studio'){
+  desc='Make an original, learn your craft, or find work behind the scenes.';
+  a=actionButton('Music studio','Produce & release',"showStudio()")+actionButton('Find local work','Studio & event jobs',"showJobs()")+actionButton('Talk to Mira','Producer & friend',"showPerson('mira')");
+ }else if(p.kind==='landmark'){
+  desc=p.description;
+  a=actionButton('Take a slow walk','+mood & energy · 1h',"act('walk')")+actionButton('Record the city','+inspiration · 1h',"act('sample')")+actionButton('Community meal','Free · daily',"act('picnic')");
+ }else if(p.kind==='station'){
+  desc='The city moves on its locals. Choose a district, or explore the street connections on foot.';
+  a=actionButton('City & local trains','₹20 · 15 minutes',"showControlSection('city')");
+ }
+ openModal(p.name,'<div class="locationIntro"><div class="eyebrow">'+district().name+' · '+p.kind+'</div><p>'+desc+'</p></div><div class="locationActions">'+a+'</div><button class="quiet locationBack" onclick="closeModal()">Back to the street</button>');
+}
+function showGigs(){
+ openModal('Mumbai after dark · stages','<p>Listening bars, weddings, warehouses, rooftops, hotel clubs and a beach festival. Travel to the venue’s district to play. One set per day · 3 hours · 25 energy.</p><p class="sub">Play with D F J K or the four pads. Match the notes to the gold line. Esc pauses your set.</p><div class="cards">'+venues.map((v,i)=>{
+ const ok=unlockedVenue(v),here=S.district===v.district;
+ return '<div class="card"><div class="row"><h3>'+v.name+'</h3><span class="pill">TIER '+v.tier+' · '+v.type+'</span></div><p>'+v.place+'<br>'+v.desc+'</p><div class="meta">From '+rupees(v.pay)+' · ~'+v.gain+' new fans</div><p class="sub">'+requirements(v.skill,0,v.fans)+(v.tracks?' · '+v.tracks+' originals':'')+'</p>'+(!here?'<button onclick="showCity(\''+v.district+'\')">Find in '+districts[v.district].name+' →</button>':'<button class="gold" onclick="startGig('+i+')" '+(!ok||S.daily.gig||gig?'disabled':'')+'>'+(S.daily.gig?'Played today':ok?'Take the stage':'Build your following')+'</button>')+'</div>';
+ }).join('')+'</div>');
+}
+function objective(){
+ if(S.gigs===0)return ['Your first rooftop set','Practice in your Dadar room, then play Gully Signal.',(S.skill>=5?'✓':'○')+' Mixing 5 · ○ First gig'];
+ return [
+ ['A name in the neighbourhood','Play local sets, earn a living, and make your first friends.',S.fans+'/60 fans'],
+ ['Find your own sound','Reach club residency. Discover record shops and release an original.',S.fans+'/300 fans · '+S.tracks.length+' originals'],
+ ['A city starts listening','Better rooms need better skills. Upgrade your decks and build your catalogue.',S.fans+'/1,200 fans · mixing '+Math.floor(S.skill)],
+ ['The sea of lights','Prepare for Monsoon Frequency: 3 originals, mixing 75, and 3,400 fans.',S.fans+'/3,400 fans · '+S.tracks.length+'/3 originals'],
+ ['Mumbai knows your name','Festival icon. Keep making music and a life worth coming home to.',S.fans.toLocaleString()+' fans · '+S.gigs+' gigs']
+ ][tier()];
+}
+function showCareer(){
+ openModal('From chawl room to main stage','<p>Build a sound the city recognises. Skills, original releases and your following open bigger opportunities.</p><div class="timeline">'+tiers.map((r,i)=>'<div class="card"><div class="row"><h3>'+r.name+'</h3><span class="pill">'+(i<tier()?'ACHIEVED':i===tier()?'YOU ARE HERE':'AHEAD')+'</span></div><p>'+['Learn the decks, work local shifts, and play a terrace.','Explore listening bars and the wedding circuit.','Step into mill warehouses and Andheri club rooms.','Take the rooftops, hotel lounges and concert halls.','Your original sound reaches the festival main stage.'][i]+'</p><span class="meta">'+r.fans.toLocaleString()+' fans</span></div>').join('')+'</div><p>'+S.gigs+' gigs · '+S.tracks.length+' releases · '+S.records+' records · '+Object.values(S.friends).filter(n=>n>=40).length+' close connections</p>');
+}
+
+function character(c,x,y,color='#e3ab68',style=0,walk=0,scale=1,face=1){
+ c.save();c.translate(Math.round(x),Math.round(y));c.scale(scale,scale);
+ rect(c,-7,-1,14,4,'#263a3d50');
+ let step=walk?Math.sin(walk)*2|0:0;
+ rect(c,-5,-7,4,8+step,'#3a405c');rect(c,1,-7,4,8-step,'#3a405c');rect(c,-6,step,5,2,'#30283d');rect(c,1,-step,5,2,'#30283d');
+ rect(c,-6,-16,12,10,color);rect(c,-8,-14,3,8,'#b67858');rect(c,6,-14,3,8,'#d8a17a');rect(c,-5,-15,3,7,style===1?'#ad7193':'#efc486');
+ rect(c,-5,-25,10,9,'#e6ad80');rect(c,-6,-26,12,5,style===2?'#6e4a40':'#493849');rect(c,-6,-22,3,5,'#493849');rect(c,3,-22,3,2,'#493849');rect(c,1+face,-21,1,2,'#30263b');rect(c,-1,-17,4,1,'#bc7b65');
+ if(style===0){rect(c,-8,-24,3,8,'#313548');rect(c,6,-24,3,8,'#313548');rect(c,-6,-28,12,2,'#414351');rect(c,-8,-23,2,4,'#b7a78e');rect(c,7,-23,2,4,'#b7a78e')}
+ if(style===1){rect(c,-6,-28,12,3,'#a5759a');rect(c,-9,-25,18,3,'#c68eac')}
+ if(style===2){rect(c,-5,-26,10,2,'#dea778');rect(c,-2,-17,4,3,'#ead6a4');rect(c,-4,-11,8,2,'#ead6a4')}
+ c.restore();
+}
+function drawAvatar(){if(!$('avatar'))return;const a=$('avatar').getContext('2d');a.imageSmoothingEnabled=false;rect(a,0,0,26,30,'#45364e');character(a,13,28,'#dfab66',0,0,1)}
+
+
+const canvas=$('world'),ctx=canvas.getContext('2d');
+const background=document.createElement('canvas');background.width=WORLD_W;background.height=WORLD_H;
+const bg=background.getContext('2d');let backgroundSeason='',hoverSpot=null;
+const camera={x:0,y:0};
+function resizeWorld(){
+ const width=window.innerWidth||1280,height=window.innerHeight||800;
+ const scale=Math.max(2,Math.ceil(Math.max(width/900,height/600)));
+ canvas.width=Math.min(WORLD_W,Math.ceil(width/scale));canvas.height=Math.min(WORLD_H,Math.ceil(height/scale));ctx.imageSmoothingEnabled=false;updateCamera();
+}
+function updateCamera(){camera.x=Math.round(clamp(S.x-canvas.width/2,0,WORLD_W-canvas.width));camera.y=Math.round(clamp(S.y-canvas.height/2,0,WORLD_H-canvas.height))}
+window.addEventListener('resize',resizeWorld);
+document.addEventListener('fullscreenchange',()=>{resizeWorld();if(!document.fullscreenElement&&S.started&&!menuMode)showGameMenu();else if(menuMode==='pause')showGameMenu()});
+function rect(c,x,y,w,h,col){c.fillStyle=col;c.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(h))}
+function poly(c,pts,col){c.fillStyle=col;c.beginPath();pts.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.closePath();c.fill()}
+function pixelText(c,s,x,y,col='#e8d1b1',size=10,align='center'){c.font='bold '+size+'px monospace';c.textAlign=align;c.textBaseline='middle';c.fillStyle='#111621';c.fillText(s,x+1,y+1);c.fillStyle=col;c.fillText(s,x,y)}
+function seed(n){let v=Math.sin(n*12.9898+78.233)*43758.5453;return v-Math.floor(v)}
+function outline(c,x,y,w,h,color='#111722'){rect(c,x-3,y-3,w+6,h+6,color)}
+function palm(c,x,y,size=1){
+ c.save();c.translate(x,y);c.scale(size,size);rect(c,-4,-50,7,53,'#4d4840');rect(c,-2,-49,2,50,'#80705a');
+ for(let i=0;i<6;i++)rect(c,-4,-8*i,7,2,'#302e30');
+ const leaves=[[[-2,-50],[-31,-75],[-47,-67],[-17,-68]],[[-2,-50],[-38,-53],[-47,-36],[-25,-47]],[[1,-51],[30,-73],[47,-62],[20,-65]],[[1,-49],[38,-52],[47,-34],[22,-46]],[[-1,-52],[-10,-84],[0,-91],[5,-69]]];
+ leaves.forEach((p,i)=>poly(c,p,i%2?'#42645b':'#34554f'));rect(c,-4,-55,9,6,'#9c7c50');c.restore();
+}
+function lamp(c,x,y){rect(c,x,y-54,3,56,'#293844');rect(c,x-8,y-57,20,4,'#778389');rect(c,x-6,y-53,16,5,'#e9be77');rect(c,x-9,y-48,22,2,'#a2794f');rect(c,x-2,y+2,7,3,'#7a8489')}
+function windowCity(c,x,y,w=15,h=20,lit=true){
+ rect(c,x-2,y-2,w+4,h+4,'#25313d');rect(c,x,y,w,h,lit?'#b99b67':'#3d5568');rect(c,x+2,y+2,w-4,h-4,lit?'#d4b27a':'#4a6674');rect(c,x+w/2-1,y,2,h,'#4d5050');rect(c,x,y+h-5,w,2,'#343e45');
+}
+function cityBuilding(c,p,style='concrete'){
+ const {x,y,w,h}=p,d=district(),wall=style==='brick'?'#674c49':d.tone;
+ if(p.kind==='club'&&S.district==='juhu'){festivalStage(c,p);return}
+ rect(c,x+9,y+h-6,w+8,18,'#12192277');outline(c,x,y,w,h);
+ rect(c,x,y,w,h,wall);rect(c,x,y,8,h,'#30343f');rect(c,x+w-8,y,8,h,'#303642');
+ rect(c,x-5,y-10,w+10,13,'#73737a');rect(c,x-5,y-10,w+10,3,'#9c9790');rect(c,x+5,y-5,w-10,3,'#343f48');
+ // Rooftop tanks, aerials, AC boxes and wiring.
+ rect(c,x+18,y-31,31,22,'#23303a');rect(c,x+21,y-33,25,4,'#56606a');rect(c,x+19,y-18,28,2,'#52616a');
+ rect(c,x+w-43,y-26,24,17,'#788487');rect(c,x+w-39,y-22,16,2,'#354653');rect(c,x+w-39,y-17,16,2,'#354653');rect(c,x+w-15,y-51,2,41,'#76818a');rect(c,x+w-24,y-44,20,2,'#8e9695');
+ for(let yy=y+12;yy<y+h-64;yy+=33){
+  rect(c,x+8,yy+25,w-16,3,'#333c46');
+  for(let xx=x+18;xx<x+w-25;xx+=34)windowCity(c,xx,yy,17,19,seed(xx+yy)>.35);
+  if(style==='chawl'){rect(c,x+6,yy+26,w-12,3,'#9b8d7f');for(let xx=x+10;xx<x+w;xx+=14)rect(c,xx,yy+18,2,10,'#89908e')}
+ }
+ if(style==='brick')for(let yy=y+5;yy<y+h;yy+=11)for(let xx=x+8;xx<x+w-10;xx+=24)rect(c,xx+(yy%2?6:0),yy,20,1,'#ad76622d');
+ const signY=y+h-57;
+ rect(c,x+8,signY,w-16,24,'#18232e');rect(c,x+10,signY+1,w-20,2,d.accent);
+ pixelText(c,p.name.toUpperCase(),x+w/2,signY+13,d.accent,p.name.length>24?7:9);
+ for(let xx=x+11;xx<x+w-12;xx+=18){rect(c,xx,y+h-31,16,29,'#354655');rect(c,xx+2,y+h-28,12,21,'#517080')}
+ rect(c,x+w/2-13,y+h-30,27,30,'#111d29');rect(c,x+w/2+8,y+h-16,2,3,'#f0bd75');
+ rect(c,x+w/2-20,y+h,40,6,'#787879');rect(c,x+w/2-26,y+h+6,52,4,'#5b6269');
+ // Sign-lit pavement.
+ rect(c,x+12,y+h+12,w-24,3,d.accent+'33');
+ if(style==='chawl'){for(let i=0;i<8;i++){rect(c,x+18+i*18,y+54,13,13,['#a98d74','#587f91','#b27478','#cabd9c'][i%4]);rect(c,x+14+i*18,y+52,18,1,'#b4ab91')}}
+ if(p.kind==='club'){
+  rect(c,x-8,y+h-30,12,32,'#111722');rect(c,x+w-4,y+h-30,12,32,'#111722');
+  for(let xx of [x-5,x+w-1]){rect(c,xx,y+h-23,6,7,'#465464');rect(c,xx,y+h-12,6,7,'#465464')}
+  for(let i=0;i<11;i++){let yy=y-4+Math.sin(i/10*Math.PI)*9;rect(c,x+i*w/10,yy,12,1,'#262334');rect(c,x+i*w/10+6,yy+2,2,3,i%2?'#d783a2':'#e6b374')}
+ }
+}
+function foodCart(c,x,y){
+ rect(c,x,y-22,58,24,'#a76746');rect(c,x-5,y-27,68,7,'#27768c');rect(c,x,y-25,58,2,'#5a9dae');rect(c,x+5,y-19,45,4,'#e3bc6d');
+ rect(c,x+4,y-12,14,10,'#d0b292');rect(c,x+25,y-12,6,7,'#c6c3b4');rect(c,x+39,y-12,12,5,'#d09760');rect(c,x+5,y+2,7,7,'#19202a');rect(c,x+44,y+2,7,7,'#19202a');
+ pixelText(c,'चाय · वडापाव',x+29,y-37,'#e7b579',8);
+}
+function heritageArch(c,x,y,w,h,color='#c3a581'){
+ rect(c,x,y,w,h,color);rect(c,x+9,y+14,w-18,h-14,'#223644');poly(c,[[x+9,y+16],[x+w/2,y+4],[x+w-9,y+16]],'#223644');
+}
+
+function festivalStage(c,p){
+ const {x,y,w,h}=p;
+ rect(c,x-8,y+8,w+16,h,'#242d3d');rect(c,x-12,y+h-10,w+24,19,'#776659');
+ rect(c,x-7,y,w+14,8,'#889096');rect(c,x-7,y,7,h,'#6b7685');rect(c,x+w,y,7,h,'#6b7685');
+ for(let i=0;i<7;i++){let xx=x+8+i*29;rect(c,xx,y+8,9,6,i%2?'#d381a0':'#6d9abd');poly(c,[[xx,y+16],[xx-24,y+102],[xx+31,y+102]],i%2?'#bc81a015':'#7fa7c619')}
+ rect(c,x+15,y+33,w-30,61,'#314357');pixelText(c,'MONSOON',x+w/2,y+55,'#d5aac0',14);pixelText(c,'FREQUENCY',x+w/2,y+77,'#e0b77a',12);
+ rect(c,x+63,y+110,80,31,'#4c4b61');rect(c,x+65,y+108,76,4,'#d59d9a');
+ for(let xx of [x+74,x+119]){rect(c,xx,y+114,15,11,'#172332');rect(c,xx+5,y+117,5,5,'#d8b07b')}
+ for(let xx of [x+9,x+w-37]){rect(c,xx,y+98,28,60,'#111e29');rect(c,xx+6,y+105,16,17,'#414c5d');rect(c,xx+6,y+134,16,17,'#414c5d')}
+ for(let i=0;i<7;i++){let xx=x+8+i*29;rect(c,xx,y+h+19,17,8,'#576a76');rect(c,xx+4,y+h+11,8,8,'#b78e71')}
+ pixelText(c,'BEACH MAIN STAGE',x+w/2,y+h+49,'#d8b894',8);
+}
+function venueDetails(c,p){
+ const {x,y,w,h}=p;
+ if(p.kind==='records'){
+  // A vinyl sign and little sleeves in a warmly lit shop window.
+  rect(c,x-25,y+h-76,24,25,'#1a2734');rect(c,x-21,y+h-72,16,17,'#7c6b77');rect(c,x-18,y+h-69,10,11,'#172532');rect(c,x-15,y+h-66,4,5,'#d6ad75');
+  for(let i=0;i<4;i++){rect(c,x+14+i*19,y+h-26,12,13,['#bb8675','#84a2ab','#c4ac79','#b098b2'][i]);rect(c,x+17+i*19,y+h-22,6,6,'#263441')}
+ }
+ if(p.kind!=='club')return;
+ const kind=venues[p.venue].type;
+ if(S.district==='dadar'){
+  rect(c,x+53,y-18,91,17,'#352d3e');rect(c,x+56,y-22,85,5,'#aca086');
+  for(let xx of [x+66,x+112]){rect(c,xx,y-17,18,10,'#111e2a');rect(c,xx+6,y-14,6,4,'#dfb87c')}
+  rect(c,x+9,y+28,43,16,'#817064');pixelText(c,'OPEN DECKS',x+30,y+36,'#f1cb90',6);
+ }else if(S.district==='bandra'){
+  rect(c,x+13,y+h-38,w-26,8,'#b18e71');for(let i=0;i<9;i++)rect(c,x+14+i*20,y+h-37,12,6,i%2?'#a46369':'#d8b78e');
+  pixelText(c,'LISTENING BAR',x+w/2,y+h-66,'#dcb586',8);
+ }else if(S.district==='parel'){
+  rect(c,x+w-20,y-94,15,84,'#73574b');rect(c,x+w-23,y-98,21,5,'#a7795c');
+  for(let yy=y-90;yy<y-10;yy+=10)rect(c,x+w-18,yy,11,1,'#ac7d6044');
+  rect(c,x+16,y+26,w-32,28,'#172737');pixelText(c,'WAREHOUSE / 46',x+w/2,y+40,'#cb9b70',12);
+ }else if(S.district==='andheri'){
+  rect(c,x+8,y+10,w-16,4,'#807bb0');rect(c,x+9,y+14,3,h-75,'#7165a1');rect(c,x+w-12,y+14,3,h-75,'#ba749c');
+  pixelText(c,'TECHNO',x+w/2,y+41,'#c291c7',15);rect(c,x+50,y+57,w-100,2,'#8178b2');
+ }else if(S.district==='worli'){
+  rect(c,x+15,y-40,w-30,27,'#263646');for(let xx=x+18;xx<x+w-15;xx+=14)rect(c,xx,y-38,2,24,'#8a9694');
+  rect(c,x+55,y-43,82,10,'#8e717d');pixelText(c,'SUNSET SESSIONS',x+w/2,y+35,'#d9af8b',9);
+ }else if(S.district==='colaba'){
+  rect(c,x+w/2-28,y-26,56,15,'#253645');pixelText(c,'★★★★★',x+w/2,y-19,'#d3b37b',9);
+  for(let xx of [x+18,x+w-25]){rect(c,xx,y+3,8,h-65,'#b5a58d');rect(c,xx-3,y+1,14,4,'#d2bd9a')}
+ }else if(S.district==='fort'){
+  for(let i=0;i<4;i++)rect(c,x+25+i*43,y+4,7,h-68,'#ab9e8b');rect(c,x+25,y+16,w-50,7,'#b7ac90');
+  pixelText(c,'DECO AFTER DARK',x+w/2,y+49,'#dbc59b',10);
+ }
+}
+
+function landmarkScene(c,kind,p){
+ const {x,y,w,h}=p;
+ rect(c,x-15,y+h-13,w+30,34,'#555865');rect(c,x-20,y+h+21,w+40,4,'#8b8983');
+ if(kind==='gateway'){
+  // Gateway arch, four turrets, and the Taj's red dome.
+  rect(c,x+182,y+56,159,153,'#ae9d8e');for(let i=0;i<8;i++)windowCity(c,x+191+i*18,y+83,9,20,i%2===0);
+  rect(c,x+204,y+32,114,28,'#b9aa98');poly(c,[[x+225,y+33],[x+228,y+12],[x+242,y-3],[x+261,y-11],[x+280,y-3],[x+294,y+12],[x+296,y+33]],'#925052');
+  rect(c,x+258,y-28,5,20,'#d5b68c');rect(c,x+253,y-15,14,3,'#c78b75');
+  for(let i=0;i<4;i++)heritageArch(c,x+194+i*34,y+154,25,54,'#c0aa90');
+  rect(c,x+6,y+83,147,124,'#b6a287');rect(c,x-2,y+72,163,13,'#d4bd98');rect(c,x+9,y+59,141,14,'#a28f76');
+  heritageArch(c,x+49,y+106,59,102,'#d7bb91');poly(c,[[x+58,y+117],[x+79,y+96],[x+99,y+117]],'#283642');
+  for(let xx of [x+4,x+131]){rect(c,xx,y+59,21,145,'#c5ad8b');rect(c,xx-3,y+49,27,11,'#d9be93');poly(c,[[xx-3,y+49],[xx+10,y+32],[xx+24,y+49]],'#a9957c')}
+  pixelText(c,'GATEWAY OF INDIA',x+82,y+226,'#e1bf8d',9);pixelText(c,'TAJ',x+263,y+220,'#d6b28d',9);
+ }else if(kind==='csmt'){
+  rect(c,x+9,y+100,w-18,110,'#aa9580');rect(c,x+26,y+80,w-52,23,'#7d6867');
+  for(let i=0;i<10;i++){heritageArch(c,x+18+i*32,y+157,25,53,'#baa080');windowCity(c,x+21+i*32,y+115,14,20,true)}
+  rect(c,x+w/2-30,y+33,60,137,'#b09b82');poly(c,[[x+w/2-36,y+36],[x+w/2-23,y+6],[x+w/2,y-13],[x+w/2+23,y+6],[x+w/2+36,y+36]],'#67858a');
+  rect(c,x+w/2-3,y-32,6,23,'#c3a275');rect(c,x+w/2-17,y+59,34,34,'#283945');rect(c,x+w/2-13,y+63,26,26,'#ddcbb0');rect(c,x+w/2-1,y+65,2,13,'#57525a');rect(c,x+w/2-1,y+77,9,2,'#57525a');
+  for(let xx of [x+8,x+w-35]){rect(c,xx,y+63,27,99,'#c2a780');poly(c,[[xx-6,y+63],[xx+13,y+25],[xx+34,y+63]],'#6d7277')}
+  pixelText(c,'CHHATRAPATI SHIVAJI MAHARAJ TERMINUS',x+w/2,y+226,'#e7c392',8);
+ }else if(kind==='bridge'){
+  rect(c,x-20,y-35,w+40,h+40,'#173243');
+  for(let i=0;i<24;i++)rect(c,x+seed(i+9)*w,y+seed(i+79)*h,18,2,'#356174');
+  rect(c,x-18,y+143,w+35,15,'#89939a');rect(c,x-18,y+150,w+35,8,'#465763');
+  for(let xx of [x+75,x+260]){
+   poly(c,[[xx-15,y+151],[xx-6,y+4],[xx+6,y+4],[xx+15,y+151],[xx+9,y+151],[xx+2,y+21],[xx-2,y+21],[xx-9,y+151]],'#b2c0c1');
+   for(let j=-5;j<=5;j++){let end=xx+j*24;poly(c,[[xx,y+17],[end,y+143],[end+1,y+143],[xx+1,y+17]],'#87a4ad')}
+  }pixelText(c,'BANDRA–WORLI SEA LINK',x+w/2,y+223,'#adcad1',10);
+ }else if(kind==='hajiali'){
+  rect(c,x-20,y-15,w+40,h+15,'#173440');
+  poly(c,[[x+28,y+h],[x+153,y+152],[x+190,y+152],[x+57,y+h]],'#8b8f87');
+  rect(c,x+102,y+138,158,50,'#77877c');rect(c,x+124,y+77,110,69,'#d3d1ba');rect(c,x+137,y+61,83,20,'#e7dec1');
+  poly(c,[[x+144,y+61],[x+147,y+39],[x+162,y+20],[x+180,y+9],[x+197,y+20],[x+213,y+39],[x+215,y+61]],'#dddfc9');
+  rect(c,x+177,y-7,4,18,'#dbbd7a');rect(c,x+253,y+20,20,124,'#dfdac2');rect(c,x+249,y+15,28,9,'#f0e3c6');poly(c,[[x+251,y+15],[x+263,y-2],[x+276,y+15]],'#cad8c8');
+  heritageArch(c,x+161,y+105,34,44,'#e1d5b9');pixelText(c,'HAJI ALI · SEAFACE',x+w/2,y+224,'#d9d6b9',10);
+ }else if(kind==='temple'){
+  rect(c,x+42,y+143,258,65,'#9e8470');rect(c,x+79,y+93,184,113,'#bf9c71');
+  for(let xx of [x+103,x+168,x+231]){poly(c,[[xx-30,y+96],[xx-23,y+72],[xx-16,y+71],[xx-12,y+51],[xx-6,y+50],[xx,y+19],[xx+6,y+50],[xx+12,y+51],[xx+16,y+71],[xx+23,y+72],[xx+30,y+96]],'#d4b17a');rect(c,xx-2,y+11,4,12,'#e8c583')}
+  for(let i=0;i<6;i++)heritageArch(c,x+52+i*40,y+157,27,50,'#c4a375');
+  pixelText(c,'SIDDHIVINAYAK',x+w/2,y+226,'#e5ba78',10);
+ }else if(kind==='mills'){
+  rect(c,x+2,y+91,w-13,109,'#77544c');poly(c,[[x-4,y+96],[x+73,y+50],[x+157,y+96]],'#434b56');poly(c,[[x+155,y+96],[x+245,y+44],[x+w,y+96]],'#49525c');
+  rect(c,x+289,y-7,28,112,'#946855');rect(c,x+285,y-11,36,10,'#ad8064');
+  for(let i=0;i<7;i++)windowCity(c,x+24+i*45,y+119,23,38,true);
+  for(let r=0;r<3;r++)for(let j=0;j<10;j++){rect(c,x+12+j*33,y+218+r*10,29,1,'#94a0a0');rect(c,x+16+j*33,y+220+r*10,13,9,['#c1b7a0','#8b9db1','#b18489'][j%3])}
+  pixelText(c,'MILLS · DHOBI GHAT',x+w/2,y+265,'#c6a490',9);
+ }else if(kind==='beach'){
+  rect(c,x-20,y-37,w+40,h+45,'#9a8e76');rect(c,x-20,y-37,w+40,96,'#1d4252');rect(c,x-20,y+58,w+40,5,'#67878c');rect(c,x-20,y+66,w+40,3,'#b0b8aa');
+  for(let i=0;i<21;i++)rect(c,x+seed(i+12)*w,y+76+seed(i+721)*100,3,1,'#c8b795');
+  for(let xx of [x+24,x+312])palm(c,xx,y+197,.9);
+  foodCart(c,x+110,y+187);pixelText(c,'JUHU BEACH',x+w/2,y+224,'#dfbb8a',12);
+ }else if(kind==='metro'){
+  rect(c,x-15,y+65,w+30,19,'#78828b');for(let i=0;i<4;i++)rect(c,x+18+i*95,y+83,17,110,'#68747c');
+  rect(c,x+4,y+27,w-10,35,'#b4c1c3');rect(c,x+4,y+28,w-10,5,'#538fbc');for(let i=0;i<11;i++)rect(c,x+15+i*29,y+38,22,14,'#344f69');
+  rect(c,x+84,y+137,198,62,'#9b7480');rect(c,x+89,y+142,188,48,'#2b3248');pixelText(c,'LIGHTS. CAMERA. SOUND.',x+182,y+163,'#dabd93',10);pixelText(c,'ANDHERI WEST',x+w/2,y+226,'#b6badf',10);
+ }
+}
+function drawStation(c,p){
+ const {x,y,w,h}=p;rect(c,x-22,y+35,w+44,h-26,'#68767b');rect(c,x-23,y+30,w+46,7,'#b37858');rect(c,x-25,y+24,w+50,7,'#c7895c');
+ for(let xx of [x-13,x+w+8])rect(c,xx,y+34,4,h-3,'#98a19d');
+ rect(c,x+1,y+38,w-2,28,'#2b6077');pixelText(c,'LOCAL · मुंबई',x+w/2,y+53,'#ecdebb',9);
+ rect(c,x+22,y+70,55,20,'#212f3b');pixelText(c,'CITY TRAVEL',x+w/2,y+80,'#bdc9bd',7);
+}
+function makeBackground(){
+ const c=bg,d=district();rect(c,0,0,WORLD_W,WORLD_H,'#25313d');
+ for(let i=0;i<1200;i++){let x=seed(i+7)*WORLD_W,y=seed(i+901)*WORLD_H;rect(c,x,y,2+seed(i)*4,1,i%3?'#4b58652c':'#89909819')}
+ // Distant apartment blocks; rooftop tanks and warm windows.
+ rect(c,0,0,WORLD_W,111,'#121f2f');
+ for(let i=0;i<24;i++){let x=i*57-10,h=42+seed(i+31)*76;rect(c,x,122-h,48,h,'#263645');rect(c,x+3,122-h+3,42,2,'#3b4b58');for(let yy=126-h;yy<111;yy+=13)for(let xx=x+7;xx<x+46;xx+=12)rect(c,xx,yy,4,6,seed(xx+yy)>.65?'#d3a773':'#405465')}
+ // Main road, pavements and smaller lanes.
+ rect(c,0,395,WORLD_W,137,'#65707b');rect(c,0,417,WORLD_W,91,'#1b2734');rect(c,576,0,133,WORLD_H,'#69727a');rect(c,596,0,91,WORLD_H,'#1b2734');
+ for(let x=0;x<WORLD_W;x+=28){rect(c,x,395,14,4,'#9d9579');rect(c,x+14,395,14,4,'#30333c');rect(c,x,528,14,4,'#969582');rect(c,x+14,528,14,4,'#30333c')}
+ for(let x=15;x<WORLD_W;x+=50){rect(c,x,460,24,2,'#c3a867');rect(c,x,467,24,1,'#8f8156')}
+ for(let y=0;y<WORLD_H;y+=51){rect(c,640,y,2,25,'#bca369');rect(c,644,y,1,25,'#827953')}
+ for(let x=548;x<577;x+=7)rect(c,x,423,3,78,'#b8b7a5');for(let x=710;x<739;x+=7)rect(c,x,423,3,78,'#b8b7a5');
+ for(let y=358;y<393;y+=8)rect(c,601,y,79,4,'#b9baa9');for(let y=535;y<566;y+=8)rect(c,601,y,79,4,'#b9baa9');
+ for(let x of [202,478,970])rect(c,x-16,355,33,467,'#505f6b');rect(c,41,782,1198,24,'#52616d');
+ // Local train viaduct.
+ rect(c,0,103,1280,23,'#71808a');rect(c,0,101,1280,3,'#9ca8ab');rect(c,0,126,1280,6,'#182532');for(let x=25;x<1280;x+=113)rect(c,x,130,13,30,'#526571');
+ for(let x=0;x<1280;x+=18)rect(c,x,107,2,14,'#394c59');
+ // City buildings.
+ for(const [id,p] of Object.entries(spots)){
+  if(['exit','landmark','station'].includes(p.kind)||p.decorOnly)continue;
+  cityBuilding(c,p,id==='home'&&S.district==='dadar'?'chawl':S.district==='parel'?'brick':'concrete');if(!(p.kind==='club'&&S.district==='juhu'))venueDetails(c,p);
+  if(p.kind==='records'){for(let i=0;i<4;i++){rect(c,p.x+12+i*21,p.y+p.h+12,18,14,'#775b47');for(let j=0;j<4;j++)rect(c,p.x+14+i*21+j*4,p.y+p.h+8,3,12,['#b98479','#8d9dae','#caac82','#9a8ba7'][j])}}
+ }
+ landmarkScene(c,d.landmarkKind,spots.landmark);drawStation(c,spots.station);
+ // Food culture, palms, monsoon tarps, posters, scooters.
+ foodCart(c,48,381);foodCart(c,1118,570);
+ for(let [x,y] of [[63,587],[357,819],[756,358],[1201,357],[752,810]])palm(c,x,y,.7);
+ for(let [x,y] of [[92,411],[362,411],[759,411],[1155,411],[363,545],[761,545],[1133,822]])lamp(c,x,y);
+ for(let i=0;i<6;i++){let x=42+i*42;rect(c,x,822,36,24,i%2?'#286578':'#4e6680');rect(c,x+2,824,32,2,'#8cabb6');rect(c,x+5,846,3,15,'#746450');rect(c,x+28,846,3,15,'#746450')}
+ rect(c,745,602,76,120,'#626878');rect(c,750,607,66,103,'#29364a');pixelText(c,'LIVE',783,626,'#e3af74',14);pixelText(c,'TONIGHT',783,645,'#c3aaa6',10);rect(c,756,660,54,27,'#8d6d87');pixelText(c,'MUMBAI',783,701,'#d0b58f',9);
+ // Wires above the lane.
+ for(let i=0;i<13;i++)rect(c,12+i*28,377+Math.sin(i/12*Math.PI)*6,30,1,'#131e2a');
+
+ // Neighbourhood details: murals, handcarts, parked scooters, and street posters.
+ for(let [xx,yy] of [[338,716],[556,330],[840,769],[1166,594]]){
+  rect(c,xx,yy,21,5,'#17212c');rect(c,xx+3,yy-10,15,10,'#758582');rect(c,xx+4,yy-13,9,3,'#2b3643');rect(c,xx-1,yy+2,5,7,'#111b28');rect(c,xx+18,yy+2,5,7,'#111b28');rect(c,xx+17,yy-16,2,13,'#a3a39b');
+ }
+ for(let i=0;i<7;i++){const xx=1000+i*24;rect(c,xx,801,15,19,['#956b71','#928f73','#5c8390'][i%3]);rect(c,xx+3,804,9,2,'#d0b8a0');rect(c,xx+3,810,9,1,'#d0b8a088')}
+ rect(c,58,662,41,23,'#796452');rect(c,54,657,49,5,'#a19275');for(let i=0;i<6;i++){rect(c,60+i*6,649,5,9,'#c8c0a6');rect(c,61+i*6,647,3,2,'#777b72')}rect(c,62,685,7,8,'#111e2b');rect(c,85,685,7,8,'#111e2b');
+ if(S.district==='bandra'){
+  rect(c,32,194,54,125,'#435966');poly(c,[[38,282],[58,229],[79,278],[58,311]],'#be8589');rect(c,48,254,23,5,'#dda17d');pixelText(c,'BANDRA',59,299,'#e6c794',7);
+ }else if(S.district==='andheri'){
+  rect(c,20,207,69,100,'#696172');rect(c,25,213,59,87,'#3d4e66');pixelText(c,'FILM',55,235,'#d6b288',10);pixelText(c,'CITY',55,252,'#a5bdc8',10);rect(c,34,270,42,12,'#ad8391');
+ }
+
+ // Marine Drive necklace and an Art Deco corner.
+ if(S.district==='fort'){
+  rect(c,15,545,73,233,'#173848');for(let i=0;i<12;i++){let yy=555+i*18;rect(c,76-Math.sin(i/11*Math.PI)*13,yy,3,4,'#efc481')}pixelText(c,'MARINE DRIVE',50,808,'#dcb68a',7);
+  rect(c,1100,654,137,98,'#4a6567');rect(c,1110,649,117,5,'#b3a88c');for(let i=0;i<5;i++)rect(c,1111,666+i*15,114,3,'#a2aba0');
+  pixelText(c,'OVAL MAIDAN',1092,843,'#9aab95',9);
+ }
+ if(S.district==='dadar'){
+  rect(c,44,183,45,99,'#34404d');rect(c,43,179,48,9,'#ba7655');pixelText(c,'फूल',65,193,'#eac583',10);
+  for(let i=0;i<19;i++)rect(c,48+(i%5)*7,217+Math.floor(i/5)*8,5,5,i%2?'#e1a350':'#bc796b');
+ }
+ if(S.district==='colaba'){rect(c,1162,130,118,262,'#143445');for(let i=0;i<5;i++){let y=161+i*44;poly(c,[[1175,y],[1252,y],[1238,y+16],[1187,y+16]],'#b99f80');rect(c,1199,y-14,31,14,'#889eaa');rect(c,1211,y-25,2,13,'#c5b6a1')}}
+ for(const [dir,to] of Object.entries(d.links)){
+  const p=spots['exit_'+dir].door;rect(c,p[0]-12,p[1]-15,24,20,'#2a4555');
+  pixelText(c,{n:'↑',s:'↓',e:'→',w:'←'}[dir],p[0],p[1]-5,'#f2be72',16);
+  const label=districts[to].name.split(' ·')[0].toUpperCase();pixelText(c,label,clamp(p[0],80,WORLD_W-80),clamp(p[1]+17,52,WORLD_H-17),'#c7b59d',8);
+ }
+ backgroundSeason=S.district;
+}
+function vehicle(c,x,y,kind='taxi'){
+ if(kind==='bus'){
+  rect(c,x,y,75,26,'#a65450');rect(c,x+2,y+2,71,3,'#d68a67');for(let i=0;i<6;i++)rect(c,x+6+i*10,y+7,7,10,'#374d62');rect(c,x+5,y+26,10,4,'#101a24');rect(c,x+59,y+26,10,4,'#101a24');pixelText(c,'BEST',x+37,y+22,'#e3c698',7);
+ }else if(kind==='auto'){rect(c,x,y+4,30,18,'#151e26');rect(c,x+3,y,23,9,'#ddba68');rect(c,x+8,y+9,12,6,'#647c83');rect(c,x+3,y+22,6,4,'#090f19');rect(c,x+23,y+22,5,4,'#090f19')}
+ else{rect(c,x,y+6,43,16,'#16202b');rect(c,x+9,y,24,10,'#d4b064');rect(c,x+12,y+2,17,6,'#50697a');rect(c,x,y+10,5,4,'#efd9a6');rect(c,x+5,y+22,7,4,'#0c1520');rect(c,x+32,y+22,7,4,'#0c1520')}
+}
+function collision(x,y){
+ if(x<12||y<30||x>WORLD_W-13||y>WORLD_H-13)return true;
+ for(const p of Object.values(spots)){if(p.kind==='exit'||p.decorOnly)continue;if(x>p.x-5&&x<p.x+p.w+5&&y>p.y+6&&y<p.y+p.h+10)return true}
+ return false;
+}
+function findPath(tx,ty){
+ const step=8,sx=Math.round(S.x/step),sy=Math.round(S.y/step),gx=Math.round(tx/step),gy=Math.round(ty/step),key=(x,y)=>x+','+y;
+ const queue=[[sx,sy]],seen=new Set([key(sx,sy)]),parents={},goal=key(gx,gy);let found=false;
+ for(let i=0;i<queue.length&&i<23000;i++){let [x,y]=queue[i];if(key(x,y)===goal){found=true;break}for(let [dx,dy] of [[0,1],[1,0],[0,-1],[-1,0]]){let nx=x+dx,ny=y+dy,k=key(nx,ny);if(seen.has(k)||collision(nx*step,ny*step))continue;seen.add(k);parents[k]=[x,y];queue.push([nx,ny])}}
+ if(!found)return [];
+ let result=[],p=[gx,gy];while(key(...p)!==key(sx,sy)){result.push([p[0]*step,p[1]*step]);p=parents[key(...p)];if(!p)return []}return result.reverse();
+}
+function announceDistrict(){
+ $('districtTitle').textContent=district().name;$('districtSubtitle').textContent=district().subtitle;$('districtBanner').classList.add('show');
+ clearTimeout(districtAnnounceTimer);districtAnnounceTimer=setTimeout(()=>$('districtBanner').classList.remove('show'),3800);
+}
+function changeDistrict(id,entry=null){
+ if(!districts[id])return;
+ S.district=id;spots=createSpots(id);currentSpot='home';path=[];pendingSpot=null;hoverSpot=null;keys={};
+ const spawn={n:[640,72],s:[640,824],w:[78,446],e:[1200,446]};
+ [S.x,S.y]=spawn[entry]||[643,353];travelCooldown=performance.now()+800;backgroundSeason='';activeRecordStore=null;makeBackground();render();updateCamera();announceDistrict();save();
+}
+function travelTo(id){
+ if(id===S.district){toast('You are already in '+district().name+'.');return}
+ if(gig){toast('Finish your set before catching a train.');return}
+ if(!spend(.25,0,20))return;
+ if(menuMode)closeMenu(false);$('modal').close();changeDistrict(id);
+ log('Caught the local to '+districts[id].name+'. Fare ₹20.');save();
+}
+function visit(id){
+ const p=spots[id];if(!p)return;
+ pendingSpot=null;path=[];currentSpot=id;
+ if(p.kind==='exit'){changeDistrict(p.to,{n:'s',s:'n',e:'w',w:'e'}[p.dir]);return}
+ renderSpot();
+}
+function interact(){
+ const id=Object.keys(spots).sort((a,b)=>Math.hypot(S.x-spots[a].door[0],S.y-spots[a].door[1])-Math.hypot(S.x-spots[b].door[0],S.y-spots[b].door[1]))[0];
+ if(Math.hypot(S.x-spots[id].door[0],S.y-spots[id].door[1])<53)visit(id);else toast('Walk to a doorway or street exit and press E. I → City shows every district.');
+}
+function goTo(id){let p=spots[id];pendingSpot=id;path=findPath(...p.door);if(!path.length&&Math.hypot(S.x-p.door[0],S.y-p.door[1])<35)visit(id);else if(!path.length){pendingSpot=null;toast('That route is blocked. Approach from the street.')}}
+function locationAt(x,y){return Object.keys(spots).find(id=>{let p=spots[id];return !p.decorOnly&&x>=p.x-12&&x<=p.x+p.w+12&&y>=p.y-15&&y<=p.y+p.h+32})}
+canvas.addEventListener('pointerdown',e=>{if($('modal').open||$('menuDialog').open)return;canvas.focus();const b=canvas.getBoundingClientRect(),x=(e.clientX-b.left)*canvas.width/b.width+camera.x,y=(e.clientY-b.top)*canvas.height/b.height+camera.y;const id=locationAt(x,y);if(id)goTo(id);else{pendingSpot=null;path=findPath(x,y)}});
+canvas.addEventListener('pointermove',e=>{const b=canvas.getBoundingClientRect();hoverSpot=locationAt((e.clientX-b.left)*canvas.width/b.width+camera.x,(e.clientY-b.top)*canvas.height/b.height+camera.y)});
+canvas.addEventListener('pointerleave',()=>hoverSpot=null);
+document.addEventListener('keydown',e=>{
+ const k=e.key.toLowerCase();
+ if(k==='escape'){e.preventDefault();e.stopPropagation();if(!e.repeat)toggleGameMenu();return}
+ if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.isContentEditable)return;
+ if(k==='i'){e.preventDefault();if(!e.repeat)toggleControlMenu();return}
+ if(k==='m'){e.preventDefault();if(!e.repeat){if(menuMode==='inventory'&&menuSection==='city')closeMenu();else showControlSection('city')}return}
+ if(menuMode)return;
+ if(gig){if(['d','f','j','k'].includes(k)&&!e.repeat){e.preventDefault();hit(['d','f','j','k'].indexOf(k))}return}
+ if($('modal').open)return;
+ if(['arrowup','arrowdown','arrowleft','arrowright','w','a','s','d','e',' '].includes(k)){e.preventDefault();keys[k]=true;if(k==='e'&&!e.repeat)interact()}
+});
+document.addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
+window.addEventListener('blur',()=>{keys={};if(gig&&!gig.paused){gig.paused=true;gig.pauseStart=performance.now();gig.pauseReason='blur'}});
+window.addEventListener('focus',()=>{if(gig&&gig.paused&&!menuMode){gig.start+=performance.now()-gig.pauseStart;gig.paused=false}});
+document.addEventListener('visibilitychange',()=>{keys={};if(document.hidden&&gig&&!gig.paused){gig.paused=true;gig.pauseStart=performance.now()}else if(!document.hidden&&gig&&gig.paused&&!menuMode){gig.start+=performance.now()-gig.pauseStart;gig.paused=false}});
+document.querySelectorAll('[data-dir]').forEach(b=>{b.addEventListener('pointerdown',e=>{e.preventDefault();keys[b.dataset.dir]=true;b.setPointerCapture(e.pointerId)});for(let type of ['pointerup','pointercancel'])b.addEventListener(type,()=>keys[b.dataset.dir]=false)});
+function drawWorld(dt,t){
+ if(backgroundSeason!==S.district)makeBackground();
+ const free=!$('modal').open&&!$('menuDialog').open;
+ if(free){
+  let vx=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),vy=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);
+  if(vx||vy){path=[];pendingSpot=null;let len=Math.hypot(vx,vy),d=dt*.13;if(!collision(S.x+vx/len*d,S.y))S.x+=vx/len*d;if(!collision(S.x,S.y+vy/len*d))S.y+=vy/len*d}
+  else if(path.length){let [tx,ty]=path[0],dx=tx-S.x,dy=ty-S.y,d=Math.hypot(dx,dy),move=dt*.15;if(d<=move){S.x=tx;S.y=ty;path.shift();if(!path.length&&pendingSpot)visit(pendingSpot)}else{S.x+=dx/d*move;S.y+=dy/d*move}}
+  if(t>travelCooldown){for(const dir of Object.keys(district().links)){let p=spots['exit_'+dir].door;if(Math.hypot(S.x-p[0],S.y-p[1])<23){visit('exit_'+dir);break}}}
+ }
+ updateCamera();ctx.save();ctx.translate(-camera.x,-camera.y);ctx.drawImage(background,0,0);
+ const anim=S.settings.motion?t:0;
+ // A suburban local, BEST bus, taxis and auto-rickshaws.
+ let trainX=(anim*.08)%(WORLD_W+420)-420;
+ for(let i=0;i<4;i++){let x=trainX+i*106;rect(ctx,x,77,99,24,'#bdc7c6');rect(ctx,x,89,99,9,'#776089');for(let j=0;j<7;j++)rect(ctx,x+5+j*13,81,9,8,'#344b60');rect(ctx,x+9,101,12,3,'#112230')}
+ vehicle(ctx,(anim*.026+220)%(WORLD_W+80)-80,431,'bus');
+ vehicle(ctx,WORLD_W-((anim*.04+650)%(WORLD_W+65)),479,'taxi');
+ vehicle(ctx,(anim*.019+780)%(WORLD_W+55)-55,433,['bandra','juhu','andheri'].includes(S.district)?'auto':'taxi');
+ const locals=[{x:351,y:379,c:'#d2a976',s:2},{x:757,y:549,c:'#709fac',s:1},{x:1141,y:776,c:'#ae839e',s:0},{x:395,y:827,c:'#ad8970',s:2},{x:903,y:400,c:'#85a19a',s:1}];
+ locals.map((p,i)=>({...p,x:p.x+Math.sin(anim*.0003+i)*11})).concat([{x:S.x,y:S.y,c:'#e8ac67',s:0,player:true}]).sort((a,b)=>a.y-b.y).forEach(p=>character(ctx,p.x,p.y,p.c,p.s,p.player&&free&&(path.length||Object.values(keys).some(Boolean))?anim*.015:0));
+ // Streetlight reflections and wet asphalt.
+ for(let [x,y] of [[92,411],[362,411],[759,411],[1155,411],[363,545],[761,545],[1133,822]]){rect(ctx,x-10,y-4,24,4,'#f0c47e2a');rect(ctx,x-18,y+8,37,2,'#efb37728');rect(ctx,x-7,y+16,14,3,'#ddb37130')}
+ for(let i=0;i<22;i++){let x=seed(i+312)*WORLD_W,y=429+seed(i+715)*72;rect(ctx,x,y,17+seed(i)*40,1,i%2?'#bc99b727':'#81b1b930')}
+ let dusk=S.hour>=18?.13:.035;rect(ctx,camera.x,camera.y,canvas.width,canvas.height,'rgba(4,10,29,'+dusk+')');
+ if(S.day%3===0){for(let i=0;i<110;i++){let x=camera.x+(seed(i+904)*canvas.width-anim*.023)%canvas.width;if(x<camera.x)x+=canvas.width;let y=camera.y+(seed(i+670)*canvas.height+anim*.16)%canvas.height;rect(ctx,x,y,1,5,'#8fbed346')}}
+ if(pendingSpot){let p=spots[pendingSpot].door;rect(ctx,p[0]-6,p[1],12,2,'#f1c484');rect(ctx,p[0],p[1]-5,2,12,'#f1c484')}
+ const near=Object.keys(spots).find(id=>Math.hypot(S.x-spots[id].door[0],S.y-spots[id].door[1])<40);
+ if(near&&!path.length&&free){rect(ctx,S.x-7,S.y-44,14,13,'#131f30');pixelText(ctx,'E',S.x,S.y-37,'#eec187',9)}
+ if(hoverSpot&&free){let p=spots[hoverSpot],w=Math.min(252,p.name.length*6+18),x=clamp(p.x+p.w/2,camera.x+w/2+5,camera.x+canvas.width-w/2-5),y=clamp(p.y-20,camera.y+12,camera.y+canvas.height-16);rect(ctx,x-w/2,y-11,w,22,'#142235ed');pixelText(ctx,p.name,x,y,'#d4b994',9)}
+ ctx.restore();
+}
+function loop(t){const dt=Math.min(40,t-last||16);last=t;frame++;drawWorld(dt,t);if(gig&&!gig.paused)drawGig(t);requestAnimationFrame(loop)}
+
+function initAudio(){
+ if(!audioCtx){const AC=window.AudioContext||window.webkitAudioContext;if(AC)audioCtx=new AC()}
+ if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
+}
+function toggleSound(){muted=!muted;S.settings.sound=!muted;if(!muted)initAudio();save()}
+function tone(freq,duration=.12,type='sine',vol=.045){
+ if(muted||!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain(),now=audioCtx.currentTime;o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(vol,now+.008);g.gain.exponentialRampToValueAtTime(.001,now+duration);o.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+duration+.02)
+}
+function drum(strong){
+ if(muted||!audioCtx)return;
+ const now=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.setValueAtTime(strong?135:480,now);o.frequency.exponentialRampToValueAtTime(strong?42:140,now+.14);g.gain.setValueAtTime(strong?.13:.025,now);g.gain.exponentialRampToValueAtTime(.001,now+.16);o.connect(g);g.connect(audioCtx.destination);o.start(now);o.stop(now+.18);
+}
+function startGig(i){
+ if(!venues[i]||gig)return;let v=venues[i];
+ if(S.skill<v.skill||S.fans<v.fans||S.tracks.length<(v.tracks||0)||S.daily.gig){toast('This stage is not available yet.');return}
+ if(v.district!==S.district){toast('Travel to '+districts[v.district].name+' to play this venue.');return}
+ if(!spend(3,25))return;
+ if(menuMode)closeMenu(false);
+ S.daily.gig=1;S.x=spots.club.door[0];S.y=spots.club.door[1];path=[];pendingSpot=null;currentSpot='club';
+ gig={i,start:performance.now(),notes:Array.from({length:v.notes},(_,n)=>({lane:(n*3+Math.floor(n/4)+(i>1?Math.floor(n/7):0))%4,t:2.5+n*.46,done:false,hit:false})),score:0,combo:0,best:0,judgment:'GET READY',judgeAt:0,lastBeat:-1,flashes:[0,0,0,0],paused:false};
+ openModal(v.name,'<div class="gigLayout"><div class="gigscore"><span id="gigCombo">0 COMBO</span><span id="gigPoints">0 POINTS</span><span id="gigTime">GET READY</span></div><canvas id="rhythm" width="480" height="390" aria-label="Rhythm game: press D F J K as notes meet the gold line"></canvas><div class="padrow">'+['D','F','J','K'].map((k,n)=>'<button onpointerdown="event.preventDefault();hit('+n+')" aria-label="Hit lane '+k+'">'+k+'</button>').join('')+'</div><p class="sub">Hit the gold line. Find your groove.<br>Use your keyboard or tap the pads.</p><button class="tiny quiet" onclick="leaveGig()">Leave stage</button><button class="tiny quiet" onclick="toggleSound()">Toggle sound</button></div>');
+ if(!muted)initAudio();render();save();
+}
+function hit(lane){
+ if(!gig||gig.paused)return;
+ const elapsed=(performance.now()-gig.start)/1000;gig.flashes[lane]=performance.now();
+ let candidates=gig.notes.filter(n=>!n.done&&n.lane===lane&&Math.abs(n.t-elapsed)<.23).sort((a,b)=>Math.abs(a.t-elapsed)-Math.abs(b.t-elapsed));
+ if(!candidates.length){gig.combo=0;gig.judgment='FIND THE BEAT';gig.judgeAt=performance.now();return}
+ const n=candidates[0],d=Math.abs(n.t-elapsed);n.done=true;n.hit=true;let points=d<.075?100:d<.15?75:50;gig.score+=points;gig.combo++;gig.best=Math.max(gig.best,gig.combo);gig.judgment=points===100?'PERFECT':points===75?'GREAT':'GOOD';gig.judgeAt=performance.now();tone([261.63,329.63,392,523.25][lane],.15,'triangle',.05);
+}
+function drawGig(t){
+ if(!gig)return;const r=$('rhythm');if(!r)return;
+ const c=r.getContext('2d'),elapsed=(t-gig.start)/1000,target=324;
+ rect(c,0,0,480,390,'#191726');
+ for(let i=0;i<4;i++){let x=32+i*104;rect(c,x,0,96,354,i%2?'#292239':'#242035');rect(c,x,0,1,354,'#59405e');if(t-gig.flashes[i]<100)rect(c,x,0,96,354,'#bca6c323');rect(c,x,target-5,96,11,'#574855');rect(c,x,target-1,96,2,'#efbf77');rect(c,x+33,target-15,30,30,'#aa849733');pixelText(c,['D','F','J','K'][i],x+48,target+3,'#e2c095',15)}
+ for(let n of gig.notes){
+  if(!n.done&&elapsed>n.t+.23){n.done=true;gig.combo=0;gig.judgment='MISS';gig.judgeAt=t}
+  if(n.done)continue;
+  let y=target-(n.t-elapsed)*155;
+  if(y>-20&&y<350){let x=40+n.lane*104;rect(c,x,y,80,12,['#e1a26f','#b695cb','#86baa9','#d98eae'][n.lane]);rect(c,x+3,y+2,74,2,'#ffe8c180');rect(c,x+4,y+12,72,3,'#0f0c1d')}
+ }
+ let beat=Math.floor((elapsed-.35)/.46);
+ if(beat>=0&&beat!==gig.lastBeat){gig.lastBeat=beat;drum(beat%2===0);if(beat%4===0)tone([65.4,87.3,73.4,98][Math.floor(beat/4)%4],.35,'triangle',.07)}
+ rect(c,0,354,480,36,'#211c30');for(let n=0;n<29;n++){let x=n*17+3,yy=375+(Math.sin(beat+n)*2|0);rect(c,x,yy,8,11,['#68546d','#7d687d','#987b8d','#646b80'][n%4]);rect(c,x+1,yy-6,6,6,'#ad8a80');if(gig.combo>3)rect(c,x-2,yy-3,2,8,'#ad8a80')}
+ if(elapsed<1.8)pixelText(c,elapsed<.8?'READY?':'FEEL THE ROOM',240,137,'#f3ce92',22);
+ else if(t-gig.judgeAt<600)pixelText(c,gig.judgment,240,99,gig.judgment==='MISS'?'#dba4b6':'#f4d297',20);
+ $('gigCombo').textContent=gig.combo+' COMBO';$('gigPoints').textContent=gig.score+' POINTS';$('gigTime').textContent=Math.max(0,Math.ceil(gig.notes[gig.notes.length-1].t+.7-elapsed))+'s';
+ if(elapsed>gig.notes[gig.notes.length-1].t+.8)finishGig(false);
+}
+function leaveGig(){if(!gig)return;finishGig(true)}
+function finishGig(left){
+ if(!gig)return;const result=gig;gig=null;
+ const v=venues[result.i],accuracy=result.score/(v.notes*100),grade=left?'—':accuracy>=.9?'S':accuracy>=.78?'A':accuracy>=.6?'B':accuracy>=.4?'C':'D';
+ const reward=left?0:Math.round(v.pay*(.5+accuracy*.9)*(S.friends.sol>=40?1.2:1));
+ const fanGain=left?0:Math.round(v.gain*(.4+accuracy*1.2)*(S.friends.kit>=40?1.2:1)*(S.mood<20?.8:1));
+ earn(reward);S.fans+=fanGain;S.skill=clamp(S.skill+(left?1:4+accuracy*3));S.mood=clamp(S.mood+(left?-5:10));S.rep+=left?0:Math.round(accuracy*10);S.best=Math.max(S.best,result.best);if(!left)S.gigs++;
+ const msg=left?'Left the set early. There will be another night.':'Played '+v.name+'. '+grade+' grade, ₹'+reward+' earned, '+fanGain+' new fans.';
+ finish(msg);
+ const festival=!left&&result.i===venues.length-1;
+ openModal(festival?'From the bedroom to the main stage':left?'There is always another night':'One more night to remember','<div class="result"><div class="eyebrow">'+(left?'SET ENDED':v.name.toUpperCase())+'</div><strong>'+grade+'</strong><p>'+Math.round(accuracy*100)+'% accuracy · '+result.best+' best combo</p><h3>+₹'+reward+' &nbsp; +'+fanGain+' fans</h3><p>'+(left?'You stepped away. Rest, reset, and come back when you are ready.':accuracy>=.78?'The room was with you. Those little hours of practice are becoming something real.':'Every room teaches you something. Keep practicing, and your next set will feel better.')+'</p>'+(festival?'<p class="note">You remember the borrowed controller and that first room of ten people. The stage is bigger now. The feeling is the same. This is your sound, and this is your life.</p>':'')+'<button class="gold" onclick="closeModal()">Back to Mumbai</button></div>');
+}
+$('modal').addEventListener('cancel',e=>{e.preventDefault();toggleGameMenu()});
+$('menuDialog').addEventListener('cancel',e=>{e.preventDefault();toggleGameMenu()});
+$('savefile').addEventListener('change',async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{if(file.size>2000000)throw Error('File too large');const parsed=validateSave(JSON.parse(await file.text()));gig=null;S=parsed;spots=createSpots(S.district);backgroundSeason='';muted=!S.settings.sound;path=[];pendingSpot=null;currentSpot='home';render();save();if(menuMode)closeMenu();closeModal();toast('Your story is back. Welcome home.')}catch(err){toast('That save could not be loaded. Choose a Project SuperDJ or Afterhours save file.')}
+ e.target.value='';
+});
+try{const saved=localStorage.getItem('project-superdj-v2')||localStorage.getItem('afterhours-v1');if(saved)S=validateSave(JSON.parse(saved))}catch(e){storageOK=false}
+spots=createSpots(S.district);muted=!S.settings.sound;resizeWorld();render();makeBackground();requestAnimationFrame(loop);
+if(!S.started)intro();else{showControlHint();announceDistrict()}
+if(!storageOK)$('saved').textContent='Use Export save to keep your story';
+window.addEventListener('beforeunload',()=>{if(S.started)save()});
+</script></body></html>
